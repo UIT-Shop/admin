@@ -1,0 +1,82 @@
+
+.container{
+    margin: auto;
+    border-bottom: #333;
+  }
+.navbar{
+    background-color: #fff;
+    padding: 0px 40px;
+    display: flex;
+    align-items: center;
+    position: fixed;
+    top:0;
+    width: 100%;
+    height: 60px;
+    
+}
+.menu-icon{
+    width: 28px;
+    margin-left: 20px;
+    display: none;
+  }
+nav{
+    flex: 1;
+    text-align: left;
+}
+nav ul{
+    padding-left: 40px;
+    list-style-type: none;
+    display: inline;
+}
+nav ul li{
+    display: inline-block;
+    margin-right: 20px;
+    color: #fff;
+    font-weight: bold;
+    font-size: 20px;
+}
+nav ul li h2{
+    color: red;
+}
+.RightSide{
+    text-align: right;
+}
+#rightMenu{
+    width: 200px;
+    display: inline;
+}
+nav ul li:hover{
+    cursor: pointer;
+    color: #ff523b;
+}
+link{
+    color: #fff;
+    font-weight: bold;
+}
+link:hover{
+    cursor: pointer;
+}
+
+@media only screen and (max-width: 800px) {
+    .menu-icon{
+        display: block;
+        cursor: pointer;
+    }
+    nav ul{
+      position: absolute;
+      top: 70px;
+      left: 0;
+      background: #333;
+      display: block;
+      width: 100%;
+      overflow: hidden;
+      transition: max-height 0.5s;
+    }
+    nav ul li{
+      display: block;
+      margin-right: 50px;
+      margin-top:10px;
+      margin-bottom:10px;
+      color: #fff;
+    }
+  }
