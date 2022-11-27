@@ -1,49 +1,22 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 
-const AddCategory = () => {
-  const [categoryInput, setCategory] = useState({
-    name: '',
-    url: '',
-    gender: '',
-    meta_title: '',
-    meta_keyword: '',
-    meta_descrip: '',
-    error_list: [],
-  });
-
-  const handleInput = (e) => {
-    e.persist();
-    setCategory({ ...categoryInput, [e.target.name]: e.target.value });
-  };
-
-  const submitCategory = async (e) => {
-    e.preventDefault();
-
-    console.log({
-      name: categoryInput.name,
-      url: categoryInput.url,
-      gender: categoryInput.gender,
-      meta_title: categoryInput.meta_title,
-      meta_keyword: categoryInput.meta_keyword,
-      meta_descrip: categoryInput.meta_descrip,
-    });
+function EditCategory(props) {
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState(true);
+  const [categoryInput, setCategory] = useState([]);
+  const [error, setError] = useState([]);
+  const { id } = useParams();
+  useEffect(() => {
     axios
-      .post(`/Category`, {
-        name: categoryInput.name,
-        url: categoryInput.url,
-        gender: categoryInput.gender,
-        meta_title: categoryInput.meta_title,
-        meta_keyword: categoryInput.meta_keyword,
-        meta_descrip: categoryInput.meta_descrip,
-      })
+      .get(`/Category/${id}`)
       .then((res) => {
-        console.log(res);
         if (res.status === 200) {
-          e.target.reset();
-          toast.success('Thêm thành công', {
+          setCategory(res.data.data);
+        } else if (res.status === 400) {
+          toast.error('Lỗi lấy dữ liệu', {
             position: 'top-right',
             autoClose: 5000,
             hideProgressBar: false,
@@ -53,54 +26,120 @@ const AddCategory = () => {
             progress: undefined,
             theme: 'colored',
           });
-          // document.getElementById('CATEGORY_FORM').reset();
-        } else if (res.status === 400) {
-          setCategory({ ...categoryInput, error_list: res.data.errors });
+          navigate('/admin/view-category');
+        }
+        setLoading(false);
+      })
+      .catch((err) => {
+        setLoading(false);
+        if (err.response) {
+          // The client was given an error response (5xx, 4xx)
+          console.log('Error response', err.response);
+          toast.error('Dữ liệu không tồn tại', {
+            position: 'top-right',
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: 'colored',
+          });
+          navigate('/admin/view-category');
+        } else if (err.request) {
+          // The client never received a response, and the request was never left (4xx)
+          console.log('Error request', err.request);
+          toast.error(err.request.data.message, {
+            position: 'top-right',
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: 'colored',
+          });
+        } else {
+          // Anything else
+          console.log('Error', err.message);
+        }
+      });
+  }, [id]);
+
+  const handleInput = (e) => {
+    e.persist();
+    setCategory({ ...categoryInput, [e.target.name]: e.target.value });
+  };
+
+  const updateCategory = (e) => {
+    e.preventDefault();
+
+    // const category_id = props.match.params.id;
+    // const data = categoryInput;
+    axios
+      .put(`/Category`, {
+        id: id,
+        name: categoryInput.name,
+        url: categoryInput.url,
+        gender: categoryInput.gender,
+        meta_title: categoryInput.meta_title,
+        meta_keyword: categoryInput.meta_keyword,
+        meta_descrip: categoryInput.meta_descrip,
+      })
+      .then((res) => {
+        if (res.status === 200) {
+          toast.success('Cập nhật thành công', {
+            position: 'top-right',
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: 'colored',
+          });
+          navigate('/admin/view-category');
         }
       })
       .catch((err) => {
-        setCategory({
-          ...categoryInput,
-          error_list: err.response.data.message,
-        });
+        setError(err.response.data.message);
       });
   };
 
-  var display_errors = [];
-  if (categoryInput.error_list) {
-    display_errors.push(categoryInput.error_list);
+  if (loading) {
+    return <h4>Loading Edit Category...</h4>;
   }
 
   return (
-    <div className="container-fluid px-4">
+    <div className="container px-4">
       <ToastContainer />
       <div className="card mt-4">
         <div className="card-header">
           <h4>
-            Add Category
+            Edit Category
             <Link
               to="/admin/view-category"
-              className="btn btn-primary float-end"
+              className="btn btn-primary  float-end"
             >
-              View Category
+              BACK
             </Link>
           </h4>
         </div>
         <div className="card-body">
-          <form onSubmit={submitCategory} id="CATEGORY_FORM">
+          <form onSubmit={updateCategory}>
             <ul className="nav nav-tabs" id="myTab" role="tablist">
               <li className="nav-item" role="presentation">
                 <button
                   className="nav-link active"
-                  id="category-tab"
+                  id="home-tab"
                   data-bs-toggle="tab"
-                  data-bs-target="#category"
+                  data-bs-target="#home"
                   type="button"
                   role="tab"
-                  aria-controls="category"
+                  aria-controls="home"
                   aria-selected="true"
                 >
-                  Category
+                  Home
                 </button>
               </li>
               <li className="nav-item" role="presentation">
@@ -121,11 +160,11 @@ const AddCategory = () => {
             <div className="tab-content" id="myTabContent">
               <div
                 className="tab-pane card-body border fade show active"
-                id="category"
+                id="home"
                 role="tabpanel"
-                aria-labelledby="category-tab"
+                aria-labelledby="home-tab"
               >
-                <div className="form-group mb-4">
+                <div className="form-group mb-3">
                   <label>Name</label>
                   <input
                     type="text"
@@ -134,8 +173,9 @@ const AddCategory = () => {
                     value={categoryInput.name}
                     className="form-control"
                   />
+                  <small className="text-danger">{error.name}</small>
                 </div>
-                <div className="form-group mb-4">
+                <div className="form-group mb-3">
                   <label>Url</label>
                   <input
                     type="text"
@@ -144,8 +184,8 @@ const AddCategory = () => {
                     value={categoryInput.url}
                     className="form-control"
                   />
+                  <small className="text-danger">{error.url}</small>
                 </div>
-
                 <div className="form-group mb-4">
                   <div>
                     <label>Giới tính</label>
@@ -190,6 +230,16 @@ const AddCategory = () => {
                     </label>
                   </div>
                 </div>
+                {/* <div className="form-group mb-3">
+                  <label>Status</label>
+                  <input
+                    type="checkbox"
+                    name="status"
+                    onChange={handleInput}
+                    value={categoryInput.status}
+                  />{' '}
+                  Status 0=shown/1=hidden
+                </div> */}
               </div>
               <div
                 className="tab-pane card-body border fade"
@@ -197,7 +247,7 @@ const AddCategory = () => {
                 role="tabpanel"
                 aria-labelledby="seo-tags-tab"
               >
-                <div className="form-group mb-4">
+                <div className="form-group mb-3">
                   <label>Meta Title</label>
                   <input
                     type="text"
@@ -207,7 +257,7 @@ const AddCategory = () => {
                     className="form-control"
                   />
                 </div>
-                <div className="form-group mb-4">
+                <div className="form-group mb-3">
                   <label>Meta Keywords</label>
                   <textarea
                     name="meta_keyword"
@@ -216,7 +266,7 @@ const AddCategory = () => {
                     className="form-control"
                   ></textarea>
                 </div>
-                <div className="form-group mb-4">
+                <div className="form-group mb-3">
                   <label>Meta Description</label>
                   <textarea
                     name="meta_descrip"
@@ -231,20 +281,14 @@ const AddCategory = () => {
               type="submit"
               className="btn btn-primary px-4 float-end mt-2"
             >
-              Submit
+              Update
             </button>
           </form>
-          {display_errors.map((item, idx) => {
-            return (
-              <small className="text-danger" key={idx}>
-                {item}
-              </small>
-            );
-          })}
+          <small className="text-danger">{error}</small>
         </div>
       </div>
     </div>
   );
-};
+}
 
-export default AddCategory;
+export default EditCategory;

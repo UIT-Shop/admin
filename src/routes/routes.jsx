@@ -1,3 +1,6 @@
+import AddCategory from '../components/category/AddCategory';
+import EditCategory from '../components/category/EditCategory';
+import ViewCategory from '../components/category/ViewCategory';
 import Dashboard from '../components/Dashboard';
 import Profile from '../components/Profile';
 // import Category from '../components/category/Category';
@@ -16,44 +19,44 @@ const routes = [
     name: 'Dashboard',
     element: Dashboard,
   },
-  //   {
-  //     path: '/add-category',
-  //
-  //     name: 'Category',
-  //     component: Category,
-  //   },
-  //   {
-  //     path: '/view-category',
-  //
-  //     name: 'ViewCategory',
-  //     component: ViewCategory,
-  //   },
-  //   {
-  //     path: '/edit-category/:id',
-  //
-  //     name: 'EditCategory',
-  //     component: EditCategory,
-  //   },
+  {
+    path: '/add-category',
+
+    name: 'Category',
+    element: AddCategory,
+  },
+  {
+    path: '/view-category',
+
+    name: 'ViewCategory',
+    element: ViewCategory,
+  },
+  {
+    path: '/edit-category/:id',
+
+    name: 'EditCategory',
+    element: EditCategory,
+  },
   //   {
   //     path: '/add-product',
   //
   //     name: 'AddProduct',
-  //     component: AddProduct,
+  //     element: AddProduct,
   //   },
   //   {
   //     path: '/view-product',
   //
   //     name: 'ViewProduct',
-  //     component: ViewProduct,
+  //     element: ViewProduct,
   //   },
   //   {
   //     path: '/edit-product/:id',
   //
   //     name: 'EditProduct',
-  //     component: EditProduct,
+  //     element: EditProduct,
   //   },
   { path: '/profile', name: 'Profile', element: Profile },
-  //   { path: '/orders',  name: 'Order', component: Order },
+  //   { path: '/orders',  name: 'Order', element: Order },
 ];
 
 export default routes;
