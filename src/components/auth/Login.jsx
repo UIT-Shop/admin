@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { navigate, useNavigate } from 'react-router-dom';
 import eyeOff from '../../common/assets/sign_in/eye_off.png';
 import eyeOn from '../../common/assets/sign_in/eye_on.png';
 import { checkValidEmail } from '../../common/validate/valid-email';
@@ -21,24 +21,19 @@ const Login = () => {
   const [checkEmptyPassword, setCheckEmptyPassword] = useState(true);
   const [isRememberMe, setIsRemember] = useState(false);
 
-  useEffect(() => {
-    //Check if the Cookies name rememberStatus is exist to prevent null exception
-    const userEmail = localStorage.getItem('auth_email');
-    const userPassword = localStorage.getItem('userPassword');
-    // if (userEmail && userPassword) {
-    //   setLogin({...loginInput, email: userEmail});
-    //   setLogin({ ...loginInput, email: userPassword });
-    //   setEmail(userEmail);
-    //   setPassword(userPassword);
-    //   setIsRemember(true);
-    // }
-  }, []);
+  const navigate = useNavigate();
+
+  // useEffect(() => {
+  //   axios.get(`/Auth/check-authen`).then((res) => {
+  //     if (res.status === 200) {
+  //       navigate('/admin/dashboard');
+  //     }
+  //   });
+  // });
   const setLocalStorages = (token, user) => {
     localStorage.setItem('auth_token', token);
     localStorage.setItem('auth_name', user[Object.keys(user)[1]]);
     localStorage.setItem('auth_email', user[Object.keys(user)[2]]);
-    localStorage.setItem('test', 'user[Object.keys(user)[2]]');
-    console.log(user[Object.keys(user)[1]]);
   };
   const removeLocalStorages = () => {
     localStorage.removeItem('auth_token');
@@ -55,8 +50,6 @@ const Login = () => {
       setInputType('text');
     }
   };
-
-  const navigate = useNavigate();
 
   const [loginInput, setLogin] = useState({
     email: '',
@@ -96,17 +89,17 @@ const Login = () => {
             const user = jwt(token);
             setLocalStorages(token, user);
 
-            toast.success('Đăng nhập thành công', {
-              position: 'top-right',
-              autoClose: 5000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-              theme: 'colored',
-            });
             if (user[Object.keys(user)[3]] === 'Admin') {
+              toast.success('Đăng nhập thành công', {
+                position: 'top-right',
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: 'colored',
+              });
               navigate('/admin/dashboard');
             } else {
               toast.warning('Bạn không có quyền truy cập trang này', {
@@ -119,7 +112,7 @@ const Login = () => {
                 progress: undefined,
                 theme: 'colored',
               });
-              navigate('/');
+              navigate('/login');
             }
           } else if (res.status === 401) {
             toast.warning('Sai email hoặc mật khẩu', {
@@ -150,16 +143,17 @@ const Login = () => {
           if (err.response) {
             // The client was given an error response (5xx, 4xx)
             console.log('Error response', err.response);
-            toast.error('Sai tài khoản hoặc mật khẩu', {
-              position: 'top-right',
-              autoClose: 5000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-              theme: 'colored',
-            });
+            if (err.response.status === 400)
+              toast.error('Sai tài khoản hoặc mật khẩu', {
+                position: 'top-right',
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: 'colored',
+              });
           } else if (err.request) {
             // The client never received a response, and the request was never left (4xx)
             console.log('Error request', err.request);

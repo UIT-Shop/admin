@@ -3,17 +3,17 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 
-function ViewCategory() {
+function ViewColor() {
   const [loading, setLoading] = useState(true);
-  const [categorylist, setCategorylist] = useState([]);
+  const [colorlist, setColorlist] = useState([]);
 
   useEffect(() => {
     let isMounted = true;
 
-    axios.get(`/Category`).then((res) => {
+    axios.get(`/Color`).then((res) => {
       if (isMounted) {
         if (res.status === 200) {
-          setCategorylist(res.data.data);
+          setColorlist(res.data.data);
           setLoading(false);
         }
       }
@@ -24,13 +24,13 @@ function ViewCategory() {
     };
   }, []);
 
-  const deleteCategory = (e, id) => {
+  const deleteColor = (e, id) => {
     e.preventDefault();
 
     const thisClicked = e.currentTarget;
     thisClicked.innerText = 'Deleting';
 
-    axios.delete(`/Category/${id}`).then((res) => {
+    axios.delete(`/Color/${id}`).then((res) => {
       if (res.status === 200) {
         toast.success('Xóa thành công', {
           position: 'top-right',
@@ -44,27 +44,23 @@ function ViewCategory() {
         });
         thisClicked.closest('tr').remove();
       } else if (res.status === 404) {
-        // swal('Success', res.data.message, 'success');
         thisClicked.innerText = 'Delete';
       }
     });
   };
 
-  var viewcategory_HTMLTABLE = '';
+  var viewcolor_HTMLTABLE = '';
   if (loading) {
-    return <h4>Loading Category...</h4>;
+    return <h4>Loading Color...</h4>;
   } else {
-    viewcategory_HTMLTABLE = categorylist.map((item) => {
+    viewcolor_HTMLTABLE = colorlist.map((item) => {
       return (
         <tr key={item.id}>
           <td>{item.id}</td>
           <td>{item.name}</td>
-          <td>{item.gender}</td>
-          <td>{item.type}</td>
-          <td>{item.url}</td>
           <td>
             <Link
-              to={`/admin/edit-category/${item.id}`}
+              to={`/admin/edit-color/${item.id}`}
               className="btn btn-success btn-sm"
             >
               Sửa
@@ -73,7 +69,7 @@ function ViewCategory() {
           <td>
             <button
               type="button"
-              onClick={(e) => deleteCategory(e, item.id)}
+              onClick={(e) => deleteColor(e, item.id)}
               className="btn btn-danger btn-sm"
             >
               Xóa
@@ -90,12 +86,9 @@ function ViewCategory() {
       <div className="card mt-4">
         <div className="card-header">
           <h4>
-            Category List
-            <Link
-              to="/admin/add-category"
-              className="btn btn-primary float-end"
-            >
-              Add Category
+            Danh sách màu sắc
+            <Link to="/admin/add-color" className="btn btn-primary float-end">
+              Thêm màu
             </Link>
           </h4>
         </div>
@@ -105,14 +98,11 @@ function ViewCategory() {
               <tr>
                 <th>ID</th>
                 <th>Tên</th>
-                <th>Giới tính</th>
-                <th>Loại</th>
-                <th>Url</th>
                 <th>Sửa</th>
                 <th>Xóa</th>
               </tr>
             </thead>
-            <tbody>{viewcategory_HTMLTABLE}</tbody>
+            <tbody>{viewcolor_HTMLTABLE}</tbody>
           </table>
         </div>
       </div>
@@ -120,4 +110,4 @@ function ViewCategory() {
   );
 }
 
-export default ViewCategory;
+export default ViewColor;

@@ -39,16 +39,7 @@ function App() {
     <>
       <Router>
         <Routes>
-          <Route
-            path="/login"
-            element={
-              localStorage.getItem('auth_token') ? (
-                <Navigate to="/" />
-              ) : (
-                <Login />
-              )
-            }
-          ></Route>
+          <Route path="/login" element={<Login />}></Route>
           <Route
             path="/403"
             name="Forbidden"

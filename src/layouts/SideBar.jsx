@@ -27,7 +27,18 @@ const SideBar = () => {
             </div>
             Category
           </Link>
-
+          <Link className="nav-link" to="/admin/add-brand">
+            <div className="sb-nav-link-icon">
+              <i className="fas fa-tachometer-alt"></i>
+            </div>
+            Brand
+          </Link>
+          <Link className="nav-link" to="/admin/add-color">
+            <div className="sb-nav-link-icon">
+              <i className="fas fa-tachometer-alt"></i>
+            </div>
+            Color
+          </Link>
           <Link
             className="nav-link collapsed"
             to="#"

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
+import { ProductType } from '../../common/constant/ProductType';
 
 function EditCategory(props) {
   const navigate = useNavigate();
@@ -82,6 +83,7 @@ function EditCategory(props) {
         name: categoryInput.name,
         url: categoryInput.url,
         gender: categoryInput.gender,
+        type: categoryInput.type,
         meta_title: categoryInput.meta_title,
         meta_keyword: categoryInput.meta_keyword,
         meta_descrip: categoryInput.meta_descrip,
@@ -116,12 +118,12 @@ function EditCategory(props) {
       <div className="card mt-4">
         <div className="card-header">
           <h4>
-            Edit Category
+            Sửa phân loại
             <Link
               to="/admin/view-category"
               className="btn btn-primary  float-end"
             >
-              BACK
+              Quay lại
             </Link>
           </h4>
         </div>
@@ -139,7 +141,7 @@ function EditCategory(props) {
                   aria-controls="home"
                   aria-selected="true"
                 >
-                  Home
+                  Phân loại
                 </button>
               </li>
               <li className="nav-item" role="presentation">
@@ -153,7 +155,7 @@ function EditCategory(props) {
                   aria-controls="seo-tags"
                   aria-selected="false"
                 >
-                  SEO Tags
+                  Thẻ SEO
                 </button>
               </li>
             </ul>
@@ -165,7 +167,7 @@ function EditCategory(props) {
                 aria-labelledby="home-tab"
               >
                 <div className="form-group mb-3">
-                  <label>Name</label>
+                  <label>Tên</label>
                   <input
                     type="text"
                     name="name"
@@ -198,6 +200,7 @@ function EditCategory(props) {
                       name="gender"
                       id="inlineRadio1"
                       value="Nam"
+                      checked={categoryInput.gender === 'Nam'}
                     />
                     <label className="form-check-label" htmlFor="inlineRadio1">
                       Nam
@@ -211,6 +214,7 @@ function EditCategory(props) {
                       onChange={handleInput}
                       id="inlineRadio2"
                       value="Nữ"
+                      checked={categoryInput.gender === 'Nữ'}
                     />
                     <label className="form-check-label" htmlFor="inlineRadio2">
                       Nữ
@@ -224,22 +228,31 @@ function EditCategory(props) {
                       onChange={handleInput}
                       id="inlineRadio3"
                       value="Unisex"
+                      checked={categoryInput.gender === 'Unisex'}
                     />
                     <label className="form-check-label" htmlFor="inlineRadio3">
                       Unisex
                     </label>
                   </div>
                 </div>
-                {/* <div className="form-group mb-3">
-                  <label>Status</label>
-                  <input
-                    type="checkbox"
-                    name="status"
+                <div className="form-group mb-4">
+                  <label>Select Type</label>
+                  <select
+                    name="type"
                     onChange={handleInput}
-                    value={categoryInput.status}
-                  />{' '}
-                  Status 0=shown/1=hidden
-                </div> */}
+                    value={categoryInput.type}
+                    className="form-control"
+                  >
+                    <option>Select Type</option>
+                    {ProductType.map((item, index) => {
+                      return (
+                        <option value={item} key={index}>
+                          {item}
+                        </option>
+                      );
+                    })}
+                  </select>
+                </div>
               </div>
               <div
                 className="tab-pane card-body border fade"

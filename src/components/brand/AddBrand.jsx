@@ -2,14 +2,11 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
-import { ProductType } from '../../common/constant/ProductType';
 
-const AddCategory = () => {
-  const [categoryInput, setCategory] = useState({
+const AddBrand = () => {
+  const [brandInput, setBrand] = useState({
     name: '',
     url: '',
-    gender: '',
-    type: '',
     meta_title: '',
     meta_keyword: '',
     meta_descrip: '',
@@ -18,20 +15,19 @@ const AddCategory = () => {
 
   const handleInput = (e) => {
     e.persist();
-    setCategory({ ...categoryInput, [e.target.name]: e.target.value });
+    setBrand({ ...brandInput, [e.target.name]: e.target.value });
   };
 
-  const submitCategory = async (e) => {
+  const submitBrand = async (e) => {
     e.preventDefault();
+
     axios
-      .post(`/Category`, {
-        name: categoryInput.name,
-        url: categoryInput.url,
-        gender: categoryInput.gender,
-        type: categoryInput.type,
-        meta_title: categoryInput.meta_title,
-        meta_keyword: categoryInput.meta_keyword,
-        meta_descrip: categoryInput.meta_descrip,
+      .post(`/Brand`, {
+        name: brandInput.name,
+        url: brandInput.url,
+        meta_title: brandInput.meta_title,
+        meta_keyword: brandInput.meta_keyword,
+        meta_descrip: brandInput.meta_descrip,
       })
       .then((res) => {
         console.log(res);
@@ -47,22 +43,22 @@ const AddCategory = () => {
             progress: undefined,
             theme: 'colored',
           });
-          // document.getElementById('CATEGORY_FORM').reset();
+          // document.getElementById('BRAND_FORM').reset();
         } else if (res.status === 400) {
-          setCategory({ ...categoryInput, error_list: res.data.errors });
+          setBrand({ ...brandInput, error_list: res.data.errors });
         }
       })
       .catch((err) => {
-        setCategory({
-          ...categoryInput,
+        setBrand({
+          ...brandInput,
           error_list: err.response.data.message,
         });
       });
   };
 
   var display_errors = [];
-  if (categoryInput.error_list) {
-    display_errors.push(categoryInput.error_list);
+  if (brandInput.error_list) {
+    display_errors.push(brandInput.error_list);
   }
 
   return (
@@ -71,30 +67,27 @@ const AddCategory = () => {
       <div className="card mt-4">
         <div className="card-header">
           <h4>
-            Add Category
-            <Link
-              to="/admin/view-category"
-              className="btn btn-primary float-end"
-            >
-              View Category
+            Add Brand
+            <Link to="/admin/view-brand" className="btn btn-primary float-end">
+              View Brand
             </Link>
           </h4>
         </div>
         <div className="card-body">
-          <form onSubmit={submitCategory} id="CATEGORY_FORM">
+          <form onSubmit={submitBrand} id="BRAND_FORM">
             <ul className="nav nav-tabs" id="myTab" role="tablist">
               <li className="nav-item" role="presentation">
                 <button
                   className="nav-link active"
-                  id="category-tab"
+                  id="brand-tab"
                   data-bs-toggle="tab"
-                  data-bs-target="#category"
+                  data-bs-target="#brand"
                   type="button"
                   role="tab"
-                  aria-controls="category"
+                  aria-controls="brand"
                   aria-selected="true"
                 >
-                  Category
+                  Brand
                 </button>
               </li>
               <li className="nav-item" role="presentation">
@@ -115,9 +108,9 @@ const AddCategory = () => {
             <div className="tab-content" id="myTabContent">
               <div
                 className="tab-pane card-body border fade show active"
-                id="category"
+                id="brand"
                 role="tabpanel"
-                aria-labelledby="category-tab"
+                aria-labelledby="brand-tab"
               >
                 <div className="form-group mb-4">
                   <label>Name</label>
@@ -125,7 +118,7 @@ const AddCategory = () => {
                     type="text"
                     name="name"
                     onChange={handleInput}
-                    value={categoryInput.name}
+                    value={brandInput.name}
                     className="form-control"
                   />
                 </div>
@@ -135,72 +128,9 @@ const AddCategory = () => {
                     type="text"
                     name="url"
                     onChange={handleInput}
-                    value={categoryInput.url}
+                    value={brandInput.url}
                     className="form-control"
                   />
-                </div>
-
-                <div className="form-group mb-4">
-                  <div>
-                    <label>Giới tính</label>
-                  </div>
-                  <div className="form-check form-check-inline">
-                    <input
-                      className="form-check-input"
-                      type="radio"
-                      onChange={handleInput}
-                      name="gender"
-                      id="inlineRadio1"
-                      value="Nam"
-                    />
-                    <label className="form-check-label" htmlFor="inlineRadio1">
-                      Nam
-                    </label>
-                  </div>
-                  <div className="form-check form-check-inline">
-                    <input
-                      className="form-check-input"
-                      type="radio"
-                      name="gender"
-                      onChange={handleInput}
-                      id="inlineRadio2"
-                      value="Nữ"
-                    />
-                    <label className="form-check-label" htmlFor="inlineRadio2">
-                      Nữ
-                    </label>
-                  </div>
-                  <div className="form-check form-check-inline">
-                    <input
-                      className="form-check-input"
-                      type="radio"
-                      name="gender"
-                      onChange={handleInput}
-                      id="inlineRadio3"
-                      value="Unisex"
-                    />
-                    <label className="form-check-label" htmlFor="inlineRadio3">
-                      Unisex
-                    </label>
-                  </div>
-                </div>
-                <div className="form-group mb-4">
-                  <label>Select Type</label>
-                  <select
-                    name="type"
-                    onChange={handleInput}
-                    value={categoryInput.type}
-                    className="form-control"
-                  >
-                    <option>Select Type</option>
-                    {ProductType.map((item, index) => {
-                      return (
-                        <option value={item} key={index}>
-                          {item}
-                        </option>
-                      );
-                    })}
-                  </select>
                 </div>
               </div>
               <div
@@ -215,7 +145,7 @@ const AddCategory = () => {
                     type="text"
                     name="meta_title"
                     onChange={handleInput}
-                    value={categoryInput.meta_title}
+                    value={brandInput.meta_title}
                     className="form-control"
                   />
                 </div>
@@ -224,7 +154,7 @@ const AddCategory = () => {
                   <textarea
                     name="meta_keyword"
                     onChange={handleInput}
-                    value={categoryInput.meta_keyword}
+                    value={brandInput.meta_keyword}
                     className="form-control"
                   ></textarea>
                 </div>
@@ -233,7 +163,7 @@ const AddCategory = () => {
                   <textarea
                     name="meta_descrip"
                     onChange={handleInput}
-                    value={categoryInput.meta_descrip}
+                    value={brandInput.meta_descrip}
                     className="form-control"
                   ></textarea>
                 </div>
@@ -259,4 +189,4 @@ const AddCategory = () => {
   );
 };
 
-export default AddCategory;
+export default AddBrand;
