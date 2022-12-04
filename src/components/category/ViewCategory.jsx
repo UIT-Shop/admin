@@ -44,7 +44,6 @@ function ViewCategory() {
         });
         thisClicked.closest('tr').remove();
       } else if (res.status === 404) {
-        // swal('Success', res.data.message, 'success');
         thisClicked.innerText = 'Delete';
       }
     });

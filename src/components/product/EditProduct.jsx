@@ -1,36 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import Variant from './Variant';
 
-function AddProduct() {
+function EditProduct() {
   const [categoryList, setCategoryList] = useState([]);
   const [brandList, setBrandList] = useState([]);
-  const [productInput, setProduct] = useState({
-    category_id: '',
-    brand_id: '',
-    title: '',
-    description: '',
-
-    meta_title: '',
-    meta_keyword: '',
-    meta_descrip: '',
-  });
+  const [productInput, setProduct] = useState();
   const [pictures, setPictures] = useState([]);
+  const [oldPictures, setOldPictures] = useState([]);
   const [errorlist, setError] = useState([]);
   const [gender, setGender] = useState('Nam');
-  const [variantList, setVariantList] = useState([
-    {
-      colorId: '',
-      price: '',
-      originalPrice: '',
-      quantity: '',
-      productSize: '',
-      image: '',
-    },
-  ]);
+  const [variantList, setVariantList] = useState([]);
+  const [oldVariantList, setOldVariantList] = useState([]);
   const apiImage = 'https://api.cloudinary.com/v1_1/nam-duong/upload';
+  const { id } = useParams();
+  const [loading, setLoading] = useState(true);
   useEffect(() => {
     let isMounted = true;
 
@@ -45,6 +31,18 @@ function AddProduct() {
       if (isMounted)
         if (res.status === 200) {
           setCategoryList(res.data.data);
+        }
+    });
+
+    axios.get(`/Product/${id}`).then((res) => {
+      if (isMounted)
+        if (res.status === 200) {
+          setProduct(res.data.data);
+          setVariantList(res.data.data.variants);
+          setOldVariantList(res.data.data.variants);
+          setPictures(res.data.data.images);
+          setOldPictures(res.data.data.images);
+          setLoading(false);
         }
     });
 
@@ -81,8 +79,8 @@ function AddProduct() {
 
   const validate = () => {
     if (
-      productInput.brand_id === '' ||
-      productInput.category_id === '' ||
+      productInput.brandId === '' ||
+      productInput.categoryId === '' ||
       productInput.description === '' ||
       productInput.title === ''
     ) {
@@ -115,11 +113,11 @@ function AddProduct() {
     variantList.map((variant) => {
       if (
         variant.price === '' ||
-        variant.image === '' ||
         variant.colorId === '' ||
         variant.originalPrice === '' ||
         variant.quantity === '' ||
-        variant.productSize === ''
+        variant.productSize === '' ||
+        variant.image === ''
       ) {
         toast.error('Vui lòng điền đầy đủ thông tin chi tiết', {
           position: 'top-right',
@@ -149,17 +147,18 @@ function AddProduct() {
     formData.append('meta_descrip', productInput.meta_descrip);
 
     axios
-      .post(`/Product`, {
+      .put(`/Product`, {
+        id,
         title: productInput.title,
         description: productInput.description,
-        categoryId: productInput.category_id,
-        brandId: productInput.brand_id,
+        categoryId: productInput.categoryId,
+        brandId: productInput.brandId,
       })
       .then(async (res) => {
-        const productId = res.data.data.id;
         let imageUrls = [];
         console.log('submmitting');
         for (let file of pictures) {
+          if (!file.preview) continue;
           const formData = new FormData();
           formData.append('file', file);
           formData.append('upload_preset', 'uploadPimage');
@@ -177,38 +176,63 @@ function AddProduct() {
         }
         for (let imageUrl of imageUrls) {
           axios.post(`/Image`, {
-            productId,
+            productId: id,
             url: imageUrl,
           });
         }
+        const removePicture = oldPictures.filter((x) => !pictures.includes(x));
+        for (let picture of removePicture) {
+          axios.delete(`/Image/${picture.id}`);
+        }
+        const removeVariant = oldVariantList.filter(
+          (x) => !variantList.includes(x),
+        );
+        for (let variant of removeVariant) {
+          axios.delete(`/ProductVariant/${variant.id}`);
+        }
         for (let variant of variantList) {
-          const formData = new FormData();
-          formData.append('file', variant.image);
-          formData.append('upload_preset', 'uploadPimage');
-          const res = await fetch(apiImage, { method: 'post', body: formData })
-            .then((response) => response.json())
-            .then((data) => data);
-          if (res != null) {
-            const url = res.secure_url;
-            axios.post(`/Image`, {
-              productId,
-              colorId: variant.colorId,
-              url,
-            });
+          if (variant.image) {
+            const formData = new FormData();
+            formData.append('file', variant.image);
+            formData.append('upload_preset', 'uploadPimage');
+            const res = await fetch(apiImage, {
+              method: 'post',
+              body: formData,
+            })
+              .then((response) => response.json())
+              .then((data) => data);
+            if (res != null) {
+              const url = res.secure_url;
+              axios.post(`/Image`, {
+                productId: id,
+                colorId: variant.colorId,
+                url,
+              });
+            }
+            URL.revokeObjectURL(variant.image);
           }
-          URL.revokeObjectURL(variant.image);
-
-          axios.post(`/ProductVariant`, {
-            productId,
-            colorId: variant.colorId,
-            price: variant.price,
-            originalPrice: variant.originalPrice,
-            quantity: variant.quantity,
-            productSize: variant.productSize,
-          });
+          if (variant.id)
+            axios.put(`/ProductVariant`, {
+              id: variant.id,
+              productId: id,
+              colorId: variant.colorId,
+              price: variant.price,
+              originalPrice: variant.originalPrice,
+              quantity: variant.quantity,
+              productSize: variant.productSize,
+            });
+          else
+            axios.post(`/ProductVariant`, {
+              productId: id,
+              colorId: variant.colorId,
+              price: variant.price,
+              originalPrice: variant.originalPrice,
+              quantity: variant.quantity,
+              productSize: variant.productSize,
+            });
         }
 
-        toast.success('Thêm thành công', {
+        toast.success('Sửa thành công', {
           position: 'top-right',
           autoClose: 5000,
           hideProgressBar: false,
@@ -217,17 +241,6 @@ function AddProduct() {
           draggable: true,
           progress: undefined,
           theme: 'colored',
-        });
-        setProduct({
-          ...productInput,
-          category_id: '',
-          brand_id: '',
-          title: '',
-          description: '',
-
-          meta_title: '',
-          meta_keyword: '',
-          meta_descrip: '',
         });
       })
       .catch((err) => {
@@ -243,7 +256,9 @@ function AddProduct() {
         });
       });
   };
-
+  if (loading) {
+    return <h4>Edit Product Data Loading...</h4>;
+  }
   return (
     <div className="container-fluid px-4">
       <ToastContainer />
@@ -383,9 +398,9 @@ function AddProduct() {
                   <div className="col-md-4 form-group mb-4">
                     <label>Phân loại</label>
                     <select
-                      name="category_id"
+                      name="categoryId"
                       onChange={handleInput}
-                      value={productInput.category_id}
+                      value={productInput.categoryId}
                       className="form-control"
                     >
                       <option>Chọn phân loại</option>
@@ -399,15 +414,15 @@ function AddProduct() {
                       })}
                     </select>
                     <small className="text-danger">
-                      {errorlist.category_id}
+                      {errorlist.categoryId}
                     </small>
                   </div>
                   <div className="col-md-4 form-group mb-4">
                     <label>Brand</label>
                     <select
-                      name="brand_id"
+                      name="brandId"
                       onChange={handleInput}
-                      value={productInput.brand_id}
+                      value={productInput.brandId}
                       className="form-control"
                     >
                       <option>Chọn nhãn hiệu</option>
@@ -446,22 +461,25 @@ function AddProduct() {
                   <small className="text-danger">{errorlist.image}</small>
                 </div>
                 <div className="form-group mb-4 row">
-                  {pictures.map((photo, index) => (
-                    <div className="d-flex flex-column mb-2 w-25 h-25">
-                      <img
-                        src={photo.preview}
-                        style={styles.image}
-                        alt="Thumb"
-                        key={index}
-                      />
-                      <button
-                        onClick={() => removeSelectedImage(index)}
-                        style={styles.delete}
-                      >
-                        Xóa ảnh
-                      </button>
-                    </div>
-                  ))}
+                  {pictures.map((photo, index) => {
+                    if (!photo.color || photo.preview)
+                      return (
+                        <div className="d-flex flex-column mb-2 w-25 h-25">
+                          <img
+                            src={photo.preview ?? photo.url}
+                            style={styles.image}
+                            alt="Thumb"
+                            key={index}
+                          />
+                          <button
+                            onClick={() => removeSelectedImage(index)}
+                            style={styles.delete}
+                          >
+                            Xóa ảnh
+                          </button>
+                        </div>
+                      );
+                  })}
                 </div>
               </div>
               <div
@@ -509,6 +527,8 @@ function AddProduct() {
                 <Variant
                   variantList={variantList}
                   setVariantList={setVariantList}
+                  pictureList={pictures}
+                  setPictures={setPictures}
                 />
               </div>
             </div>
@@ -536,4 +556,4 @@ const styles = {
   },
 };
 
-export default AddProduct;
+export default EditProduct;

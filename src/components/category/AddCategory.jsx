@@ -34,7 +34,6 @@ const AddCategory = () => {
         meta_descrip: categoryInput.meta_descrip,
       })
       .then((res) => {
-        console.log(res);
         if (res.status === 200) {
           e.target.reset();
           toast.success('Thêm thành công', {
@@ -200,6 +199,9 @@ const AddCategory = () => {
                         </option>
                       );
                     })}
+                    {categoryInput.gender === 'Nữ' && (
+                      <option value="Váy đầm">Váy đầm</option>
+                    )}
                   </select>
                 </div>
               </div>

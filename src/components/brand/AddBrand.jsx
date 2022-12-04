@@ -30,7 +30,6 @@ const AddBrand = () => {
         meta_descrip: brandInput.meta_descrip,
       })
       .then((res) => {
-        console.log(res);
         if (res.status === 200) {
           e.target.reset();
           toast.success('Thêm thành công', {

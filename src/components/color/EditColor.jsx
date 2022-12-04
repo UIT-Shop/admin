@@ -34,7 +34,6 @@ function EditColor(props) {
         setLoading(false);
         if (err.response) {
           // The client was given an error response (5xx, 4xx)
-          console.log('Error response', err.response);
           toast.error('Dữ liệu không tồn tại', {
             position: 'top-right',
             autoClose: 5000,
@@ -48,7 +47,6 @@ function EditColor(props) {
           navigate('/admin/view-color');
         } else if (err.request) {
           // The client never received a response, and the request was never left (4xx)
-          console.log('Error request', err.request);
           toast.error(err.request.data.message, {
             position: 'top-right',
             autoClose: 5000,
@@ -73,9 +71,6 @@ function EditColor(props) {
 
   const updateColor = (e) => {
     e.preventDefault();
-
-    // const color_id = props.match.params.id;
-    // const data = colorInput;
     axios
       .put(`/Color`, {
         id: id,

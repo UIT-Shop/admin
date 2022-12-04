@@ -9,13 +9,9 @@ import EditColor from '../components/color/EditColor';
 import ViewColor from '../components/color/ViewColor';
 import Dashboard from '../components/Dashboard';
 import AddProduct from '../components/product/AddProduct';
+import ViewProduct from '../components/product/ViewProduct';
 import Profile from '../components/Profile';
-// import Category from '../components/category/Category';
-// import ViewCategory from '../components/category/ViewCategory';
-// import EditCategory from '../components/category/EditCategory';
-// import AddProduct from '../components/product/AddProduct';
-// import ViewProduct from '../components/product/ViewProduct';
-// import EditProduct from '../components/product/EditProduct';
+import EditProduct from '../components/product/EditProduct';
 // import Order from '../components/order/Order';
 
 const routes = [
@@ -86,18 +82,18 @@ const routes = [
     name: 'AddProduct',
     element: AddProduct,
   },
-  //   {
-  //     path: '/view-product',
-  //
-  //     name: 'ViewProduct',
-  //     element: ViewProduct,
-  //   },
-  //   {
-  //     path: '/edit-product/:id',
-  //
-  //     name: 'EditProduct',
-  //     element: EditProduct,
-  //   },
+  {
+    path: '/view-product',
+
+    name: 'ViewProduct',
+    element: ViewProduct,
+  },
+  {
+    path: '/edit-product/:id',
+
+    name: 'EditProduct',
+    element: EditProduct,
+  },
   { path: '/profile', name: 'Profile', element: Profile },
   //   { path: '/orders',  name: 'Order', element: Order },
 ];

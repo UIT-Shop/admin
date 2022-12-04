@@ -24,7 +24,6 @@ const AddColor = () => {
         name: colorInput.name,
       })
       .then((res) => {
-        console.log(res);
         if (res.status === 200) {
           e.target.reset();
           toast.success('Thêm thành công', {

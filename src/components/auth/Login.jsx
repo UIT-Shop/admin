@@ -8,7 +8,6 @@ import { checkValidPassword } from '../../common/validate/valid-password';
 import { ToastContainer, toast } from 'react-toastify';
 import jwt from 'jwt-decode';
 
-// toast.configure();
 const Login = () => {
   const [visibility, setVisibility] = useState(eyeOff);
   const [inputType, setInputType] = useState('password');
@@ -23,13 +22,6 @@ const Login = () => {
 
   const navigate = useNavigate();
 
-  // useEffect(() => {
-  //   axios.get(`/Auth/check-authen`).then((res) => {
-  //     if (res.status === 200) {
-  //       navigate('/admin/dashboard');
-  //     }
-  //   });
-  // });
   const setLocalStorages = (token, user) => {
     localStorage.setItem('auth_token', token);
     localStorage.setItem('auth_name', user[Object.keys(user)[1]]);

@@ -35,7 +35,6 @@ function EditCategory(props) {
         setLoading(false);
         if (err.response) {
           // The client was given an error response (5xx, 4xx)
-          console.log('Error response', err.response);
           toast.error('Dữ liệu không tồn tại', {
             position: 'top-right',
             autoClose: 5000,
@@ -49,7 +48,6 @@ function EditCategory(props) {
           navigate('/admin/view-category');
         } else if (err.request) {
           // The client never received a response, and the request was never left (4xx)
-          console.log('Error request', err.request);
           toast.error(err.request.data.message, {
             position: 'top-right',
             autoClose: 5000,
@@ -74,9 +72,6 @@ function EditCategory(props) {
 
   const updateCategory = (e) => {
     e.preventDefault();
-
-    // const category_id = props.match.params.id;
-    // const data = categoryInput;
     axios
       .put(`/Category`, {
         id: id,
