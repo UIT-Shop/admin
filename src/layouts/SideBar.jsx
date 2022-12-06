@@ -15,29 +15,35 @@ const SideBar = () => {
             </div>
             Dashboard
           </Link>
-          <Link className="nav-link" to="/admin/profile">
+          <Link className="nav-link" to="/admin/view-user">
             <div className="sb-nav-link-icon">
               <i className="fas fa-tachometer-alt"></i>
             </div>
-            Profile
+            Người dùng
+          </Link>
+          <Link className="nav-link" to="/admin/orders">
+            <div className="sb-nav-link-icon">
+              <i className="fas fa-tachometer-alt"></i>
+            </div>
+            Orders
           </Link>
           <Link className="nav-link" to="/admin/add-category">
             <div className="sb-nav-link-icon">
               <i className="fas fa-tachometer-alt"></i>
             </div>
-            Category
+            Phân loại{' '}
           </Link>
           <Link className="nav-link" to="/admin/add-brand">
             <div className="sb-nav-link-icon">
               <i className="fas fa-tachometer-alt"></i>
             </div>
-            Brand
+            Nhãn hiệu
           </Link>
           <Link className="nav-link" to="/admin/add-color">
             <div className="sb-nav-link-icon">
               <i className="fas fa-tachometer-alt"></i>
             </div>
-            Color
+            Màu sắc
           </Link>
           <Link
             className="nav-link collapsed"
@@ -50,7 +56,7 @@ const SideBar = () => {
             <div className="sb-nav-link-icon">
               <i className="fas fa-columns"></i>
             </div>
-            Products
+            Sản phẩm
             <div className="sb-sidenav-collapse-arrow">
               <i className="fas fa-angle-down"></i>
             </div>
@@ -63,10 +69,10 @@ const SideBar = () => {
           >
             <nav className="sb-sidenav-menu-nested nav">
               <Link className="nav-link" to="/admin/add-product">
-                Add Product
+                Thêm sản phẩm
               </Link>
               <Link className="nav-link" to="/admin/view-product">
-                View Product
+                Xem sản phẩm
               </Link>
             </nav>
           </div>
@@ -151,10 +157,10 @@ const SideBar = () => {
               >
                 <nav className="sb-sidenav-menu-nested nav">
                   <Link className="nav-link" to="login.html">
-                    Login
+                    Profile
                   </Link>
                   <Link className="nav-link" to="password.html">
-                    Forgot Password
+                    Change Password
                   </Link>
                 </nav>
               </div>

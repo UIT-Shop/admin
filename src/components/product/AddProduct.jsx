@@ -16,6 +16,9 @@ function AddProduct() {
     meta_title: '',
     meta_keyword: '',
     meta_descrip: '',
+
+    isNew: false,
+    visible: true,
   });
   const [pictures, setPictures] = useState([]);
   const [errorlist, setError] = useState([]);
@@ -28,12 +31,14 @@ function AddProduct() {
       quantity: '',
       productSize: '',
       image: '',
+      isNew: false,
+      visible: true,
     },
   ]);
   const apiImage = 'https://api.cloudinary.com/v1_1/nam-duong/upload';
   useEffect(() => {
     let isMounted = true;
-
+    console.log(isMounted);
     axios.get(`/Brand`).then((res) => {
       if (isMounted)
         if (res.status === 200) {
@@ -56,6 +61,11 @@ function AddProduct() {
   const handleInput = (e) => {
     e.persist();
     setProduct({ ...productInput, [e.target.name]: e.target.value });
+  };
+
+  const handleCheckbox = (e) => {
+    e.persist();
+    setProduct({ ...productInput, [e.target.name]: e.target.checked });
   };
 
   const handleImage = (e) => {
@@ -154,6 +164,8 @@ function AddProduct() {
         description: productInput.description,
         categoryId: productInput.category_id,
         brandId: productInput.brand_id,
+        isNew: productInput.isNew,
+        visible: productInput.visible,
       })
       .then(async (res) => {
         const productId = res.data.data.id;
@@ -403,7 +415,7 @@ function AddProduct() {
                     </small>
                   </div>
                   <div className="col-md-4 form-group mb-4">
-                    <label>Brand</label>
+                    <label>Nhãn hiệu</label>
                     <select
                       name="brand_id"
                       onChange={handleInput}
@@ -432,18 +444,53 @@ function AddProduct() {
                     className="form-control"
                   ></textarea>
                 </div>
-
-                <div className="form-group mb-4">
-                  <label>Ảnh</label>
-                  <input
-                    type="file"
-                    name="image"
-                    multiple
-                    accept="image/*"
-                    onChange={handleImage}
-                    className="form-control"
-                  />
-                  <small className="text-danger">{errorlist.image}</small>
+                <div className="row">
+                  <div className="col-md-4 form-group mb-4">
+                    <label>Ảnh</label>
+                    <input
+                      type="file"
+                      name="image"
+                      multiple
+                      accept="image/*"
+                      onChange={handleImage}
+                      className="form-control"
+                    />
+                    <small className="text-danger">{errorlist.image}</small>
+                  </div>
+                  <div className="form-check col-md-4 form-group mb-4">
+                    <input
+                      className="form-check-input"
+                      type="checkbox"
+                      name="isNew"
+                      onChange={handleCheckbox}
+                      value={productInput.isNew}
+                      defaultChecked={productInput.isNew}
+                      id="flexCheckDefault"
+                    />
+                    <label
+                      className="form-check-label"
+                      htmlFor="flexCheckDefault"
+                    >
+                      Sản phẩm mới
+                    </label>
+                  </div>
+                  <div className="form-check col-md-4 form-group mb-4">
+                    <input
+                      className="form-check-input"
+                      type="checkbox"
+                      name="visible"
+                      onChange={handleCheckbox}
+                      value={productInput.visible}
+                      defaultChecked={productInput.visible}
+                      id="flexCheckDefault"
+                    />
+                    <label
+                      className="form-check-label"
+                      htmlFor="flexCheckDefault"
+                    >
+                      Hiển thị
+                    </label>
+                  </div>
                 </div>
                 <div className="form-group mb-4 row">
                   {pictures.map((photo, index) => (

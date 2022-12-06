@@ -76,8 +76,17 @@ const Variant = ({ variantList, setVariantList, pictureList, setPictures }) => {
         quantity: '',
         productSize: '',
         image: '',
+        isNew: false,
+        visible: true,
       },
     ]);
+  };
+
+  const handleCheckbox = (e, index) => {
+    e.persist();
+    const list = [...variantList];
+    list[index][e.target.name] = e.target.checked;
+    setVariantList(list);
   };
 
   const getImage = (variant, index) => {
@@ -93,23 +102,23 @@ const Variant = ({ variantList, setVariantList, pictureList, setPictures }) => {
           </button>
         </div>
       );
-
-    return pictureList.map((picture, idx) => {
-      if (picture.colorId && picture.colorId === variant.colorId)
-        return (
-          <div style={styles.preview}>
-            <img src={picture.url} style={styles.image} alt="Thumb" />
-            <button
-              onClick={(e) =>
-                removeSelectedImageOfPictureList({ e: e, index: idx })
-              }
-              style={styles.delete}
-            >
-              Xóa ảnh
-            </button>
-          </div>
-        );
-    });
+    if (pictureList)
+      return pictureList.map((picture, idx) => {
+        if (picture.colorId && picture.colorId === variant.colorId)
+          return (
+            <div style={styles.preview}>
+              <img src={picture.url} style={styles.image} alt="Thumb" />
+              <button
+                onClick={(e) =>
+                  removeSelectedImageOfPictureList({ e: e, index: idx })
+                }
+                style={styles.delete}
+              >
+                Xóa ảnh
+              </button>
+            </div>
+          );
+      });
   };
   return (
     <div className="info__container">
@@ -208,25 +217,39 @@ const Variant = ({ variantList, setVariantList, pictureList, setPictures }) => {
                     })}
                   </select>
                 </div>
-                <div className="col-md-4 form-group mb-4">
-                  <label>Featured (checked=shown)</label>
+                <div className="form-check col-md-4 form-group mb-4">
                   <input
+                    className="form-check-input"
                     type="checkbox"
-                    name="featured"
-                    onChange={(e) => handleVariantChange(e, index)}
-                    value={singleVariant.featured}
-                    className="w-50 h-50"
+                    name="isNew"
+                    onChange={(e) => handleCheckbox(e, index)}
+                    value={singleVariant.isNew}
+                    defaultChecked={singleVariant.isNew}
+                    id="flexCheckDefault"
                   />
+                  <label
+                    className="form-check-label"
+                    htmlFor="flexCheckDefault"
+                  >
+                    Sản phẩm mới
+                  </label>
                 </div>
-                <div className="col-md-4 form-group mb-4">
-                  <label>Status (checked=Hidden)</label>
+                <div className="form-check col-md-4 form-group mb-4">
                   <input
+                    className="form-check-input"
                     type="checkbox"
-                    name="status"
-                    onChange={(e) => handleVariantChange(e, index)}
-                    value={singleVariant.status}
-                    className="w-50 h-50"
+                    name="visible"
+                    onChange={(e) => handleCheckbox(e, index)}
+                    value={singleVariant.visible}
+                    defaultChecked={singleVariant.visible}
+                    id="flexCheckDefault"
                   />
+                  <label
+                    className="form-check-label"
+                    htmlFor="flexCheckDefault"
+                  >
+                    Hiển thị
+                  </label>
                 </div>
               </div>
               <div className="d-flex justify-content-center">

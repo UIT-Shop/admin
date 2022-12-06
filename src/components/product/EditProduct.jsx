@@ -56,6 +56,11 @@ function EditProduct() {
     setProduct({ ...productInput, [e.target.name]: e.target.value });
   };
 
+  const handleCheckbox = (e) => {
+    e.persist();
+    setProduct({ ...productInput, [e.target.name]: e.target.checked });
+  };
+
   const handleImage = (e) => {
     e.preventDefault();
     const arrayFile = [...e.target.files].map((file) =>
@@ -153,6 +158,8 @@ function EditProduct() {
         description: productInput.description,
         categoryId: productInput.categoryId,
         brandId: productInput.brandId,
+        isNew: productInput.isNew,
+        visible: productInput.visible,
       })
       .then(async (res) => {
         let imageUrls = [];
@@ -265,7 +272,7 @@ function EditProduct() {
       <div className="card mt-4">
         <div className="card-header">
           <h4>
-            Add Product
+            Sửa sản phẩm
             <Link
               to="/admin/view-product"
               className="btn btn-primary btn-sm float-end"
@@ -316,7 +323,7 @@ function EditProduct() {
                   aria-controls="otherdetails"
                   aria-selected="false"
                 >
-                  Other Details
+                  Chi tiết sản phẩm
                 </button>
               </li>
             </ul>
@@ -418,7 +425,7 @@ function EditProduct() {
                     </small>
                   </div>
                   <div className="col-md-4 form-group mb-4">
-                    <label>Brand</label>
+                    <label>Nhãn hiệu</label>
                     <select
                       name="brandId"
                       onChange={handleInput}
@@ -447,19 +454,55 @@ function EditProduct() {
                     className="form-control"
                   ></textarea>
                 </div>
-
-                <div className="form-group mb-4">
-                  <label>Ảnh</label>
-                  <input
-                    type="file"
-                    name="image"
-                    multiple
-                    accept="image/*"
-                    onChange={handleImage}
-                    className="form-control"
-                  />
-                  <small className="text-danger">{errorlist.image}</small>
+                <div className="row">
+                  <div className="col-md-4 form-group mb-4">
+                    <label>Ảnh</label>
+                    <input
+                      type="file"
+                      name="image"
+                      multiple
+                      accept="image/*"
+                      onChange={handleImage}
+                      className="form-control"
+                    />
+                    <small className="text-danger">{errorlist.image}</small>
+                  </div>
+                  <div className="form-check col-md-4 form-group mb-4">
+                    <input
+                      className="form-check-input"
+                      type="checkbox"
+                      name="isNew"
+                      onChange={handleCheckbox}
+                      value={productInput.isNew}
+                      defaultChecked={productInput.isNew}
+                      id="flexCheckDefault"
+                    />
+                    <label
+                      className="form-check-label"
+                      htmlFor="flexCheckDefault"
+                    >
+                      Sản phẩm mới
+                    </label>
+                  </div>
+                  <div className="form-check col-md-4 form-group mb-4">
+                    <input
+                      className="form-check-input"
+                      type="checkbox"
+                      name="visible"
+                      onChange={handleCheckbox}
+                      value={productInput.visible}
+                      defaultChecked={productInput.visible}
+                      id="flexCheckDefault"
+                    />
+                    <label
+                      className="form-check-label"
+                      htmlFor="flexCheckDefault"
+                    >
+                      Hiển thị
+                    </label>
+                  </div>
                 </div>
+
                 <div className="form-group mb-4 row">
                   {pictures.map((photo, index) => {
                     if (!photo.color || photo.preview)
