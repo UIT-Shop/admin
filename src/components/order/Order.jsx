@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import Moment from 'moment';
+import { OrderStatus } from '../../common/constant/OrderStatus';
 
 function Order() {
   const [loading, setLoading] = useState(true);
@@ -8,9 +10,7 @@ function Order() {
 
   useEffect(() => {
     let isMounted = true;
-    document.title = 'Orders';
-    console.log('here');
-    axios.get(`/Order`).then((res) => {
+    axios.get(`/Order/admin`).then((res) => {
       if (isMounted) {
         if (res.status === 200) {
           setOrders(res.data.data);
@@ -23,6 +23,7 @@ function Order() {
     };
   }, []);
 
+  Moment.locale('vi');
   var display_orders = '';
   if (loading) {
     return <h4>Loading Orders...</h4>;
@@ -31,17 +32,23 @@ function Order() {
       return (
         <tr key={item.id}>
           <td>{item.id}</td>
-          <td>{item.tracking_no}</td>
-          <td>{item.phone}</td>
-          <td>{item.email}</td>
+          <td>{item.product}</td>
+          <td>{Moment(item.orderDate).format('HH:mm:ss - DD/MM/yyyy')}</td>
+          <td>
+            {Intl.NumberFormat('vi-VN', {
+              style: 'currency',
+              currency: 'VND',
+            }).format(item.totalPrice)}
+          </td>
           <td>
             <Link
-              //   to={`view-order/${item.id}`}
+              to={`/admin/order-detail/${item.id}`}
               className="btn btn-success btn-sm"
             >
-              View
+              Sửa
             </Link>
           </td>
+          <td>{OrderStatus[item.status].value}</td>
         </tr>
       );
     });
@@ -59,10 +66,11 @@ function Order() {
               <thead>
                 <tr>
                   <th>ID</th>
-                  <th>Tracking No.</th>
-                  <th>Phone No.</th>
-                  <th>Email</th>
-                  <th>Action</th>
+                  <th>Sản phẩm</th>
+                  <th>Ngày đặt hàng</th>
+                  <th>Tổng tiền</th>
+                  <th>Sửa</th>
+                  <th>Trạng thái</th>
                 </tr>
               </thead>
               <tbody>{display_orders}</tbody>

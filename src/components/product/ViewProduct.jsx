@@ -1,38 +1,73 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { Link } from 'react-router-dom';
+import { Link, useSearchParams, Navigate, useNavigate } from 'react-router-dom';
+import ReactPaginate from 'react-paginate';
+import '../../common/assets/css/paginate.css';
+import { ToastContainer, toast } from 'react-toastify';
 
 function ViewProduct() {
   const [loading, setLoading] = useState(true);
   const [viewProduct, setProduct] = useState([]);
-  const apiImage = 'https://api.cloudinary.com/v1_1/nam-duong/upload';
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  // let pageNumber = searchParams.get('page');
+  // if (pageNumber === null) pageNumber = 0;
+  const navigate = useNavigate();
+  const [currentPage, setCurrentPage] = useState(0);
+  const [pageCount, setPageCount] = useState(1);
   useEffect(() => {
     let isMounted = true;
-    document.title = 'View Product';
-
-    axios.get(`/Product/admin?page=1`).then((res) => {
-      if (isMounted) {
-        if (res.status === 200) {
-          setProduct(res.data.data.products);
-          setLoading(false);
+    setLoading(true);
+    axios
+      .get(`/Product/admin?page=${parseInt(currentPage) + 1}`)
+      .then((res) => {
+        if (isMounted) {
+          if (res.status === 200) {
+            console.log(res.data.data);
+            setProduct(res.data.data.products);
+            setPageCount(res.data.data.pages);
+            setLoading(false);
+          }
+          if (res.status === 500)
+            toast.error('Lỗi máy chủ', {
+              position: 'top-right',
+              autoClose: 5000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: 'colored',
+            });
         }
-      }
-    });
+      })
+      .catch((err) => {
+        if (err.response.status === 500)
+          toast.error('Lỗi máy chủ', {
+            position: 'top-right',
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: 'colored',
+          });
+      });
     return () => {
       isMounted = false;
     };
-  }, []);
+  }, [currentPage]);
+  // useEffect(() => {
+  //   setCurrentPage(pageNumber);
+  // }, [pageNumber]);
 
-  const getImage = async (file) => {
-    const formData = new FormData();
-    formData.append('file', file);
-    formData.append('upload_preset', 'uploadPimage');
-    const res = await axios.post(apiImage, formData);
-    const data = res.data;
-    if (data != null) {
-      const url = data.secure_url;
-      return <img src={url} width="50px" alt={'image'} />;
-    }
+  // Invoke when user click to request another page.
+  const handlePageClick = (event) => {
+    var page = parseInt(event.selected) + 1;
+    setCurrentPage(parseInt(event.selected));
+    window.scrollTo(0, 0);
+    navigate('/admin/view-product?page=' + page);
   };
 
   var display_Productdata = '';
@@ -49,17 +84,21 @@ function ViewProduct() {
             {Intl.NumberFormat('vi-VN', {
               style: 'currency',
               currency: 'VND',
-            }).format(item.variants[0].price)}
+            }).format(item.variants.length > 0 ? item.variants[0].price : 0)}
           </td>
           <td>
-            <img src={item.images[0].url} width="50px" alt={item.title} />
+            <img
+              src={item.images.length > 0 ? item.images[0].url : null}
+              width="50px"
+              alt={item.title}
+            />
           </td>
           <td>
             <Link
               to={`/admin/edit-product/${item.id}`}
               className="btn btn-success btn-sm"
             >
-              Edit
+              Sửa
             </Link>
           </td>
           <td>{item.visible ? 'Hiện' : 'Ẩn'}</td>
@@ -81,6 +120,7 @@ function ViewProduct() {
               Add Product
             </Link>
           </h4>
+          <ToastContainer />
         </div>
         <div className="card-body">
           <div className="table-responsive">
@@ -98,6 +138,22 @@ function ViewProduct() {
               </thead>
               <tbody>{display_Productdata}</tbody>
             </table>
+          </div>
+        </div>
+        <div className="text-center">
+          <div className="pagination">
+            <ReactPaginate
+              breakLabel="..."
+              nextLabel={<i className="fas fa-chevron-right"></i>}
+              onPageChange={handlePageClick}
+              pageRangeDisplayed={2}
+              marginPagesDisplayed={2}
+              pageCount={pageCount}
+              previousLabel={<i className="fas fa-chevron-left"></i>}
+              renderOnZeroPageCount={null}
+              activeClassName="active"
+              forcePage={parseInt(currentPage)}
+            />
           </div>
         </div>
       </div>

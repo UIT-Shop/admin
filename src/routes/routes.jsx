@@ -7,13 +7,14 @@ import ViewCategory from '../components/category/ViewCategory';
 import AddColor from '../components/color/AddColor';
 import EditColor from '../components/color/EditColor';
 import ViewColor from '../components/color/ViewColor';
-import Dashboard from '../components/Dashboard';
+import Dashboard from '../components/dashboard/Dashboard';
 import AddProduct from '../components/product/AddProduct';
 import ViewProduct from '../components/product/ViewProduct';
-import Profile from '../components/Profile';
+import Profile from '../components/user/Profile';
 import EditProduct from '../components/product/EditProduct';
 import Order from '../components/order/Order';
 import ViewUser from '../components/user/ViewUsers';
+import OrderDetail from '../components/order/OrderDetail';
 
 const routes = [
   { path: '/', name: 'Admin' },
@@ -89,6 +90,7 @@ const routes = [
   },
   { path: '/profile', name: 'Profile', element: Profile },
   { path: '/orders', name: 'Order', element: Order },
+  { path: '/order-detail/:id', name: 'OrderDetail', element: OrderDetail },
 ];
 
 export default routes;
