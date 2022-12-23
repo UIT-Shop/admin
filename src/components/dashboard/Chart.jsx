@@ -84,7 +84,7 @@ const Chart = () => {
     };
   }, []);
 
-  if (loading) return <h4>Loading Data...</h4>;
+  if (loading) return <h4>Đang tải dữ liệu...</h4>;
   return (
     <ResponsiveContainer width="100%" height="100%">
       <ComposedChart

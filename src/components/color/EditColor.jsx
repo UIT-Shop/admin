@@ -102,7 +102,7 @@ function EditColor(props) {
   };
 
   if (loading) {
-    return <h4>Loading Edit Color...</h4>;
+    return <h4>Đang tải dữ liệu...</h4>;
   }
 
   return (
@@ -111,9 +111,9 @@ function EditColor(props) {
       <div className="card mt-4">
         <div className="card-header">
           <h4>
-            Edit Color
+            Sửa màu
             <Link to="/admin/view-color" className="btn btn-primary  float-end">
-              BACK
+              Quay lại
             </Link>
           </h4>
         </div>
@@ -146,7 +146,7 @@ function EditColor(props) {
               type="submit"
               className="btn btn-primary px-4 float-end mt-2"
             >
-              Update
+              Cập nhật
             </button>
           </form>
           <small className="text-danger">{error}</small>

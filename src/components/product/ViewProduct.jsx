@@ -72,7 +72,7 @@ function ViewProduct() {
 
   var display_Productdata = '';
   if (loading) {
-    return <h4>View Products Loading...</h4>;
+    return <h4>Đang tải dữ liệu...</h4>;
   } else {
     display_Productdata = viewProduct.map((item) => {
       return (
@@ -112,12 +112,12 @@ function ViewProduct() {
       <div className="card">
         <div className="card-header">
           <h4>
-            View Product
+            Danh sách sản phẩm
             <Link
               to="/admin/add-product"
               className="btn btn-primary btn-sm float-end"
             >
-              Add Product
+              Thêm sản phẩm
             </Link>
           </h4>
           <ToastContainer />

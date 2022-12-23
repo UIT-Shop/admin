@@ -104,7 +104,7 @@ function EditCategory(props) {
   };
 
   if (loading) {
-    return <h4>Loading Edit Category...</h4>;
+    return <h4>Đang tải dữ liệu...</h4>;
   }
 
   return (
@@ -289,7 +289,7 @@ function EditCategory(props) {
               type="submit"
               className="btn btn-primary px-4 float-end mt-2"
             >
-              Update
+              Cập nhật
             </button>
           </form>
           <small className="text-danger">{error}</small>

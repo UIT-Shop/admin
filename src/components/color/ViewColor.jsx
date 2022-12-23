@@ -51,7 +51,7 @@ function ViewColor() {
 
   var viewcolor_HTMLTABLE = '';
   if (loading) {
-    return <h4>Loading Color...</h4>;
+    return <h4>Đang tải dữ liệu...</h4>;
   } else {
     viewcolor_HTMLTABLE = colorlist.map((item) => {
       return (

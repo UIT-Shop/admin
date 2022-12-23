@@ -66,9 +66,9 @@ const AddBrand = () => {
       <div className="card mt-4">
         <div className="card-header">
           <h4>
-            Add Brand
+            Thêm nhãn hiệu
             <Link to="/admin/view-brand" className="btn btn-primary float-end">
-              View Brand
+              Xem nhãn hiệu
             </Link>
           </h4>
         </div>
@@ -86,7 +86,7 @@ const AddBrand = () => {
                   aria-controls="brand"
                   aria-selected="true"
                 >
-                  Brand
+                  Nhãn hiệu
                 </button>
               </li>
               <li className="nav-item" role="presentation">
@@ -100,7 +100,7 @@ const AddBrand = () => {
                   aria-controls="seo-tags"
                   aria-selected="false"
                 >
-                  SEO Tags
+                  Thẻ SEO
                 </button>
               </li>
             </ul>
@@ -112,7 +112,7 @@ const AddBrand = () => {
                 aria-labelledby="brand-tab"
               >
                 <div className="form-group mb-4">
-                  <label>Name</label>
+                  <label>Tên</label>
                   <input
                     type="text"
                     name="name"
@@ -172,7 +172,7 @@ const AddBrand = () => {
               type="submit"
               className="btn btn-primary px-4 float-end mt-2"
             >
-              Submit
+              Gửi
             </button>
           </form>
           {display_errors.map((item, idx) => {

@@ -26,7 +26,7 @@ function Order() {
   Moment.locale('vi');
   var display_orders = '';
   if (loading) {
-    return <h4>Loading Orders...</h4>;
+    return <h4>Đang tải dữ liệu...</h4>;
   } else {
     display_orders = orders.map((item) => {
       return (

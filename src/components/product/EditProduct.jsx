@@ -264,7 +264,7 @@ function EditProduct() {
       });
   };
   if (loading) {
-    return <h4>Edit Product Data Loading...</h4>;
+    return <h4>Đang tải dữ liệu...</h4>;
   }
   return (
     <div className="container-fluid px-4">

@@ -102,7 +102,7 @@ function EditBrand(props) {
   };
 
   if (loading) {
-    return <h4>Loading Edit Brand...</h4>;
+    return <h4>Đang tải dữ liệu...</h4>;
   }
 
   return (
@@ -111,9 +111,9 @@ function EditBrand(props) {
       <div className="card mt-4">
         <div className="card-header">
           <h4>
-            Edit Brand
+            Sửa nhãn hiệu
             <Link to="/admin/view-brand" className="btn btn-primary  float-end">
-              BACK
+              Quay lại
             </Link>
           </h4>
         </div>
@@ -131,7 +131,7 @@ function EditBrand(props) {
                   aria-controls="home"
                   aria-selected="true"
                 >
-                  Home
+                  Chính
                 </button>
               </li>
               <li className="nav-item" role="presentation">
@@ -145,7 +145,7 @@ function EditBrand(props) {
                   aria-controls="seo-tags"
                   aria-selected="false"
                 >
-                  SEO Tags
+                  Thẻ SEO
                 </button>
               </li>
             </ul>
@@ -157,7 +157,7 @@ function EditBrand(props) {
                 aria-labelledby="home-tab"
               >
                 <div className="form-group mb-3">
-                  <label>Name</label>
+                  <label>Tên</label>
                   <input
                     type="text"
                     name="name"
@@ -273,7 +273,7 @@ function EditBrand(props) {
               type="submit"
               className="btn btn-primary px-4 float-end mt-2"
             >
-              Update
+              Cập nhật
             </button>
           </form>
           <small className="text-danger">{error}</small>

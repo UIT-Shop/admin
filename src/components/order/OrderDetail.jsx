@@ -48,7 +48,7 @@ function OrderDetail() {
   };
   var display_order = '';
   if (loading) {
-    return <h4>Loading Order Detail...</h4>;
+    return <h4>Đang tải dữ liệu...</h4>;
   } else {
     display_order = orderDetail.map((item) => {
       return (

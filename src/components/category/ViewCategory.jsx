@@ -51,7 +51,7 @@ function ViewCategory() {
 
   var viewcategory_HTMLTABLE = '';
   if (loading) {
-    return <h4>Loading Category...</h4>;
+    return <h4>Đang tải dữ liệu...</h4>;
   } else {
     viewcategory_HTMLTABLE = categorylist.map((item) => {
       return (
@@ -89,12 +89,12 @@ function ViewCategory() {
       <div className="card mt-4">
         <div className="card-header">
           <h4>
-            Category List
+            Danh sách phân loại
             <Link
               to="/admin/add-category"
               className="btn btn-primary float-end"
             >
-              Add Category
+              Thêm phân loại
             </Link>
           </h4>
         </div>

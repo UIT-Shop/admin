@@ -5,7 +5,6 @@ import { ToastContainer, toast } from 'react-toastify';
 
 const AddColor = () => {
   const [colorInput, setColor] = useState({
-    id: '',
     name: '',
     error_list: [],
   });
@@ -20,7 +19,6 @@ const AddColor = () => {
 
     axios
       .post(`/Color`, {
-        id: colorInput.id,
         name: colorInput.name,
       })
       .then((res) => {
@@ -60,9 +58,9 @@ const AddColor = () => {
       <div className="card mt-4">
         <div className="card-header">
           <h4>
-            Add Color
+            Thêm màu
             <Link to="/admin/view-color" className="btn btn-primary float-end">
-              View Color
+              Xem màu
             </Link>
           </h4>
         </div>
@@ -75,16 +73,6 @@ const AddColor = () => {
                 role="tabpanel"
                 aria-labelledby="color-tab"
               >
-                <div className="form-group mb-4">
-                  <label>Id</label>
-                  <input
-                    type="text"
-                    name="id"
-                    onChange={handleInput}
-                    value={colorInput.id}
-                    className="form-control"
-                  />
-                </div>
                 <div className="form-group mb-4">
                   <label>Tên</label>
                   <input
@@ -101,7 +89,7 @@ const AddColor = () => {
               type="submit"
               className="btn btn-primary px-4 float-end mt-2"
             >
-              Submit
+              Gửi
             </button>
           </form>
           {display_errors.map((item, idx) => {

@@ -1,8 +1,8 @@
 export const ProductType = [
-  'Áo thun',
-  'Áo sơ mi',
-  'Áo khoác',
-  'Quần dài',
-  'Quần shorts',
-  'Đồ lót',
+  'ĐỒ MẶC NGOÀI',
+  'ÁO',
+  'QUẦN DÀI',
+  'ĐỒ MẶC TRONG & ĐỒ LÓT',
+  'ĐỒ MẶC NHÀ',
+  'PHỤ KIỆN',
 ];

@@ -70,12 +70,12 @@ const AddCategory = () => {
       <div className="card mt-4">
         <div className="card-header">
           <h4>
-            Add Category
+            Thêm phân loại
             <Link
               to="/admin/view-category"
               className="btn btn-primary float-end"
             >
-              View Category
+              Xem phân loại
             </Link>
           </h4>
         </div>
@@ -93,7 +93,7 @@ const AddCategory = () => {
                   aria-controls="category"
                   aria-selected="true"
                 >
-                  Category
+                  Phân loại
                 </button>
               </li>
               <li className="nav-item" role="presentation">
@@ -107,7 +107,7 @@ const AddCategory = () => {
                   aria-controls="seo-tags"
                   aria-selected="false"
                 >
-                  SEO Tags
+                  Thẻ SEO
                 </button>
               </li>
             </ul>
@@ -119,7 +119,7 @@ const AddCategory = () => {
                 aria-labelledby="category-tab"
               >
                 <div className="form-group mb-4">
-                  <label>Name</label>
+                  <label>Tên</label>
                   <input
                     type="text"
                     name="name"
@@ -184,24 +184,19 @@ const AddCategory = () => {
                   </div>
                 </div>
                 <div className="form-group mb-4">
-                  <label>Select Type</label>
+                  <label>Loại</label>
                   <select
                     name="type"
                     onChange={handleInput}
                     value={categoryInput.type}
                     className="form-control"
                   >
-                    <option>Select Type</option>
-                    {ProductType.map((item, index) => {
-                      return (
-                        <option value={item} key={index}>
-                          {item}
-                        </option>
-                      );
-                    })}
-                    {categoryInput.gender === 'Nữ' && (
-                      <option value="Váy đầm">Váy đầm</option>
-                    )}
+                    <option>Chọn loại</option>
+                    {ProductType.map((item, index) => (
+                      <option value={item} key={index}>
+                        {item}
+                      </option>
+                    ))}
                   </select>
                 </div>
               </div>
@@ -245,7 +240,7 @@ const AddCategory = () => {
               type="submit"
               className="btn btn-primary px-4 float-end mt-2"
             >
-              Submit
+              Gửi
             </button>
           </form>
           {display_errors.map((item, idx) => {

@@ -262,12 +262,12 @@ function AddProduct() {
       <div className="card mt-4">
         <div className="card-header">
           <h4>
-            Add Product
+            Thêm sản phẩm
             <Link
               to="/admin/view-product"
               className="btn btn-primary btn-sm float-end"
             >
-              View Product
+              Xem sản phẩm
             </Link>
           </h4>
         </div>

@@ -80,7 +80,7 @@ function ViewUsers() {
   };
   var viewuser_HTMLTABLE = '';
   if (loading) {
-    return <h4>Loading User...</h4>;
+    return <h4>Đang tải dữ liệu...</h4>;
   } else {
     viewuser_HTMLTABLE = userlist.map((item, idx) => {
       return (

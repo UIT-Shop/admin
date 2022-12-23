@@ -51,7 +51,7 @@ function ViewBrand() {
 
   var viewbrand_HTMLTABLE = '';
   if (loading) {
-    return <h4>Loading Brand...</h4>;
+    return <h4>Đang tải dữ liệu...</h4>;
   } else {
     viewbrand_HTMLTABLE = brandlist.map((item) => {
       return (
@@ -87,9 +87,9 @@ function ViewBrand() {
       <div className="card mt-4">
         <div className="card-header">
           <h4>
-            Brand List
+            Danh sách nhãn hiệu
             <Link to="/admin/add-brand" className="btn btn-primary float-end">
-              Add Brand
+              Thêm nhãn hiệu
             </Link>
           </h4>
         </div>
