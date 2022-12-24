@@ -18,7 +18,7 @@ const SideBar = () => {
             <div className="sb-nav-link-icon">
               <i className="fas fa-tachometer-alt"></i>
             </div>
-            Orders
+            Đơn hàng
           </Link>
 
           <Link
