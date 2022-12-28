@@ -58,7 +58,7 @@ function ViewBrand() {
         <tr key={item.id}>
           <td>{item.id}</td>
           <td>{item.name}</td>
-          <td>{item.url}</td>
+          {/* <td>{item.url}</td> */}
           <td>
             <Link
               to={`/admin/edit-brand/${item.id}`}
@@ -99,7 +99,7 @@ function ViewBrand() {
               <tr>
                 <th>ID</th>
                 <th>Tên</th>
-                <th>Url</th>
+                {/* <th>Url</th> */}
                 <th>Sửa</th>
                 <th>Xóa</th>
               </tr>

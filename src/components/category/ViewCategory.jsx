@@ -60,7 +60,7 @@ function ViewCategory() {
           <td>{item.name}</td>
           <td>{item.gender}</td>
           <td>{item.type}</td>
-          <td>{item.url}</td>
+          {/* <td>{item.url}</td> */}
           <td>
             <Link
               to={`/admin/edit-category/${item.id}`}
@@ -106,7 +106,7 @@ function ViewCategory() {
                 <th>Tên</th>
                 <th>Giới tính</th>
                 <th>Loại</th>
-                <th>Url</th>
+                {/* <th>Url</th> */}
                 <th>Sửa</th>
                 <th>Xóa</th>
               </tr>

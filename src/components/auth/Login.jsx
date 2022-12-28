@@ -54,6 +54,12 @@ const Login = () => {
     setLogin({ ...loginInput, [e.target.name]: e.target.value });
   };
 
+  const handleKeypress = (e) => {
+    //it triggers by pressing the enter key
+    if (e.keyCode === 13) {
+      loginSubmit();
+    }
+  };
   const loginSubmit = async (e) => {
     e.preventDefault();
     setError('');
@@ -184,6 +190,7 @@ const Login = () => {
                       type="email"
                       name="email"
                       onChange={handleInput}
+                      onKeyUp={handleKeypress}
                       value={loginInput.email}
                       className="form-control"
                     />
@@ -197,6 +204,7 @@ const Login = () => {
                       type="password"
                       name="password"
                       onChange={handleInput}
+                      onKeyUp={handleKeypress}
                       value={loginInput.password}
                       className="form-control"
                     />

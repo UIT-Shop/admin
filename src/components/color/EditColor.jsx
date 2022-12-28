@@ -75,11 +75,6 @@ function EditColor(props) {
       .put(`/Color`, {
         id: id,
         name: colorInput.name,
-        url: colorInput.url,
-        gender: colorInput.gender,
-        meta_title: colorInput.meta_title,
-        meta_keyword: colorInput.meta_keyword,
-        meta_descrip: colorInput.meta_descrip,
       })
       .then((res) => {
         if (res.status === 200) {

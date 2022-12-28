@@ -32,7 +32,7 @@ function Order() {
       return (
         <tr key={item.id}>
           <td>{item.id}</td>
-          <td>{item.product}</td>
+          {/* <td>{item.product}</td> */}
           <td>{Moment(item.orderDate).format('HH:mm:ss - DD/MM/yyyy')}</td>
           <td>
             {Intl.NumberFormat('vi-VN', {
@@ -45,7 +45,7 @@ function Order() {
               to={`/admin/order-detail/${item.id}`}
               className="btn btn-success btn-sm"
             >
-              Sửa
+              Chi tiết
             </Link>
           </td>
           <td>{OrderStatus[item.status].value}</td>
@@ -58,7 +58,7 @@ function Order() {
     <div className="container px-4 mt-3">
       <div className="card">
         <div className="card-header">
-          <h4>Orders </h4>
+          <h4>Quản lý đơn hàng </h4>
         </div>
         <div className="card-body">
           <div className="table-responsive">
@@ -66,10 +66,10 @@ function Order() {
               <thead>
                 <tr>
                   <th>ID</th>
-                  <th>Sản phẩm</th>
+                  {/* <th>Sản phẩm</th> */}
                   <th>Ngày đặt hàng</th>
                   <th>Tổng tiền</th>
-                  <th>Sửa</th>
+                  <th>Xem chi tiết</th>
                   <th>Trạng thái</th>
                 </tr>
               </thead>

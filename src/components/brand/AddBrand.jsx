@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
+import { Stack, Tabs, Tab, Row, Button, Col, Container } from 'react-bootstrap';
 
 const AddBrand = () => {
   const [brandInput, setBrand] = useState({
@@ -12,15 +13,28 @@ const AddBrand = () => {
     meta_descrip: '',
     error_list: [],
   });
+  const [currentTab, setCurrentTab] = useState(0);
 
   const handleInput = (e) => {
     e.persist();
     setBrand({ ...brandInput, [e.target.name]: e.target.value });
   };
 
-  const submitBrand = async (e) => {
+  const submitBrand = (e) => {
     e.preventDefault();
-
+    if (brandInput.name.trim().length === 0) {
+      toast.error('Vui lòng điền tên thương hiệu', {
+        position: 'top-right',
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'colored',
+      });
+      return;
+    }
     axios
       .post(`/Brand`, {
         name: brandInput.name,
@@ -60,6 +74,14 @@ const AddBrand = () => {
     display_errors.push(brandInput.error_list);
   }
 
+  const next = (e) => {
+    e.preventDefault();
+    setCurrentTab((prev) => prev + 1);
+  };
+  const prev = (e) => {
+    e.preventDefault();
+    setCurrentTab((prev) => prev - 1);
+  };
   return (
     <div className="container-fluid px-4">
       <ToastContainer />
@@ -73,55 +95,26 @@ const AddBrand = () => {
           </h4>
         </div>
         <div className="card-body">
-          <form onSubmit={submitBrand} id="BRAND_FORM">
-            <ul className="nav nav-tabs" id="myTab" role="tablist">
-              <li className="nav-item" role="presentation">
-                <button
-                  className="nav-link active"
-                  id="brand-tab"
-                  data-bs-toggle="tab"
-                  data-bs-target="#brand"
-                  type="button"
-                  role="tab"
-                  aria-controls="brand"
-                  aria-selected="true"
+          <form onSubmit={submitBrand} encType="multipart/form-data">
+            <Tabs activeKey={currentTab} id="controlled-tab-example">
+              <Tab eventKey={0} title="Thương hiệu" disabled={currentTab !== 0}>
+                <div
+                  className="tab-pane card-body border fade show active"
+                  id="brand"
+                  role="tabpanel"
+                  aria-labelledby="brand-tab"
                 >
-                  Nhãn hiệu
-                </button>
-              </li>
-              <li className="nav-item" role="presentation">
-                <button
-                  className="nav-link"
-                  id="seo-tags-tab"
-                  data-bs-toggle="tab"
-                  data-bs-target="#seo-tags"
-                  type="button"
-                  role="tab"
-                  aria-controls="seo-tags"
-                  aria-selected="false"
-                >
-                  Thẻ SEO
-                </button>
-              </li>
-            </ul>
-            <div className="tab-content" id="myTabContent">
-              <div
-                className="tab-pane card-body border fade show active"
-                id="brand"
-                role="tabpanel"
-                aria-labelledby="brand-tab"
-              >
-                <div className="form-group mb-4">
-                  <label>Tên</label>
-                  <input
-                    type="text"
-                    name="name"
-                    onChange={handleInput}
-                    value={brandInput.name}
-                    className="form-control"
-                  />
-                </div>
-                <div className="form-group mb-4">
+                  <div className="form-group mb-4">
+                    <label>Tên</label>
+                    <input
+                      type="text"
+                      name="name"
+                      onChange={handleInput}
+                      value={brandInput.name}
+                      className="form-control"
+                    />
+                  </div>
+                  {/* <div className="form-group mb-4">
                   <label>Url</label>
                   <input
                     type="text"
@@ -130,58 +123,77 @@ const AddBrand = () => {
                     value={brandInput.url}
                     className="form-control"
                   />
+                </div> */}
                 </div>
-              </div>
-              <div
-                className="tab-pane card-body border fade"
-                id="seo-tags"
-                role="tabpanel"
-                aria-labelledby="seo-tags-tab"
-              >
-                <div className="form-group mb-4">
-                  <label>Meta Title</label>
-                  <input
-                    type="text"
-                    name="meta_title"
-                    onChange={handleInput}
-                    value={brandInput.meta_title}
-                    className="form-control"
-                  />
+              </Tab>
+              <Tab eventKey={1} title="SEO" disabled={currentTab !== 1}>
+                <div
+                  className="tab-pane card-body border fade show active"
+                  id="seotags"
+                  role="tabpanel"
+                  aria-labelledby="seotags-tab"
+                >
+                  <div className="form-group mb-4">
+                    <label>Meta Title</label>
+                    <input
+                      type="text"
+                      name="meta_title"
+                      onChange={handleInput}
+                      value={brandInput.meta_title}
+                      className="form-control"
+                    />
+                    <small className="text-danger">
+                      {display_errors.meta_title}
+                    </small>
+                  </div>
+                  <div className="form-group mb-4">
+                    <label>Meta Keyword</label>
+                    <textarea
+                      name="meta_keyword"
+                      onChange={handleInput}
+                      value={brandInput.meta_keyword}
+                      className="form-control"
+                    ></textarea>
+                  </div>
+                  <div className="form-group mb-4">
+                    <label>Meta Description</label>
+                    <textarea
+                      name="meta_descrip"
+                      onChange={handleInput}
+                      value={brandInput.meta_descrip}
+                      className="form-control"
+                    ></textarea>
+                  </div>
                 </div>
-                <div className="form-group mb-4">
-                  <label>Meta Keywords</label>
-                  <textarea
-                    name="meta_keyword"
-                    onChange={handleInput}
-                    value={brandInput.meta_keyword}
-                    className="form-control"
-                  ></textarea>
-                </div>
-                <div className="form-group mb-4">
-                  <label>Meta Description</label>
-                  <textarea
-                    name="meta_descrip"
-                    onChange={handleInput}
-                    value={brandInput.meta_descrip}
-                    className="form-control"
-                  ></textarea>
-                </div>
-              </div>
-            </div>
-            <button
-              type="submit"
-              className="btn btn-primary px-4 float-end mt-2"
-            >
-              Gửi
-            </button>
+              </Tab>
+            </Tabs>
+            <Stack gap={3} direction="horizontal" className="float-end mt-2">
+              {currentTab === 1 ? (
+                <Button
+                  className="success"
+                  disabled={currentTab === 0}
+                  onClick={prev}
+                >
+                  Quay lại
+                </Button>
+              ) : null}
+
+              {currentTab === 0 ? (
+                <Button
+                  className="success"
+                  disabled={currentTab === 2}
+                  onClick={next}
+                >
+                  Tiếp
+                </Button>
+              ) : null}
+              {currentTab === 1 ? (
+                <button type="submit" className="btn btn-primary px-4 ">
+                  Gửi
+                </button>
+              ) : null}
+            </Stack>
           </form>
-          {display_errors.map((item, idx) => {
-            return (
-              <small className="text-danger" key={idx}>
-                {item}
-              </small>
-            );
-          })}
         </div>
       </div>
     </div>

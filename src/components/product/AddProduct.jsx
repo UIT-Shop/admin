@@ -3,6 +3,7 @@ import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import Variant from './Variant';
+import { Stack, Tabs, Tab, Row, Button, Col, Container } from 'react-bootstrap';
 
 function AddProduct() {
   const [categoryList, setCategoryList] = useState([]);
@@ -38,7 +39,6 @@ function AddProduct() {
   const apiImage = 'https://api.cloudinary.com/v1_1/nam-duong/upload';
   useEffect(() => {
     let isMounted = true;
-    console.log(isMounted);
     axios.get(`/Brand`).then((res) => {
       if (isMounted)
         if (res.status === 200) {
@@ -83,6 +83,15 @@ function AddProduct() {
     const list = [...pictures];
     list.splice(index, 1);
     setPictures(list);
+  };
+
+  const next = (e) => {
+    e.preventDefault();
+    setCurrentTab((prev) => prev + 1);
+  };
+  const prev = (e) => {
+    e.preventDefault();
+    setCurrentTab((prev) => prev - 1);
   };
 
   const updateGender = (e) => {
@@ -255,6 +264,7 @@ function AddProduct() {
         });
       });
   };
+  const [currentTab, setCurrentTab] = useState(0);
 
   return (
     <div className="container-fluid px-4">
@@ -265,7 +275,7 @@ function AddProduct() {
             Thêm sản phẩm
             <Link
               to="/admin/view-product"
-              className="btn btn-primary btn-sm float-end"
+              className="btn btn-primary float-end"
             >
               Xem sản phẩm
             </Link>
@@ -273,298 +283,282 @@ function AddProduct() {
         </div>
         <div className="card-body">
           <form onSubmit={submitProduct} encType="multipart/form-data">
-            <ul className="nav nav-tabs" id="myTab" role="tablist">
-              <li className="nav-item" role="presentation">
-                <button
-                  className="nav-link active"
-                  id="home-tab"
-                  data-bs-toggle="tab"
-                  data-bs-target="#home"
-                  type="button"
-                  role="tab"
-                  aria-controls="home"
-                  aria-selected="true"
+            <Tabs activeKey={currentTab} id="controlled-tab-example">
+              <Tab eventKey={0} title="Home" disabled={currentTab !== 0}>
+                <div
+                  className="tab-pane card-body border fade show active"
+                  id="home"
+                  role="tabpanel"
+                  aria-labelledby="home-tab"
                 >
-                  Sản phẩm
-                </button>
-              </li>
-              <li className="nav-item" role="presentation">
-                <button
-                  className="nav-link"
-                  id="seotags-tab"
-                  data-bs-toggle="tab"
-                  data-bs-target="#seotags"
-                  type="button"
-                  role="tab"
-                  aria-controls="seotags"
-                  aria-selected="false"
-                >
-                  Thẻ SEO
-                </button>
-              </li>
-              <li className="nav-item" role="presentation">
-                <button
-                  className="nav-link"
-                  id="otherdetails-tab"
-                  data-bs-toggle="tab"
-                  data-bs-target="#otherdetails"
-                  type="button"
-                  role="tab"
-                  aria-controls="otherdetails"
-                  aria-selected="false"
-                >
-                  Other Details
-                </button>
-              </li>
-            </ul>
-            <div className="tab-content" id="myTabContent">
-              <div
-                className="tab-pane card-body border fade show active"
-                id="home"
-                role="tabpanel"
-                aria-labelledby="home-tab"
-              >
-                <div className="form-group mb-4">
-                  <label>Tiêu đề</label>
-                  <input
-                    type="text"
-                    name="title"
-                    onChange={handleInput}
-                    value={productInput.title}
-                    className="form-control"
-                  />
-                  <small className="text-danger">{errorlist.title}</small>
-                </div>
-                <div className="row">
-                  <div className="col-md-4 form-group mb-4">
-                    <div>
-                      <label>Giới tính</label>
-                    </div>
-                    <div className="form-check form-check-inline">
-                      <input
-                        className="form-check-input"
-                        type="radio"
-                        onChange={updateGender}
-                        name="gender"
-                        id="inlineRadio1"
-                        value="Nam"
-                        checked={gender === 'Nam'}
-                      />
-                      <label
-                        className="form-check-label"
-                        htmlFor="inlineRadio1"
-                      >
-                        Nam
-                      </label>
-                    </div>
-                    <div className="form-check form-check-inline">
-                      <input
-                        className="form-check-input"
-                        type="radio"
-                        name="gender"
-                        onChange={updateGender}
-                        id="inlineRadio2"
-                        value="Nữ"
-                        checked={gender === 'Nữ'}
-                      />
-                      <label
-                        className="form-check-label"
-                        htmlFor="inlineRadio2"
-                      >
-                        Nữ
-                      </label>
-                    </div>
-                    <div className="form-check form-check-inline">
-                      <input
-                        className="form-check-input"
-                        type="radio"
-                        name="gender"
-                        onChange={updateGender}
-                        id="inlineRadio3"
-                        value="Unisex"
-                        checked={gender === 'Unisex'}
-                      />
-                      <label
-                        className="form-check-label"
-                        htmlFor="inlineRadio3"
-                      >
-                        Unisex
-                      </label>
-                    </div>
-                  </div>
-                  <div className="col-md-4 form-group mb-4">
-                    <label>Phân loại</label>
-                    <select
-                      name="category_id"
+                  <div className="form-group mb-4">
+                    <label>Tiêu đề</label>
+                    <input
+                      type="text"
+                      name="title"
                       onChange={handleInput}
-                      value={productInput.category_id}
+                      value={productInput.title}
                       className="form-control"
-                    >
-                      <option>Chọn phân loại</option>
-                      {categoryList.map((item) => {
-                        if (item.gender === gender)
+                    />
+                    <small className="text-danger">{errorlist.title}</small>
+                  </div>
+                  <div className="row">
+                    <div className="col-md-4 form-group mb-4">
+                      <div>
+                        <label>Giới tính</label>
+                      </div>
+                      <div className="form-check form-check-inline">
+                        <input
+                          className="form-check-input"
+                          type="radio"
+                          onChange={updateGender}
+                          name="gender"
+                          id="inlineRadio1"
+                          value="Nam"
+                          checked={gender === 'Nam'}
+                        />
+                        <label
+                          className="form-check-label"
+                          htmlFor="inlineRadio1"
+                        >
+                          Nam
+                        </label>
+                      </div>
+                      <div className="form-check form-check-inline">
+                        <input
+                          className="form-check-input"
+                          type="radio"
+                          name="gender"
+                          onChange={updateGender}
+                          id="inlineRadio2"
+                          value="Nữ"
+                          checked={gender === 'Nữ'}
+                        />
+                        <label
+                          className="form-check-label"
+                          htmlFor="inlineRadio2"
+                        >
+                          Nữ
+                        </label>
+                      </div>
+                      <div className="form-check form-check-inline">
+                        <input
+                          className="form-check-input"
+                          type="radio"
+                          name="gender"
+                          onChange={updateGender}
+                          id="inlineRadio3"
+                          value="Unisex"
+                          checked={gender === 'Unisex'}
+                        />
+                        <label
+                          className="form-check-label"
+                          htmlFor="inlineRadio3"
+                        >
+                          Unisex
+                        </label>
+                      </div>
+                    </div>
+                    <div className="col-md-4 form-group mb-4">
+                      <label>Phân loại</label>
+                      <select
+                        name="category_id"
+                        onChange={handleInput}
+                        value={productInput.category_id}
+                        className="form-control"
+                      >
+                        <option>Chọn phân loại</option>
+                        {categoryList.map((item) => {
+                          if (item.gender === gender)
+                            return (
+                              <option value={item.id} key={item.id}>
+                                {item.name}
+                              </option>
+                            );
+                        })}
+                      </select>
+                      <small className="text-danger">
+                        {errorlist.category_id}
+                      </small>
+                    </div>
+                    <div className="col-md-4 form-group mb-4">
+                      <label>Nhãn hiệu</label>
+                      <select
+                        name="brand_id"
+                        onChange={handleInput}
+                        value={productInput.brand_id}
+                        className="form-control"
+                      >
+                        <option>Chọn nhãn hiệu</option>
+                        {brandList.map((item) => {
                           return (
                             <option value={item.id} key={item.id}>
                               {item.name}
                             </option>
                           );
-                      })}
-                    </select>
+                        })}
+                      </select>
+                      <small className="text-danger">{errorlist.brand}</small>
+                    </div>
+                  </div>
+
+                  <div className="form-group mb-4">
+                    <label>Mô tả</label>
+                    <textarea
+                      name="description"
+                      onChange={handleInput}
+                      value={productInput.description}
+                      className="form-control"
+                    ></textarea>
+                  </div>
+                  <div className="row">
+                    <div className="col-md-4 form-group mb-4">
+                      <label>Ảnh</label>
+                      <input
+                        type="file"
+                        name="image"
+                        multiple
+                        accept="image/*"
+                        onChange={handleImage}
+                        className="form-control"
+                      />
+                      <small className="text-danger">{errorlist.image}</small>
+                    </div>
+                    <div className="form-check col-md-4 form-group mb-4">
+                      <input
+                        className="form-check-input"
+                        type="checkbox"
+                        name="isNew"
+                        onChange={handleCheckbox}
+                        value={productInput.isNew}
+                        defaultChecked={productInput.isNew}
+                        id="flexCheckDefault"
+                      />
+                      <label
+                        className="form-check-label"
+                        htmlFor="flexCheckDefault"
+                      >
+                        Sản phẩm mới
+                      </label>
+                    </div>
+                    <div className="form-check col-md-4 form-group mb-4">
+                      <input
+                        className="form-check-input"
+                        type="checkbox"
+                        name="visible"
+                        onChange={handleCheckbox}
+                        value={productInput.visible}
+                        defaultChecked={productInput.visible}
+                        id="flexCheckDefault"
+                      />
+                      <label
+                        className="form-check-label"
+                        htmlFor="flexCheckDefault"
+                      >
+                        Hiển thị
+                      </label>
+                    </div>
+                  </div>
+                  <div className="form-group mb-4 row">
+                    {pictures.map((photo, index) => (
+                      <div className="d-flex flex-column mb-2 w-25 h-25">
+                        <img
+                          src={photo.preview}
+                          style={styles.image}
+                          alt="Thumb"
+                          key={index}
+                        />
+                        <button
+                          onClick={() => removeSelectedImage(index)}
+                          style={styles.delete}
+                        >
+                          Xóa ảnh
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </Tab>
+              <Tab eventKey={1} title="SEO" disabled={currentTab !== 1}>
+                <div
+                  className="tab-pane card-body border fade show active"
+                  id="seotags"
+                  role="tabpanel"
+                  aria-labelledby="seotags-tab"
+                >
+                  <div className="form-group mb-4">
+                    <label>Meta Title</label>
+                    <input
+                      type="text"
+                      name="meta_title"
+                      onChange={handleInput}
+                      value={productInput.meta_title}
+                      className="form-control"
+                    />
                     <small className="text-danger">
-                      {errorlist.category_id}
+                      {errorlist.meta_title}
                     </small>
                   </div>
-                  <div className="col-md-4 form-group mb-4">
-                    <label>Nhãn hiệu</label>
-                    <select
-                      name="brand_id"
+                  <div className="form-group mb-4">
+                    <label>Meta Keyword</label>
+                    <textarea
+                      name="meta_keyword"
                       onChange={handleInput}
-                      value={productInput.brand_id}
+                      value={productInput.meta_keyword}
                       className="form-control"
-                    >
-                      <option>Chọn nhãn hiệu</option>
-                      {brandList.map((item) => {
-                        return (
-                          <option value={item.id} key={item.id}>
-                            {item.name}
-                          </option>
-                        );
-                      })}
-                    </select>
-                    <small className="text-danger">{errorlist.brand}</small>
+                    ></textarea>
                   </div>
-                </div>
-
-                <div className="form-group mb-4">
-                  <label>Mô tả</label>
-                  <textarea
-                    name="description"
-                    onChange={handleInput}
-                    value={productInput.description}
-                    className="form-control"
-                  ></textarea>
-                </div>
-                <div className="row">
-                  <div className="col-md-4 form-group mb-4">
-                    <label>Ảnh</label>
-                    <input
-                      type="file"
-                      name="image"
-                      multiple
-                      accept="image/*"
-                      onChange={handleImage}
+                  <div className="form-group mb-4">
+                    <label>Meta Description</label>
+                    <textarea
+                      name="meta_descrip"
+                      onChange={handleInput}
+                      value={productInput.meta_descrip}
                       className="form-control"
-                    />
-                    <small className="text-danger">{errorlist.image}</small>
-                  </div>
-                  <div className="form-check col-md-4 form-group mb-4">
-                    <input
-                      className="form-check-input"
-                      type="checkbox"
-                      name="isNew"
-                      onChange={handleCheckbox}
-                      value={productInput.isNew}
-                      defaultChecked={productInput.isNew}
-                      id="flexCheckDefault"
-                    />
-                    <label
-                      className="form-check-label"
-                      htmlFor="flexCheckDefault"
-                    >
-                      Sản phẩm mới
-                    </label>
-                  </div>
-                  <div className="form-check col-md-4 form-group mb-4">
-                    <input
-                      className="form-check-input"
-                      type="checkbox"
-                      name="visible"
-                      onChange={handleCheckbox}
-                      value={productInput.visible}
-                      defaultChecked={productInput.visible}
-                      id="flexCheckDefault"
-                    />
-                    <label
-                      className="form-check-label"
-                      htmlFor="flexCheckDefault"
-                    >
-                      Hiển thị
-                    </label>
+                    ></textarea>
                   </div>
                 </div>
-                <div className="form-group mb-4 row">
-                  {pictures.map((photo, index) => (
-                    <div className="d-flex flex-column mb-2 w-25 h-25">
-                      <img
-                        src={photo.preview}
-                        style={styles.image}
-                        alt="Thumb"
-                        key={index}
-                      />
-                      <button
-                        onClick={() => removeSelectedImage(index)}
-                        style={styles.delete}
-                      >
-                        Xóa ảnh
-                      </button>
-                    </div>
-                  ))}
-                </div>
-              </div>
-              <div
-                className="tab-pane card-body border fade"
-                id="seotags"
-                role="tabpanel"
-                aria-labelledby="seotags-tab"
-              >
-                <div className="form-group mb-4">
-                  <label>Meta Title</label>
-                  <input
-                    type="text"
-                    name="meta_title"
-                    onChange={handleInput}
-                    value={productInput.meta_title}
-                    className="form-control"
+              </Tab>
+              <Tab eventKey={2} title="Details" disabled={currentTab !== 2}>
+                <div
+                  className="tab-pane card-body border fade show active"
+                  id="otherdetails"
+                  role="tabpanel"
+                  aria-labelledby="otherdetails-tab"
+                >
+                  <Variant
+                    variantList={variantList}
+                    setVariantList={setVariantList}
                   />
-                  <small className="text-danger">{errorlist.meta_title}</small>
                 </div>
-                <div className="form-group mb-4">
-                  <label>Meta Keyword</label>
-                  <textarea
-                    name="meta_keyword"
-                    onChange={handleInput}
-                    value={productInput.meta_keyword}
-                    className="form-control"
-                  ></textarea>
-                </div>
-                <div className="form-group mb-4">
-                  <label>Meta Description</label>
-                  <textarea
-                    name="meta_descrip"
-                    onChange={handleInput}
-                    value={productInput.meta_descrip}
-                    className="form-control"
-                  ></textarea>
-                </div>
-              </div>
-              <div
-                className="tab-pane card-body border fade"
-                id="otherdetails"
-                role="tabpanel"
-                aria-labelledby="otherdetails-tab"
-              >
-                <Variant
-                  variantList={variantList}
-                  setVariantList={setVariantList}
-                />
-              </div>
-            </div>
-            <button
-              type="submit"
-              className="btn btn-primary px-4 float-end mt-2"
-            >
-              Submit
-            </button>
+              </Tab>
+            </Tabs>
+            <Stack gap={3} direction="horizontal" className="float-end mt-2">
+              {currentTab > 0 ? (
+                <Button
+                  className="success"
+                  disabled={currentTab === 0}
+                  onClick={prev}
+                >
+                  Quay lại
+                </Button>
+              ) : null}
+
+              {currentTab < 2 ? (
+                <Button
+                  className="success"
+                  disabled={currentTab === 2}
+                  onClick={next}
+                >
+                  Tiếp
+                </Button>
+              ) : null}
+              {currentTab === 2 ? (
+                <button type="submit" className="btn btn-primary px-4 ">
+                  Gửi
+                </button>
+              ) : null}
+            </Stack>
           </form>
         </div>
       </div>

@@ -3,12 +3,14 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import { ProductType } from '../../common/constant/ProductType';
+import { Stack, Tabs, Tab, Row, Button, Col, Container } from 'react-bootstrap';
 
 function EditCategory(props) {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [categoryInput, setCategory] = useState([]);
   const [error, setError] = useState([]);
+  const [currentTab, setCurrentTab] = useState(0);
   const { id } = useParams();
   useEffect(() => {
     axios
@@ -102,13 +104,20 @@ function EditCategory(props) {
         setError(err.response.data.message);
       });
   };
-
+  const next = (e) => {
+    e.preventDefault();
+    setCurrentTab((prev) => prev + 1);
+  };
+  const prev = (e) => {
+    e.preventDefault();
+    setCurrentTab((prev) => prev - 1);
+  };
   if (loading) {
     return <h4>Đang tải dữ liệu...</h4>;
   }
 
   return (
-    <div className="container px-4">
+    <div className="container-fluid px-4">
       <ToastContainer />
       <div className="card mt-4">
         <div className="card-header">
@@ -116,63 +125,33 @@ function EditCategory(props) {
             Sửa phân loại
             <Link
               to="/admin/view-category"
-              className="btn btn-primary  float-end"
+              className="btn btn-primary float-end"
             >
-              Quay lại
+              Xem phân loại
             </Link>
           </h4>
         </div>
         <div className="card-body">
-          <form onSubmit={updateCategory}>
-            <ul className="nav nav-tabs" id="myTab" role="tablist">
-              <li className="nav-item" role="presentation">
-                <button
-                  className="nav-link active"
-                  id="home-tab"
-                  data-bs-toggle="tab"
-                  data-bs-target="#home"
-                  type="button"
-                  role="tab"
-                  aria-controls="home"
-                  aria-selected="true"
+          <form onSubmit={updateCategory} encType="multipart/form-data">
+            <Tabs activeKey={currentTab} id="controlled-tab-example">
+              <Tab eventKey={0} title="Phân loại" disabled={currentTab !== 0}>
+                <div
+                  className="tab-pane card-body border fade show active"
+                  id="category"
+                  role="tabpanel"
+                  aria-labelledby="category-tab"
                 >
-                  Phân loại
-                </button>
-              </li>
-              <li className="nav-item" role="presentation">
-                <button
-                  className="nav-link"
-                  id="seo-tags-tab"
-                  data-bs-toggle="tab"
-                  data-bs-target="#seo-tags"
-                  type="button"
-                  role="tab"
-                  aria-controls="seo-tags"
-                  aria-selected="false"
-                >
-                  Thẻ SEO
-                </button>
-              </li>
-            </ul>
-            <div className="tab-content" id="myTabContent">
-              <div
-                className="tab-pane card-body border fade show active"
-                id="home"
-                role="tabpanel"
-                aria-labelledby="home-tab"
-              >
-                <div className="form-group mb-3">
-                  <label>Tên</label>
-                  <input
-                    type="text"
-                    name="name"
-                    onChange={handleInput}
-                    value={categoryInput.name}
-                    className="form-control"
-                  />
-                  <small className="text-danger">{error.name}</small>
-                </div>
-                <div className="form-group mb-3">
+                  <div className="form-group mb-4">
+                    <label>Tên</label>
+                    <input
+                      type="text"
+                      name="name"
+                      onChange={handleInput}
+                      value={categoryInput.name}
+                      className="form-control"
+                    />
+                  </div>
+                  {/* <div className="form-group mb-4">
                   <label>Url</label>
                   <input
                     type="text"
@@ -181,118 +160,144 @@ function EditCategory(props) {
                     value={categoryInput.url}
                     className="form-control"
                   />
-                  <small className="text-danger">{error.url}</small>
-                </div>
-                <div className="form-group mb-4">
-                  <div>
-                    <label>Giới tính</label>
+                </div> */}
+
+                  <div className="form-group mb-4">
+                    <div>
+                      <label>Giới tính</label>
+                    </div>
+                    <div className="form-check form-check-inline">
+                      <input
+                        className="form-check-input"
+                        type="radio"
+                        onChange={handleInput}
+                        name="gender"
+                        id="inlineRadio1"
+                        value="Nam"
+                      />
+                      <label
+                        className="form-check-label"
+                        htmlFor="inlineRadio1"
+                      >
+                        Nam
+                      </label>
+                    </div>
+                    <div className="form-check form-check-inline">
+                      <input
+                        className="form-check-input"
+                        type="radio"
+                        name="gender"
+                        onChange={handleInput}
+                        id="inlineRadio2"
+                        value="Nữ"
+                      />
+                      <label
+                        className="form-check-label"
+                        htmlFor="inlineRadio2"
+                      >
+                        Nữ
+                      </label>
+                    </div>
+                    <div className="form-check form-check-inline">
+                      <input
+                        className="form-check-input"
+                        type="radio"
+                        name="gender"
+                        onChange={handleInput}
+                        id="inlineRadio3"
+                        value="Unisex"
+                      />
+                      <label
+                        className="form-check-label"
+                        htmlFor="inlineRadio3"
+                      >
+                        Unisex
+                      </label>
+                    </div>
                   </div>
-                  <div className="form-check form-check-inline">
-                    <input
-                      className="form-check-input"
-                      type="radio"
+                  <div className="form-group mb-4">
+                    <label>Loại</label>
+                    <select
+                      name="type"
                       onChange={handleInput}
-                      name="gender"
-                      id="inlineRadio1"
-                      value="Nam"
-                      checked={categoryInput.gender === 'Nam'}
-                    />
-                    <label className="form-check-label" htmlFor="inlineRadio1">
-                      Nam
-                    </label>
-                  </div>
-                  <div className="form-check form-check-inline">
-                    <input
-                      className="form-check-input"
-                      type="radio"
-                      name="gender"
-                      onChange={handleInput}
-                      id="inlineRadio2"
-                      value="Nữ"
-                      checked={categoryInput.gender === 'Nữ'}
-                    />
-                    <label className="form-check-label" htmlFor="inlineRadio2">
-                      Nữ
-                    </label>
-                  </div>
-                  <div className="form-check form-check-inline">
-                    <input
-                      className="form-check-input"
-                      type="radio"
-                      name="gender"
-                      onChange={handleInput}
-                      id="inlineRadio3"
-                      value="Unisex"
-                      checked={categoryInput.gender === 'Unisex'}
-                    />
-                    <label className="form-check-label" htmlFor="inlineRadio3">
-                      Unisex
-                    </label>
-                  </div>
-                </div>
-                <div className="form-group mb-4">
-                  <label>Select Type</label>
-                  <select
-                    name="type"
-                    onChange={handleInput}
-                    value={categoryInput.type}
-                    className="form-control"
-                  >
-                    <option>Select Type</option>
-                    {ProductType.map((item, index) => {
-                      return (
+                      value={categoryInput.type}
+                      className="form-control"
+                    >
+                      <option>Chọn loại</option>
+                      {ProductType.map((item, index) => (
                         <option value={item} key={index}>
                           {item}
                         </option>
-                      );
-                    })}
-                  </select>
+                      ))}
+                    </select>
+                  </div>
                 </div>
-              </div>
-              <div
-                className="tab-pane card-body border fade"
-                id="seo-tags"
-                role="tabpanel"
-                aria-labelledby="seo-tags-tab"
-              >
-                <div className="form-group mb-3">
-                  <label>Meta Title</label>
-                  <input
-                    type="text"
-                    name="meta_title"
-                    onChange={handleInput}
-                    value={categoryInput.meta_title}
-                    className="form-control"
-                  />
+              </Tab>
+              <Tab eventKey={1} title="SEO" disabled={currentTab !== 1}>
+                <div
+                  className="tab-pane card-body border fade show active"
+                  id="seotags"
+                  role="tabpanel"
+                  aria-labelledby="seotags-tab"
+                >
+                  <div className="form-group mb-4">
+                    <label>Meta Title</label>
+                    <input
+                      type="text"
+                      name="meta_title"
+                      onChange={handleInput}
+                      value={categoryInput.meta_title}
+                      className="form-control"
+                    />
+                  </div>
+                  <div className="form-group mb-4">
+                    <label>Meta Keyword</label>
+                    <textarea
+                      name="meta_keyword"
+                      onChange={handleInput}
+                      value={categoryInput.meta_keyword}
+                      className="form-control"
+                    ></textarea>
+                  </div>
+                  <div className="form-group mb-4">
+                    <label>Meta Description</label>
+                    <textarea
+                      name="meta_descrip"
+                      onChange={handleInput}
+                      value={categoryInput.meta_descrip}
+                      className="form-control"
+                    ></textarea>
+                  </div>
                 </div>
-                <div className="form-group mb-3">
-                  <label>Meta Keywords</label>
-                  <textarea
-                    name="meta_keyword"
-                    onChange={handleInput}
-                    value={categoryInput.meta_keyword}
-                    className="form-control"
-                  ></textarea>
-                </div>
-                <div className="form-group mb-3">
-                  <label>Meta Description</label>
-                  <textarea
-                    name="meta_descrip"
-                    onChange={handleInput}
-                    value={categoryInput.meta_descrip}
-                    className="form-control"
-                  ></textarea>
-                </div>
-              </div>
-            </div>
-            <button
-              type="submit"
-              className="btn btn-primary px-4 float-end mt-2"
-            >
-              Cập nhật
-            </button>
+              </Tab>
+            </Tabs>
+            <Stack gap={3} direction="horizontal" className="float-end mt-2">
+              {currentTab === 1 ? (
+                <Button
+                  className="success"
+                  disabled={currentTab === 0}
+                  onClick={prev}
+                >
+                  Quay lại
+                </Button>
+              ) : null}
+
+              {currentTab === 0 ? (
+                <Button
+                  className="success"
+                  disabled={currentTab === 2}
+                  onClick={next}
+                >
+                  Tiếp
+                </Button>
+              ) : null}
+              {currentTab === 1 ? (
+                <button type="submit" className="btn btn-primary px-4 ">
+                  Gửi
+                </button>
+              ) : null}
+            </Stack>
           </form>
-          <small className="text-danger">{error}</small>
         </div>
       </div>
     </div>
