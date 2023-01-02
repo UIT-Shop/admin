@@ -15,6 +15,7 @@ import EditProduct from '../components/product/EditProduct';
 import Order from '../components/order/Order';
 import ViewUser from '../components/user/ViewUsers';
 import OrderDetail from '../components/order/OrderDetail';
+import EditProfile from '../components/user/EditProfile';
 
 const routes = [
   { path: '/', name: 'Admin' },
@@ -88,6 +89,7 @@ const routes = [
     name: 'ViewUser',
     element: ViewUser,
   },
+  { path: '/profile/edit', name: 'EditProfile', element: EditProfile },
   { path: '/profile', name: 'Profile', element: Profile },
   { path: '/orders', name: 'Order', element: Order },
   { path: '/order-detail/:id', name: 'OrderDetail', element: OrderDetail },

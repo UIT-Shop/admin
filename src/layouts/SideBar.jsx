@@ -115,7 +115,7 @@ const SideBar = () => {
       </div>
       <div className="sb-sidenav-footer">
         <div className="small">Logged in as:</div>
-        Start Bootstrap
+        {localStorage.getItem('auth_name')}
       </div>
     </nav>
   );

@@ -13,17 +13,17 @@ function ViewProduct() {
   // let pageNumber = searchParams.get('page');
   // if (pageNumber === null) pageNumber = 0;
   const navigate = useNavigate();
-  const [currentPage, setCurrentPage] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
   const [pageCount, setPageCount] = useState(1);
   useEffect(() => {
     let isMounted = true;
     setLoading(true);
+    setCurrentPage(searchParams.get('page'));
     axios
-      .get(`/Product/admin?page=${parseInt(currentPage) + 1}`)
+      .get(`/Product/admin?page=${parseInt(searchParams.get('page'))}`)
       .then((res) => {
         if (isMounted) {
           if (res.status === 200) {
-            console.log(res.data.data);
             setProduct(res.data.data.products);
             setPageCount(res.data.data.pages);
             setLoading(false);
@@ -67,7 +67,7 @@ function ViewProduct() {
     var page = parseInt(event.selected) + 1;
     setCurrentPage(parseInt(event.selected));
     window.scrollTo(0, 0);
-    navigate('/admin/view-product?page=' + page);
+    navigate({ pathname: '/admin/view-product', search: `?page=${page}` });
   };
 
   var display_Productdata = '';
@@ -140,7 +140,7 @@ function ViewProduct() {
             </table>
           </div>
         </div>
-        <div className="text-center">
+        <div className="d-flex justify-content-center">
           <div className="pagination">
             <ReactPaginate
               breakLabel="..."
@@ -152,7 +152,7 @@ function ViewProduct() {
               previousLabel={<i className="fas fa-chevron-left"></i>}
               renderOnZeroPageCount={null}
               activeClassName="active"
-              forcePage={parseInt(currentPage)}
+              forcePage={parseInt(currentPage) - 1}
             />
           </div>
         </div>

@@ -287,7 +287,7 @@ function EditProduct() {
           <h4>
             Sửa sản phẩm
             <Link
-              to="/admin/view-product"
+              to="/admin/view-product?page=1"
               className="btn btn-primary float-end"
             >
               Xem sản phẩm

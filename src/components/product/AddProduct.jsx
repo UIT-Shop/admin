@@ -274,7 +274,7 @@ function AddProduct() {
           <h4>
             Thêm sản phẩm
             <Link
-              to="/admin/view-product"
+              to="/admin/view-product?page=1"
               className="btn btn-primary float-end"
             >
               Xem sản phẩm
