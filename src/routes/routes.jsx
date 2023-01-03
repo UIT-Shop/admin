@@ -16,83 +16,85 @@ import Order from '../components/order/Order';
 import ViewUser from '../components/user/ViewUsers';
 import OrderDetail from '../components/order/OrderDetail';
 import EditProfile from '../components/user/EditProfile';
+import ChangePassword from '../components/auth/ChangePassword';
 
 const routes = [
   { path: '/', name: 'Admin' },
   {
     path: '/dashboard',
     name: 'Dashboard',
-    element: Dashboard,
+    element: Dashboard
   },
   {
     path: '/add-category',
     name: 'Category',
-    element: AddCategory,
+    element: AddCategory
   },
   {
     path: '/view-category',
     name: 'ViewCategory',
-    element: ViewCategory,
+    element: ViewCategory
   },
   {
     path: '/edit-category/:id',
     name: 'EditCategory',
-    element: EditCategory,
+    element: EditCategory
   },
   {
     path: '/add-brand',
     name: 'AddBrand',
-    element: AddBrand,
+    element: AddBrand
   },
   {
     path: '/view-brand',
     name: 'ViewBrand',
-    element: ViewBrand,
+    element: ViewBrand
   },
   {
     path: '/edit-brand/:id',
     name: 'EditBrand',
-    element: EditBrand,
+    element: EditBrand
   },
   {
     path: '/add-color',
     name: 'AddColor',
-    element: AddColor,
+    element: AddColor
   },
   {
     path: '/view-color',
     name: 'ViewColor',
-    element: ViewColor,
+    element: ViewColor
   },
   {
     path: '/edit-color/:id',
     name: 'EditColor',
-    element: EditColor,
+    element: EditColor
   },
   {
     path: '/add-product',
     name: 'AddProduct',
-    element: AddProduct,
+    element: AddProduct
   },
   {
     path: '/view-product',
     name: 'ViewProduct',
-    element: ViewProduct,
+    element: ViewProduct
   },
   {
     path: '/edit-product/:id',
     name: 'EditProduct',
-    element: EditProduct,
+    element: EditProduct
   },
   {
     path: '/view-user',
     name: 'ViewUser',
-    element: ViewUser,
+    element: ViewUser
   },
   { path: '/profile/edit', name: 'EditProfile', element: EditProfile },
   { path: '/profile', name: 'Profile', element: Profile },
+  { path: '/change-password', name: 'ChangePassword', element: ChangePassword },
   { path: '/orders', name: 'Order', element: Order },
-  { path: '/order-detail/:id', name: 'OrderDetail', element: OrderDetail },
+  { path: '/order-detail/:id', name: 'OrderDetail', element: OrderDetail }
 ];
 
 export default routes;

@@ -95,6 +95,8 @@ function EditProduct() {
   };
 
   const validate = () => {
+    if (productInput.visible === false)
+      return true
     if (
       productInput.brandId === '' ||
       productInput.categoryId === '' ||

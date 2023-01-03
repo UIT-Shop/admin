@@ -106,7 +106,7 @@ const SideBar = () => {
               <Link className="nav-link" to="/admin/profile">
                 Profile
               </Link>
-              <Link className="nav-link" to="password.html">
+              <Link className="nav-link" to="/admin/change-password">
                 Đổi mật khẩu
               </Link>
             </nav>

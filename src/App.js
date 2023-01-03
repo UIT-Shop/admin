@@ -6,12 +6,7 @@ import Page404 from './components/error/Page404';
 
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-  Navigate,
-} from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 
 axios.defaults.baseURL = process.env.REACT_APP_API_URL;
 axios.defaults.headers.post['Content-Type'] = 'application/json';
@@ -23,18 +18,6 @@ axios.interceptors.request.use(function (config) {
 });
 
 function App() {
-  function parseJwt(token) {
-    if (!token) {
-      return;
-    }
-    const base64Url = token.split('.')[1];
-    const base64 = base64Url.replace('-', '+').replace('_', '/');
-    return JSON.parse(window.atob(base64));
-  }
-  const [user, setUser] = useState();
-  useEffect(() => {
-    setUser(parseJwt(sessionStorage.getItem('JWT')));
-  }, []);
   return (
     <>
       <Router>
@@ -47,9 +30,8 @@ function App() {
               <div
                 style={{
                   backgroundColor: '#1c2127',
-                  height: 100 + 'vh',
-                }}
-              >
+                  height: 100 + 'vh'
+                }}>
                 <Page403 />
               </div>
             }
@@ -61,9 +43,8 @@ function App() {
               <div
                 style={{
                   backgroundColor: '#1c2127',
-                  height: 100 + 'vh',
-                }}
-              >
+                  height: 100 + 'vh'
+                }}>
                 <Page404 />
               </div>
             }

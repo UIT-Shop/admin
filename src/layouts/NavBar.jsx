@@ -1,7 +1,12 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React from 'react'
+import { Link } from 'react-router-dom'
 
 const Navbar = () => {
+  const logOut = () => {
+    localStorage.removeItem('auth_token')
+    localStorage.removeItem('auth_name')
+    localStorage.removeItem('auth_email')
+  }
   return (
     <nav className="sb-topnav navbar navbar-expand navbar-dark bg-dark">
       <Link className="navbar-brand ps-3" to="/admin">
@@ -11,8 +16,7 @@ const Navbar = () => {
       <button
         className="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0"
         id="sidebarToggle"
-        to="#!"
-      >
+        to="#!">
         <i className="fas fa-bars"></i>
       </button>
 
@@ -25,11 +29,7 @@ const Navbar = () => {
             aria-label="Search for..."
             aria-describedby="btnNavbarSearch"
           />
-          <button
-            className="btn btn-primary"
-            id="btnNavbarSearch"
-            type="button"
-          >
+          <button className="btn btn-primary" id="btnNavbarSearch" type="button">
             <i className="fas fa-search"></i>
           </button>
         </div>
@@ -43,37 +43,28 @@ const Navbar = () => {
             id="navbarDropdown"
             role="button"
             data-bs-toggle="dropdown"
-            aria-expanded="false"
-          >
+            aria-expanded="false">
             <i className="fas fa-user fa-fw"></i>
           </Link>
-          <ul
-            className="dropdown-menu dropdown-menu-end"
-            aria-labelledby="navbarDropdown"
-          >
+          <ul className="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
             <li>
-              <Link className="dropdown-item" to="#!">
-                Settings
-              </Link>
-            </li>
-            <li>
-              <Link className="dropdown-item" to="#!">
-                Activity Log
+              <Link className="dropdown-item" to="/admin/profile">
+                Profile
               </Link>
             </li>
             <li>
               <hr className="dropdown-divider" />
             </li>
             <li>
-              <Link className="dropdown-item" to="#!">
-                Logout
-              </Link>
+              <button className="dropdown-item" onClick={logOut}>
+                Đăng xuất
+              </button>
             </li>
           </ul>
         </li>
       </ul>
     </nav>
-  );
-};
+  )
+}
 
-export default Navbar;
+export default Navbar
