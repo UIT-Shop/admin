@@ -1,12 +1,10 @@
-import React from 'react'
-import { Link, useParams, navigate, useNavigate } from 'react-router-dom'
+import axios from 'axios'
 import jwt from 'jwt-decode'
+import React, { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { ToastContainer, toast } from 'react-toastify'
 import { Role } from '../../common/constant/Role'
 import '../user/Profile.css'
-import { useEffect } from 'react'
-import axios from 'axios'
-import { useState } from 'react'
-import { ToastContainer, toast } from 'react-toastify'
 
 function ChangePassword() {
   const navigate = useNavigate()

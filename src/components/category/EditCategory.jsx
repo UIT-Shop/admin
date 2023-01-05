@@ -1,23 +1,23 @@
-import React, { useState, useEffect } from 'react';
-import { Link, useNavigate, useParams } from 'react-router-dom';
-import axios from 'axios';
-import { ToastContainer, toast } from 'react-toastify';
-import { ProductType } from '../../common/constant/ProductType';
-import { Stack, Tabs, Tab, Row, Button, Col, Container } from 'react-bootstrap';
+import axios from 'axios'
+import React, { useEffect, useState } from 'react'
+import { Button, Stack, Tab, Tabs } from 'react-bootstrap'
+import { Link, useNavigate, useParams } from 'react-router-dom'
+import { ToastContainer, toast } from 'react-toastify'
+import { ProductType } from '../../common/constant/ProductType'
 
 function EditCategory(props) {
-  const navigate = useNavigate();
-  const [loading, setLoading] = useState(true);
-  const [categoryInput, setCategory] = useState([]);
-  const [error, setError] = useState([]);
-  const [currentTab, setCurrentTab] = useState(0);
-  const { id } = useParams();
+  const navigate = useNavigate()
+  const [loading, setLoading] = useState(true)
+  const [categoryInput, setCategory] = useState([])
+  const [error, setError] = useState([])
+  const [currentTab, setCurrentTab] = useState(0)
+  const { id } = useParams()
   useEffect(() => {
     axios
       .get(`/Category/${id}`)
       .then((res) => {
         if (res.status === 200) {
-          setCategory(res.data.data);
+          setCategory(res.data.data)
         } else if (res.status === 400) {
           toast.error('Lỗi lấy dữ liệu', {
             position: 'top-right',
@@ -27,14 +27,14 @@ function EditCategory(props) {
             pauseOnHover: true,
             draggable: true,
             progress: undefined,
-            theme: 'colored',
-          });
-          navigate('/admin/view-category');
+            theme: 'colored'
+          })
+          navigate('/admin/view-category')
         }
-        setLoading(false);
+        setLoading(false)
       })
       .catch((err) => {
-        setLoading(false);
+        setLoading(false)
         if (err.response) {
           // The client was given an error response (5xx, 4xx)
           toast.error('Dữ liệu không tồn tại', {
@@ -45,9 +45,9 @@ function EditCategory(props) {
             pauseOnHover: true,
             draggable: true,
             progress: undefined,
-            theme: 'colored',
-          });
-          navigate('/admin/view-category');
+            theme: 'colored'
+          })
+          navigate('/admin/view-category')
         } else if (err.request) {
           // The client never received a response, and the request was never left (4xx)
           toast.error(err.request.data.message, {
@@ -58,22 +58,22 @@ function EditCategory(props) {
             pauseOnHover: true,
             draggable: true,
             progress: undefined,
-            theme: 'colored',
-          });
+            theme: 'colored'
+          })
         } else {
           // Anything else
-          console.log('Error', err.message);
+          console.log('Error', err.message)
         }
-      });
-  }, [id]);
+      })
+  }, [id])
 
   const handleInput = (e) => {
-    e.persist();
-    setCategory({ ...categoryInput, [e.target.name]: e.target.value });
-  };
+    e.persist()
+    setCategory({ ...categoryInput, [e.target.name]: e.target.value })
+  }
 
   const updateCategory = (e) => {
-    e.preventDefault();
+    e.preventDefault()
     axios
       .put(`/Category`, {
         id: id,
@@ -83,7 +83,7 @@ function EditCategory(props) {
         type: categoryInput.type,
         meta_title: categoryInput.meta_title,
         meta_keyword: categoryInput.meta_keyword,
-        meta_descrip: categoryInput.meta_descrip,
+        meta_descrip: categoryInput.meta_descrip
       })
       .then((res) => {
         if (res.status === 200) {
@@ -95,25 +95,25 @@ function EditCategory(props) {
             pauseOnHover: true,
             draggable: true,
             progress: undefined,
-            theme: 'colored',
-          });
-          navigate('/admin/view-category');
+            theme: 'colored'
+          })
+          navigate('/admin/view-category')
         }
       })
       .catch((err) => {
-        setError(err.response.data.message);
-      });
-  };
+        setError(err.response.data.message)
+      })
+  }
   const next = (e) => {
-    e.preventDefault();
-    setCurrentTab((prev) => prev + 1);
-  };
+    e.preventDefault()
+    setCurrentTab((prev) => parseInt(prev) + 1)
+  }
   const prev = (e) => {
-    e.preventDefault();
-    setCurrentTab((prev) => prev - 1);
-  };
+    e.preventDefault()
+    setCurrentTab((prev) => parseInt(prev) - 1)
+  }
   if (loading) {
-    return <h4>Đang tải dữ liệu...</h4>;
+    return <h4>Đang tải dữ liệu...</h4>
   }
 
   return (
@@ -123,24 +123,23 @@ function EditCategory(props) {
         <div className="card-header">
           <h4>
             Sửa phân loại
-            <Link
-              to="/admin/view-category"
-              className="btn btn-primary float-end"
-            >
+            <Link to="/admin/view-category" className="btn btn-primary float-end">
               Xem phân loại
             </Link>
           </h4>
         </div>
         <div className="card-body">
           <form onSubmit={updateCategory} encType="multipart/form-data">
-            <Tabs activeKey={currentTab} id="controlled-tab-example">
-              <Tab eventKey={0} title="Phân loại" disabled={currentTab !== 0}>
+            <Tabs
+              activeKey={parseInt(currentTab)}
+              onSelect={(k) => setCurrentTab(k)}
+              id="controlled-tab-example">
+              <Tab eventKey={0} title="Phân loại">
                 <div
                   className="tab-pane card-body border fade show active"
                   id="category"
                   role="tabpanel"
-                  aria-labelledby="category-tab"
-                >
+                  aria-labelledby="category-tab">
                   <div className="form-group mb-4">
                     <label>Tên</label>
                     <input
@@ -151,17 +150,6 @@ function EditCategory(props) {
                       className="form-control"
                     />
                   </div>
-                  {/* <div className="form-group mb-4">
-                  <label>Url</label>
-                  <input
-                    type="text"
-                    name="url"
-                    onChange={handleInput}
-                    value={categoryInput.url}
-                    className="form-control"
-                  />
-                </div> */}
-
                   <div className="form-group mb-4">
                     <div>
                       <label>Giới tính</label>
@@ -175,10 +163,7 @@ function EditCategory(props) {
                         id="inlineRadio1"
                         value="Nam"
                       />
-                      <label
-                        className="form-check-label"
-                        htmlFor="inlineRadio1"
-                      >
+                      <label className="form-check-label" htmlFor="inlineRadio1">
                         Nam
                       </label>
                     </div>
@@ -191,10 +176,7 @@ function EditCategory(props) {
                         id="inlineRadio2"
                         value="Nữ"
                       />
-                      <label
-                        className="form-check-label"
-                        htmlFor="inlineRadio2"
-                      >
+                      <label className="form-check-label" htmlFor="inlineRadio2">
                         Nữ
                       </label>
                     </div>
@@ -207,10 +189,7 @@ function EditCategory(props) {
                         id="inlineRadio3"
                         value="Unisex"
                       />
-                      <label
-                        className="form-check-label"
-                        htmlFor="inlineRadio3"
-                      >
+                      <label className="form-check-label" htmlFor="inlineRadio3">
                         Unisex
                       </label>
                     </div>
@@ -221,8 +200,7 @@ function EditCategory(props) {
                       name="type"
                       onChange={handleInput}
                       value={categoryInput.type}
-                      className="form-control"
-                    >
+                      className="form-control">
                       <option>Chọn loại</option>
                       {ProductType.map((item, index) => (
                         <option value={item} key={index}>
@@ -233,13 +211,12 @@ function EditCategory(props) {
                   </div>
                 </div>
               </Tab>
-              <Tab eventKey={1} title="SEO" disabled={currentTab !== 1}>
+              <Tab eventKey={1} title="SEO">
                 <div
                   className="tab-pane card-body border fade show active"
                   id="seotags"
                   role="tabpanel"
-                  aria-labelledby="seotags-tab"
-                >
+                  aria-labelledby="seotags-tab">
                   <div className="form-group mb-4">
                     <label>Meta Title</label>
                     <input
@@ -256,8 +233,7 @@ function EditCategory(props) {
                       name="meta_keyword"
                       onChange={handleInput}
                       value={categoryInput.meta_keyword}
-                      className="form-control"
-                    ></textarea>
+                      className="form-control"></textarea>
                   </div>
                   <div className="form-group mb-4">
                     <label>Meta Description</label>
@@ -265,33 +241,24 @@ function EditCategory(props) {
                       name="meta_descrip"
                       onChange={handleInput}
                       value={categoryInput.meta_descrip}
-                      className="form-control"
-                    ></textarea>
+                      className="form-control"></textarea>
                   </div>
                 </div>
               </Tab>
             </Tabs>
             <Stack gap={3} direction="horizontal" className="float-end mt-2">
-              {currentTab === 1 ? (
-                <Button
-                  className="success"
-                  disabled={currentTab === 0}
-                  onClick={prev}
-                >
+              {parseInt(currentTab) === 1 ? (
+                <Button className="success" onClick={prev}>
                   Quay lại
                 </Button>
               ) : null}
 
-              {currentTab === 0 ? (
-                <Button
-                  className="success"
-                  disabled={currentTab === 2}
-                  onClick={next}
-                >
+              {parseInt(currentTab) === 0 ? (
+                <Button className="success" onClick={next}>
                   Tiếp
                 </Button>
               ) : null}
-              {currentTab === 1 ? (
+              {parseInt(currentTab) === 1 ? (
                 <button type="submit" className="btn btn-primary px-4 ">
                   Gửi
                 </button>
@@ -301,7 +268,7 @@ function EditCategory(props) {
         </div>
       </div>
     </div>
-  );
+  )
 }
 
-export default EditCategory;
+export default EditCategory

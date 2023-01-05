@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import axios from 'axios';
-import { ToastContainer, toast } from 'react-toastify';
-import { ProductType } from '../../common/constant/ProductType';
-import { Stack, Tabs, Tab, Row, Button, Col, Container } from 'react-bootstrap';
+import axios from 'axios'
+import React, { useState } from 'react'
+import { Button, Stack, Tab, Tabs } from 'react-bootstrap'
+import { Link } from 'react-router-dom'
+import { ToastContainer, toast } from 'react-toastify'
+import { ProductType } from '../../common/constant/ProductType'
 
 const AddCategory = () => {
   const [categoryInput, setCategory] = useState({
@@ -14,17 +14,17 @@ const AddCategory = () => {
     meta_title: '',
     meta_keyword: '',
     meta_descrip: '',
-    error_list: [],
-  });
-  const [currentTab, setCurrentTab] = useState(0);
+    error_list: []
+  })
+  const [currentTab, setCurrentTab] = useState(0)
 
   const handleInput = (e) => {
-    e.persist();
-    setCategory({ ...categoryInput, [e.target.name]: e.target.value });
-  };
+    e.persist()
+    setCategory({ ...categoryInput, [e.target.name]: e.target.value })
+  }
 
   const submitCategory = async (e) => {
-    e.preventDefault();
+    e.preventDefault()
     axios
       .post(`/Category`, {
         name: categoryInput.name,
@@ -33,11 +33,11 @@ const AddCategory = () => {
         type: categoryInput.type,
         meta_title: categoryInput.meta_title,
         meta_keyword: categoryInput.meta_keyword,
-        meta_descrip: categoryInput.meta_descrip,
+        meta_descrip: categoryInput.meta_descrip
       })
       .then((res) => {
         if (res.status === 200) {
-          e.target.reset();
+          e.target.reset()
           toast.success('Thêm thành công', {
             position: 'top-right',
             autoClose: 5000,
@@ -46,33 +46,33 @@ const AddCategory = () => {
             pauseOnHover: true,
             draggable: true,
             progress: undefined,
-            theme: 'colored',
-          });
+            theme: 'colored'
+          })
           // document.getElementById('CATEGORY_FORM').reset();
         } else if (res.status === 400) {
-          setCategory({ ...categoryInput, error_list: res.data.errors });
+          setCategory({ ...categoryInput, error_list: res.data.errors })
         }
       })
       .catch((err) => {
         setCategory({
           ...categoryInput,
-          error_list: err.response.data.message,
-        });
-      });
-  };
+          error_list: err.response.data.message
+        })
+      })
+  }
 
-  var display_errors = [];
+  var display_errors = []
   if (categoryInput.error_list) {
-    display_errors.push(categoryInput.error_list);
+    display_errors.push(categoryInput.error_list)
   }
   const next = (e) => {
-    e.preventDefault();
-    setCurrentTab((prev) => prev + 1);
-  };
+    e.preventDefault()
+    setCurrentTab((prev) => parseInt(prev) + 1)
+  }
   const prev = (e) => {
-    e.preventDefault();
-    setCurrentTab((prev) => prev - 1);
-  };
+    e.preventDefault()
+    setCurrentTab((prev) => parseInt(prev) - 1)
+  }
   return (
     <div className="container-fluid px-4">
       <ToastContainer />
@@ -80,24 +80,23 @@ const AddCategory = () => {
         <div className="card-header">
           <h4>
             Thêm phân loại
-            <Link
-              to="/admin/view-category"
-              className="btn btn-primary float-end"
-            >
+            <Link to="/admin/view-category" className="btn btn-primary float-end">
               Xem phân loại
             </Link>
           </h4>
         </div>
         <div className="card-body">
           <form onSubmit={submitCategory} encType="multipart/form-data">
-            <Tabs activeKey={currentTab} id="controlled-tab-example">
-              <Tab eventKey={0} title="Phân loại" disabled={currentTab !== 0}>
+            <Tabs
+              activeKey={parseInt(currentTab)}
+              onSelect={(k) => setCurrentTab(k)}
+              id="controlled-tab-example">
+              <Tab eventKey={0} title="Phân loại">
                 <div
                   className="tab-pane card-body border fade show active"
                   id="category"
                   role="tabpanel"
-                  aria-labelledby="category-tab"
-                >
+                  aria-labelledby="category-tab">
                   <div className="form-group mb-4">
                     <label>Tên</label>
                     <input
@@ -132,10 +131,7 @@ const AddCategory = () => {
                         id="inlineRadio1"
                         value="Nam"
                       />
-                      <label
-                        className="form-check-label"
-                        htmlFor="inlineRadio1"
-                      >
+                      <label className="form-check-label" htmlFor="inlineRadio1">
                         Nam
                       </label>
                     </div>
@@ -148,10 +144,7 @@ const AddCategory = () => {
                         id="inlineRadio2"
                         value="Nữ"
                       />
-                      <label
-                        className="form-check-label"
-                        htmlFor="inlineRadio2"
-                      >
+                      <label className="form-check-label" htmlFor="inlineRadio2">
                         Nữ
                       </label>
                     </div>
@@ -164,10 +157,7 @@ const AddCategory = () => {
                         id="inlineRadio3"
                         value="Unisex"
                       />
-                      <label
-                        className="form-check-label"
-                        htmlFor="inlineRadio3"
-                      >
+                      <label className="form-check-label" htmlFor="inlineRadio3">
                         Unisex
                       </label>
                     </div>
@@ -178,8 +168,7 @@ const AddCategory = () => {
                       name="type"
                       onChange={handleInput}
                       value={categoryInput.type}
-                      className="form-control"
-                    >
+                      className="form-control">
                       <option>Chọn loại</option>
                       {ProductType.map((item, index) => (
                         <option value={item} key={index}>
@@ -190,13 +179,12 @@ const AddCategory = () => {
                   </div>
                 </div>
               </Tab>
-              <Tab eventKey={1} title="SEO" disabled={currentTab !== 1}>
+              <Tab eventKey={1} title="SEO">
                 <div
                   className="tab-pane card-body border fade show active"
                   id="seotags"
                   role="tabpanel"
-                  aria-labelledby="seotags-tab"
-                >
+                  aria-labelledby="seotags-tab">
                   <div className="form-group mb-4">
                     <label>Meta Title</label>
                     <input
@@ -206,9 +194,7 @@ const AddCategory = () => {
                       value={categoryInput.meta_title}
                       className="form-control"
                     />
-                    <small className="text-danger">
-                      {display_errors.meta_title}
-                    </small>
+                    <small className="text-danger">{display_errors.meta_title}</small>
                   </div>
                   <div className="form-group mb-4">
                     <label>Meta Keyword</label>
@@ -216,8 +202,7 @@ const AddCategory = () => {
                       name="meta_keyword"
                       onChange={handleInput}
                       value={categoryInput.meta_keyword}
-                      className="form-control"
-                    ></textarea>
+                      className="form-control"></textarea>
                   </div>
                   <div className="form-group mb-4">
                     <label>Meta Description</label>
@@ -225,33 +210,24 @@ const AddCategory = () => {
                       name="meta_descrip"
                       onChange={handleInput}
                       value={categoryInput.meta_descrip}
-                      className="form-control"
-                    ></textarea>
+                      className="form-control"></textarea>
                   </div>
                 </div>
               </Tab>
             </Tabs>
             <Stack gap={3} direction="horizontal" className="float-end mt-2">
-              {currentTab === 1 ? (
-                <Button
-                  className="success"
-                  disabled={currentTab === 0}
-                  onClick={prev}
-                >
+              {parseInt(currentTab) === 1 ? (
+                <Button className="success" onClick={prev}>
                   Quay lại
                 </Button>
               ) : null}
 
-              {currentTab === 0 ? (
-                <Button
-                  className="success"
-                  disabled={currentTab === 2}
-                  onClick={next}
-                >
+              {parseInt(currentTab) === 0 ? (
+                <Button className="success" onClick={next}>
                   Tiếp
                 </Button>
               ) : null}
-              {currentTab === 1 ? (
+              {parseInt(currentTab) === 1 ? (
                 <button type="submit" className="btn btn-primary px-4 ">
                   Gửi
                 </button>
@@ -261,7 +237,7 @@ const AddCategory = () => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default AddCategory;
+export default AddCategory

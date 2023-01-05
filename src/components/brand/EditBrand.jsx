@@ -1,23 +1,23 @@
-import React, { useState, useEffect } from 'react';
-import { Link, useNavigate, useParams } from 'react-router-dom';
-import axios from 'axios';
-import { ToastContainer, toast } from 'react-toastify';
-import { Stack, Tabs, Tab, Row, Button, Col, Container } from 'react-bootstrap';
+import axios from 'axios'
+import React, { useEffect, useState } from 'react'
+import { Button, Stack, Tab, Tabs } from 'react-bootstrap'
+import { Link, useNavigate, useParams } from 'react-router-dom'
+import { ToastContainer, toast } from 'react-toastify'
 
 function EditBrand(props) {
-  const navigate = useNavigate();
-  const [loading, setLoading] = useState(true);
-  const [brandInput, setBrand] = useState([]);
-  const [error, setError] = useState([]);
-  const [currentTab, setCurrentTab] = useState(0);
-  const { id } = useParams();
+  const navigate = useNavigate()
+  const [loading, setLoading] = useState(true)
+  const [brandInput, setBrand] = useState([])
+  const [error, setError] = useState([])
+  const [currentTab, setCurrentTab] = useState(0)
+  const { id } = useParams()
 
   useEffect(() => {
     axios
       .get(`/Brand/${id}`)
       .then((res) => {
         if (res.status === 200) {
-          setBrand(res.data.data);
+          setBrand(res.data.data)
         } else if (res.status === 400) {
           toast.error('Lỗi lấy dữ liệu', {
             position: 'top-right',
@@ -27,14 +27,14 @@ function EditBrand(props) {
             pauseOnHover: true,
             draggable: true,
             progress: undefined,
-            theme: 'colored',
-          });
-          navigate('/admin/view-brand');
+            theme: 'colored'
+          })
+          navigate('/admin/view-brand')
         }
-        setLoading(false);
+        setLoading(false)
       })
       .catch((err) => {
-        setLoading(false);
+        setLoading(false)
         if (err.response) {
           // The client was given an error response (5xx, 4xx)
           toast.error('Dữ liệu không tồn tại', {
@@ -45,9 +45,9 @@ function EditBrand(props) {
             pauseOnHover: true,
             draggable: true,
             progress: undefined,
-            theme: 'colored',
-          });
-          navigate('/admin/view-brand');
+            theme: 'colored'
+          })
+          navigate('/admin/view-brand')
         } else if (err.request) {
           // The client never received a response, and the request was never left (4xx)
           toast.error(err.request.data.message, {
@@ -58,29 +58,29 @@ function EditBrand(props) {
             pauseOnHover: true,
             draggable: true,
             progress: undefined,
-            theme: 'colored',
-          });
+            theme: 'colored'
+          })
         } else {
           // Anything else
-          console.log('Error', err.message);
+          console.log('Error', err.message)
         }
-      });
-  }, [id]);
+      })
+  }, [id])
 
   const handleInput = (e) => {
-    e.persist();
-    setBrand({ ...brandInput, [e.target.name]: e.target.value });
-  };
+    e.persist()
+    setBrand({ ...brandInput, [e.target.name]: e.target.value })
+  }
   const next = (e) => {
-    e.preventDefault();
-    setCurrentTab((prev) => prev + 1);
-  };
+    e.preventDefault()
+    setCurrentTab((prev) => parseInt(prev) + 1)
+  }
   const prev = (e) => {
-    e.preventDefault();
-    setCurrentTab((prev) => prev - 1);
-  };
+    e.preventDefault()
+    setCurrentTab((prev) => parseInt(prev) - 1)
+  }
   const updateBrand = (e) => {
-    e.preventDefault();
+    e.preventDefault()
     axios
       .put(`/Brand`, {
         id: id,
@@ -89,7 +89,7 @@ function EditBrand(props) {
         gender: brandInput.gender,
         meta_title: brandInput.meta_title,
         meta_keyword: brandInput.meta_keyword,
-        meta_descrip: brandInput.meta_descrip,
+        meta_descrip: brandInput.meta_descrip
       })
       .then((res) => {
         if (res.status === 200) {
@@ -101,18 +101,18 @@ function EditBrand(props) {
             pauseOnHover: true,
             draggable: true,
             progress: undefined,
-            theme: 'colored',
-          });
-          navigate('/admin/view-brand');
+            theme: 'colored'
+          })
+          navigate('/admin/view-brand')
         }
       })
       .catch((err) => {
-        setError(err.response.data.message);
-      });
-  };
+        setError(err.response.data.message)
+      })
+  }
 
   if (loading) {
-    return <h4>Đang tải dữ liệu...</h4>;
+    return <h4>Đang tải dữ liệu...</h4>
   }
 
   return (
@@ -129,14 +129,16 @@ function EditBrand(props) {
         </div>
         <div className="card-body">
           <form onSubmit={updateBrand} encType="multipart/form-data">
-            <Tabs activeKey={currentTab} id="controlled-tab-example">
-              <Tab eventKey={0} title="Thương hiệu" disabled={currentTab !== 0}>
+            <Tabs
+              activeKey={parseInt(currentTab)}
+              onSelect={(k) => setCurrentTab(k)}
+              id="controlled-tab-example">
+              <Tab eventKey={0} title="Thương hiệu">
                 <div
                   className="tab-pane card-body border fade show active"
                   id="brand"
                   role="tabpanel"
-                  aria-labelledby="brand-tab"
-                >
+                  aria-labelledby="brand-tab">
                   <div className="form-group mb-4">
                     <label>Tên</label>
                     <input
@@ -159,13 +161,12 @@ function EditBrand(props) {
                 </div> */}
                 </div>
               </Tab>
-              <Tab eventKey={1} title="SEO" disabled={currentTab !== 1}>
+              <Tab eventKey={1} title="SEO">
                 <div
                   className="tab-pane card-body border fade show active"
                   id="seotags"
                   role="tabpanel"
-                  aria-labelledby="seotags-tab"
-                >
+                  aria-labelledby="seotags-tab">
                   <div className="form-group mb-4">
                     <label>Meta Title</label>
                     <input
@@ -182,8 +183,7 @@ function EditBrand(props) {
                       name="meta_keyword"
                       onChange={handleInput}
                       value={brandInput.meta_keyword}
-                      className="form-control"
-                    ></textarea>
+                      className="form-control"></textarea>
                   </div>
                   <div className="form-group mb-4">
                     <label>Meta Description</label>
@@ -191,33 +191,24 @@ function EditBrand(props) {
                       name="meta_descrip"
                       onChange={handleInput}
                       value={brandInput.meta_descrip}
-                      className="form-control"
-                    ></textarea>
+                      className="form-control"></textarea>
                   </div>
                 </div>
               </Tab>
             </Tabs>
             <Stack gap={3} direction="horizontal" className="float-end mt-2">
-              {currentTab === 1 ? (
-                <Button
-                  className="success"
-                  disabled={currentTab === 0}
-                  onClick={prev}
-                >
+              {parseInt(currentTab) === 1 ? (
+                <Button className="success" onClick={prev}>
                   Quay lại
                 </Button>
               ) : null}
 
-              {currentTab === 0 ? (
-                <Button
-                  className="success"
-                  disabled={currentTab === 2}
-                  onClick={next}
-                >
+              {parseInt(currentTab) === 0 ? (
+                <Button className="success" onClick={next}>
                   Tiếp
                 </Button>
               ) : null}
-              {currentTab === 1 ? (
+              {parseInt(currentTab) === 1 ? (
                 <button type="submit" className="btn btn-primary px-4 ">
                   Gửi
                 </button>
@@ -227,7 +218,7 @@ function EditBrand(props) {
         </div>
       </div>
     </div>
-  );
+  )
 }
 
-export default EditBrand;
+export default EditBrand

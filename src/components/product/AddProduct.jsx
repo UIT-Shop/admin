@@ -1,13 +1,13 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import { Link } from 'react-router-dom';
-import { ToastContainer, toast } from 'react-toastify';
-import Variant from './Variant';
-import { Stack, Tabs, Tab, Row, Button, Col, Container } from 'react-bootstrap';
+import axios from 'axios'
+import React, { useEffect, useState } from 'react'
+import { Button, Stack, Tab, Tabs } from 'react-bootstrap'
+import { Link } from 'react-router-dom'
+import { ToastContainer, toast } from 'react-toastify'
+import Variant from './Variant'
 
 function AddProduct() {
-  const [categoryList, setCategoryList] = useState([]);
-  const [brandList, setBrandList] = useState([]);
+  const [categoryList, setCategoryList] = useState([])
+  const [brandList, setBrandList] = useState([])
   const [productInput, setProduct] = useState({
     category_id: '',
     brand_id: '',
@@ -16,14 +16,14 @@ function AddProduct() {
 
     meta_title: '',
     meta_keyword: '',
-    meta_descrip: '',
+    meta_description: '',
 
     isNew: false,
-    visible: true,
-  });
-  const [pictures, setPictures] = useState([]);
-  const [errorlist, setError] = useState([]);
-  const [gender, setGender] = useState('Nam');
+    visible: true
+  })
+  const [pictures, setPictures] = useState([])
+  const [errorlist, setError] = useState([])
+  const [gender, setGender] = useState('Nam')
   const [variantList, setVariantList] = useState([
     {
       colorId: '',
@@ -33,70 +33,70 @@ function AddProduct() {
       productSize: '',
       image: '',
       isNew: false,
-      visible: true,
-    },
-  ]);
-  const apiImage = 'https://api.cloudinary.com/v1_1/nam-duong/upload';
+      visible: true
+    }
+  ])
+  const apiImage = 'https://api.cloudinary.com/v1_1/nam-duong/upload'
   useEffect(() => {
-    let isMounted = true;
+    let isMounted = true
     axios.get(`/Brand`).then((res) => {
       if (isMounted)
         if (res.status === 200) {
-          setBrandList(res.data.data);
+          setBrandList(res.data.data)
         }
-    });
+    })
 
     axios.get(`/Category`).then((res) => {
       if (isMounted)
         if (res.status === 200) {
-          setCategoryList(res.data.data);
+          setCategoryList(res.data.data)
         }
-    });
+    })
 
     return () => {
-      isMounted = false;
-    };
-  }, []);
+      isMounted = false
+    }
+  }, [])
 
   const handleInput = (e) => {
-    e.persist();
-    setProduct({ ...productInput, [e.target.name]: e.target.value });
-  };
+    e.persist()
+    setProduct({ ...productInput, [e.target.name]: e.target.value })
+  }
 
   const handleCheckbox = (e) => {
-    e.persist();
-    setProduct({ ...productInput, [e.target.name]: e.target.checked });
-  };
+    e.persist()
+    setProduct({ ...productInput, [e.target.name]: e.target.checked })
+  }
 
   const handleImage = (e) => {
-    e.preventDefault();
+    e.preventDefault()
     const arrayFile = [...e.target.files].map((file) =>
       Object.assign(file, {
-        preview: URL.createObjectURL(file),
-      }),
-    );
-    setPictures((prevFiles) => prevFiles.concat(arrayFile));
-  };
+        preview: URL.createObjectURL(file)
+      })
+    )
+    setPictures((prevFiles) => prevFiles.concat(arrayFile))
+  }
 
   // This function will be triggered when the "Remove This Image" button is clicked
   const removeSelectedImage = (index) => {
-    const list = [...pictures];
-    list.splice(index, 1);
-    setPictures(list);
-  };
+    const list = [...pictures]
+    list.splice(index, 1)
+    setPictures(list)
+  }
 
   const next = (e) => {
-    e.preventDefault();
-    setCurrentTab((prev) => prev + 1);
-  };
+    e.preventDefault()
+    setCurrentTab((prev) => parseInt(prev) + 1)
+  }
   const prev = (e) => {
-    e.preventDefault();
-    setCurrentTab((prev) => prev - 1);
-  };
+    e.preventDefault()
+    setCurrentTab((prev) => parseInt(prev) - 1)
+  }
 
   const updateGender = (e) => {
-    setGender(e.target.value);
-  };
+    setGender(e.target.value)
+  }
 
   const validate = () => {
     if (
@@ -113,9 +113,9 @@ function AddProduct() {
         pauseOnHover: true,
         draggable: true,
         progress: undefined,
-        theme: 'colored',
-      });
-      return false;
+        theme: 'colored'
+      })
+      return false
     }
     if (pictures.length === 0) {
       toast.error('Vui lòng thêm hình cho sản phẩm', {
@@ -126,11 +126,11 @@ function AddProduct() {
         pauseOnHover: true,
         draggable: true,
         progress: undefined,
-        theme: 'colored',
-      });
-      return false;
+        theme: 'colored'
+      })
+      return false
     }
-    let checkVariant = true;
+    let checkVariant = true
     variantList.map((variant) => {
       if (
         variant.price === '' ||
@@ -148,24 +148,24 @@ function AddProduct() {
           pauseOnHover: true,
           draggable: true,
           progress: undefined,
-          theme: 'colored',
-        });
-        checkVariant = false;
+          theme: 'colored'
+        })
+        checkVariant = false
       }
-    });
-    return checkVariant;
-  };
+    })
+    return checkVariant
+  }
 
   const submitProduct = (e) => {
-    e.preventDefault();
+    e.preventDefault()
     if (!validate()) {
-      return;
+      return
     }
-    const formData = new FormData();
+    const formData = new FormData()
 
-    formData.append('meta_title', productInput.meta_title);
-    formData.append('meta_keyword', productInput.meta_keyword);
-    formData.append('meta_descrip', productInput.meta_descrip);
+    formData.append('metaTitle', productInput.meta_title)
+    formData.append('metaKeyword', productInput.meta_keyword)
+    formData.append('metaDescription', productInput.meta_description)
 
     axios
       .post(`/Product`, {
@@ -174,50 +174,50 @@ function AddProduct() {
         categoryId: productInput.category_id,
         brandId: productInput.brand_id,
         isNew: productInput.isNew,
-        visible: productInput.visible,
+        visible: productInput.visible
       })
       .then(async (res) => {
-        const productId = res.data.data.id;
-        let imageUrls = [];
-        console.log('submmitting');
+        const productId = res.data.data.id
+        let imageUrls = []
+        console.log('submmitting')
         for (let file of pictures) {
-          const formData = new FormData();
-          formData.append('file', file);
-          formData.append('upload_preset', 'uploadPimage');
+          const formData = new FormData()
+          formData.append('file', file)
+          formData.append('upload_preset', 'uploadPimage')
           const res = await fetch(apiImage, {
             method: 'post',
-            body: formData,
+            body: formData
           })
             .then((response) => response.json())
-            .then((data) => data);
+            .then((data) => data)
           if (res != null) {
-            const url = res.secure_url;
-            imageUrls = imageUrls.concat(url);
+            const url = res.secure_url
+            imageUrls = imageUrls.concat(url)
           }
-          URL.revokeObjectURL(file);
+          URL.revokeObjectURL(file)
         }
         for (let imageUrl of imageUrls) {
           axios.post(`/Image`, {
             productId,
-            url: imageUrl,
-          });
+            url: imageUrl
+          })
         }
         for (let variant of variantList) {
-          const formData = new FormData();
-          formData.append('file', variant.image);
-          formData.append('upload_preset', 'uploadPimage');
+          const formData = new FormData()
+          formData.append('file', variant.image)
+          formData.append('upload_preset', 'uploadPimage')
           const res = await fetch(apiImage, { method: 'post', body: formData })
             .then((response) => response.json())
-            .then((data) => data);
+            .then((data) => data)
           if (res != null) {
-            const url = res.secure_url;
+            const url = res.secure_url
             axios.post(`/Image`, {
               productId,
               colorId: variant.colorId,
-              url,
-            });
+              url
+            })
           }
-          URL.revokeObjectURL(variant.image);
+          URL.revokeObjectURL(variant.image)
 
           axios.post(`/ProductVariant`, {
             productId,
@@ -225,8 +225,8 @@ function AddProduct() {
             price: variant.price,
             originalPrice: variant.originalPrice,
             quantity: variant.quantity,
-            productSize: variant.productSize,
-          });
+            productSize: variant.productSize
+          })
         }
 
         toast.success('Thêm thành công', {
@@ -237,8 +237,8 @@ function AddProduct() {
           pauseOnHover: true,
           draggable: true,
           progress: undefined,
-          theme: 'colored',
-        });
+          theme: 'colored'
+        })
         setProduct({
           ...productInput,
           category_id: '',
@@ -248,8 +248,8 @@ function AddProduct() {
 
           meta_title: '',
           meta_keyword: '',
-          meta_descrip: '',
-        });
+          meta_description: ''
+        })
       })
       .catch((err) => {
         toast.error(err.response.message, {
@@ -260,11 +260,11 @@ function AddProduct() {
           pauseOnHover: true,
           draggable: true,
           progress: undefined,
-          theme: 'colored',
-        });
-      });
-  };
-  const [currentTab, setCurrentTab] = useState(0);
+          theme: 'colored'
+        })
+      })
+  }
+  const [currentTab, setCurrentTab] = useState(0)
 
   return (
     <div className="container-fluid px-4">
@@ -273,24 +273,23 @@ function AddProduct() {
         <div className="card-header">
           <h4>
             Thêm sản phẩm
-            <Link
-              to="/admin/view-product?page=1"
-              className="btn btn-primary float-end"
-            >
+            <Link to="/admin/view-product?page=1" className="btn btn-primary float-end">
               Xem sản phẩm
             </Link>
           </h4>
         </div>
         <div className="card-body">
           <form onSubmit={submitProduct} encType="multipart/form-data">
-            <Tabs activeKey={currentTab} id="controlled-tab-example">
-              <Tab eventKey={0} title="Home" disabled={currentTab !== 0}>
+            <Tabs
+              activeKey={parseInt(currentTab)}
+              onSelect={(k) => setCurrentTab(k)}
+              id="controlled-tab-example">
+              <Tab eventKey={0} title="Home">
                 <div
                   className="tab-pane card-body border fade show active"
                   id="home"
                   role="tabpanel"
-                  aria-labelledby="home-tab"
-                >
+                  aria-labelledby="home-tab">
                   <div className="form-group mb-4">
                     <label>Tiêu đề</label>
                     <input
@@ -317,10 +316,7 @@ function AddProduct() {
                           value="Nam"
                           checked={gender === 'Nam'}
                         />
-                        <label
-                          className="form-check-label"
-                          htmlFor="inlineRadio1"
-                        >
+                        <label className="form-check-label" htmlFor="inlineRadio1">
                           Nam
                         </label>
                       </div>
@@ -334,10 +330,7 @@ function AddProduct() {
                           value="Nữ"
                           checked={gender === 'Nữ'}
                         />
-                        <label
-                          className="form-check-label"
-                          htmlFor="inlineRadio2"
-                        >
+                        <label className="form-check-label" htmlFor="inlineRadio2">
                           Nữ
                         </label>
                       </div>
@@ -351,10 +344,7 @@ function AddProduct() {
                           value="Unisex"
                           checked={gender === 'Unisex'}
                         />
-                        <label
-                          className="form-check-label"
-                          htmlFor="inlineRadio3"
-                        >
+                        <label className="form-check-label" htmlFor="inlineRadio3">
                           Unisex
                         </label>
                       </div>
@@ -365,8 +355,7 @@ function AddProduct() {
                         name="category_id"
                         onChange={handleInput}
                         value={productInput.category_id}
-                        className="form-control"
-                      >
+                        className="form-control">
                         <option>Chọn phân loại</option>
                         {categoryList.map((item) => {
                           if (item.gender === gender)
@@ -374,12 +363,10 @@ function AddProduct() {
                               <option value={item.id} key={item.id}>
                                 {item.name}
                               </option>
-                            );
+                            )
                         })}
                       </select>
-                      <small className="text-danger">
-                        {errorlist.category_id}
-                      </small>
+                      <small className="text-danger">{errorlist.category_id}</small>
                     </div>
                     <div className="col-md-4 form-group mb-4">
                       <label>Nhãn hiệu</label>
@@ -387,15 +374,14 @@ function AddProduct() {
                         name="brand_id"
                         onChange={handleInput}
                         value={productInput.brand_id}
-                        className="form-control"
-                      >
+                        className="form-control">
                         <option>Chọn nhãn hiệu</option>
                         {brandList.map((item) => {
                           return (
                             <option value={item.id} key={item.id}>
                               {item.name}
                             </option>
-                          );
+                          )
                         })}
                       </select>
                       <small className="text-danger">{errorlist.brand}</small>
@@ -408,8 +394,7 @@ function AddProduct() {
                       name="description"
                       onChange={handleInput}
                       value={productInput.description}
-                      className="form-control"
-                    ></textarea>
+                      className="form-control"></textarea>
                   </div>
                   <div className="row">
                     <div className="col-md-4 form-group mb-4">
@@ -434,10 +419,7 @@ function AddProduct() {
                         defaultChecked={productInput.isNew}
                         id="flexCheckDefault"
                       />
-                      <label
-                        className="form-check-label"
-                        htmlFor="flexCheckDefault"
-                      >
+                      <label className="form-check-label" htmlFor="flexCheckDefault">
                         Sản phẩm mới
                       </label>
                     </div>
@@ -451,10 +433,7 @@ function AddProduct() {
                         defaultChecked={productInput.visible}
                         id="flexCheckDefault"
                       />
-                      <label
-                        className="form-check-label"
-                        htmlFor="flexCheckDefault"
-                      >
+                      <label className="form-check-label" htmlFor="flexCheckDefault">
                         Hiển thị
                       </label>
                     </div>
@@ -462,16 +441,8 @@ function AddProduct() {
                   <div className="form-group mb-4 row">
                     {pictures.map((photo, index) => (
                       <div className="d-flex flex-column mb-2 w-25 h-25">
-                        <img
-                          src={photo.preview}
-                          style={styles.image}
-                          alt="Thumb"
-                          key={index}
-                        />
-                        <button
-                          onClick={() => removeSelectedImage(index)}
-                          style={styles.delete}
-                        >
+                        <img src={photo.preview} style={styles.image} alt="Thumb" key={index} />
+                        <button onClick={() => removeSelectedImage(index)} style={styles.delete}>
                           Xóa ảnh
                         </button>
                       </div>
@@ -479,13 +450,12 @@ function AddProduct() {
                   </div>
                 </div>
               </Tab>
-              <Tab eventKey={1} title="SEO" disabled={currentTab !== 1}>
+              <Tab eventKey={1} title="SEO">
                 <div
                   className="tab-pane card-body border fade show active"
                   id="seotags"
                   role="tabpanel"
-                  aria-labelledby="seotags-tab"
-                >
+                  aria-labelledby="seotags-tab">
                   <div className="form-group mb-4">
                     <label>Meta Title</label>
                     <input
@@ -495,9 +465,7 @@ function AddProduct() {
                       value={productInput.meta_title}
                       className="form-control"
                     />
-                    <small className="text-danger">
-                      {errorlist.meta_title}
-                    </small>
+                    <small className="text-danger">{errorlist.meta_title}</small>
                   </div>
                   <div className="form-group mb-4">
                     <label>Meta Keyword</label>
@@ -505,55 +473,41 @@ function AddProduct() {
                       name="meta_keyword"
                       onChange={handleInput}
                       value={productInput.meta_keyword}
-                      className="form-control"
-                    ></textarea>
+                      className="form-control"></textarea>
                   </div>
                   <div className="form-group mb-4">
                     <label>Meta Description</label>
                     <textarea
-                      name="meta_descrip"
+                      name="meta_description"
                       onChange={handleInput}
-                      value={productInput.meta_descrip}
-                      className="form-control"
-                    ></textarea>
+                      value={productInput.meta_description}
+                      className="form-control"></textarea>
                   </div>
                 </div>
               </Tab>
-              <Tab eventKey={2} title="Details" disabled={currentTab !== 2}>
+              <Tab eventKey={2} title="Details">
                 <div
                   className="tab-pane card-body border fade show active"
                   id="otherdetails"
                   role="tabpanel"
-                  aria-labelledby="otherdetails-tab"
-                >
-                  <Variant
-                    variantList={variantList}
-                    setVariantList={setVariantList}
-                  />
+                  aria-labelledby="otherdetails-tab">
+                  <Variant variantList={variantList} setVariantList={setVariantList} />
                 </div>
               </Tab>
             </Tabs>
             <Stack gap={3} direction="horizontal" className="float-end mt-2">
-              {currentTab > 0 ? (
-                <Button
-                  className="success"
-                  disabled={currentTab === 0}
-                  onClick={prev}
-                >
+              {parseInt(currentTab) > 0 ? (
+                <Button className="success" onClick={prev}>
                   Quay lại
                 </Button>
               ) : null}
 
-              {currentTab < 2 ? (
-                <Button
-                  className="success"
-                  disabled={currentTab === 2}
-                  onClick={next}
-                >
+              {parseInt(currentTab) < 2 ? (
+                <Button className="success" onClick={next}>
                   Tiếp
                 </Button>
               ) : null}
-              {currentTab === 2 ? (
+              {parseInt(currentTab) === 2 ? (
                 <button type="submit" className="btn btn-primary px-4 ">
                   Gửi
                 </button>
@@ -563,7 +517,7 @@ function AddProduct() {
         </div>
       </div>
     </div>
-  );
+  )
 }
 
 // Just some styles
@@ -573,8 +527,8 @@ const styles = {
     cursor: 'pointer',
     background: 'red',
     color: 'white',
-    border: 'none',
-  },
-};
+    border: 'none'
+  }
+}
 
-export default AddProduct;
+export default AddProduct

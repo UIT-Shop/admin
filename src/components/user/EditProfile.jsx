@@ -1,10 +1,9 @@
-import React, { useEffect } from 'react'
 import axios from 'axios'
-import { Link, useParams, navigate, useNavigate } from 'react-router-dom'
 import jwt from 'jwt-decode'
+import React, { useEffect, useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 import { Role } from '../../common/constant/Role'
 import './Profile.css'
-import { useState } from 'react'
 
 const EditProfile = () => {
   const [province, setProvince] = useState([])
@@ -22,7 +21,7 @@ const EditProfile = () => {
     province: '',
     district: '',
     ward: '',
-    note: '',
+    note: ''
   })
 
   const navigate = useNavigate()
@@ -36,12 +35,8 @@ const EditProfile = () => {
 
   const handleFetchDistrict = async (oldProvinceId = null) => {
     let response
-    if (oldProvinceId)
-      response = await axios.get(
-        `/address/provinces/${oldProvinceId}/districts`,
-      )
-    else
-      response = await axios.get(`/address/provinces/${idProvince}/districts`)
+    if (oldProvinceId) response = await axios.get(`/address/provinces/${oldProvinceId}/districts`)
+    else response = await axios.get(`/address/provinces/${idProvince}/districts`)
     setDistrict(response.data.data)
   }
 
@@ -50,7 +45,7 @@ const EditProfile = () => {
       setAddress({
         ...address,
         ward: '',
-        note: '',
+        note: ''
       })
       document.querySelector('.wardSelect').value = ''
       setStyleWard('option_disable')
@@ -58,20 +53,15 @@ const EditProfile = () => {
     }
   }, [idDistrict])
 
-  const handleFetchWard = async (
-    oldDistrictId = null,
-    oldProvinceId = null,
-  ) => {
+  const handleFetchWard = async (oldDistrictId = null, oldProvinceId = null) => {
     let response
     if (oldProvinceId && oldDistrictId) {
       response = await axios.get(
-        `/address/provinces/${oldProvinceId}/districts/${oldProvinceId}/wards`,
+        `/address/provinces/${oldProvinceId}/districts/${oldProvinceId}/wards`
       )
       setWard(response.data.data)
     } else if (idDistrict !== '') {
-      response = await axios.get(
-        `/address/provinces/${idProvince}/districts/${idDistrict}/wards`,
-      )
+      response = await axios.get(`/address/provinces/${idProvince}/districts/${idDistrict}/wards`)
       setWard(response.data.data)
     }
   }
@@ -100,7 +90,7 @@ const EditProfile = () => {
   const handleGetNameNote = (detail) => {
     setAddress({
       ...address,
-      note: detail,
+      note: detail
     })
   }
   const [user, setUser] = useState({
@@ -113,9 +103,9 @@ const EditProfile = () => {
       street: '',
       ward: {
         districtId: '',
-        provinceId: '',
-      },
-    },
+        provinceId: ''
+      }
+    }
   })
 
   useEffect(() => {
@@ -131,17 +121,14 @@ const EditProfile = () => {
           const oldAddress = res.data.data.address
           await handleFetchProvince()
           await handleFetchDistrict(oldAddress.ward.provinceId)
-          await handleFetchWard(
-            oldAddress.ward.districtId,
-            oldAddress.ward.provinceId,
-          )
+          await handleFetchWard(oldAddress.ward.districtId, oldAddress.ward.provinceId)
 
           setIdProvince(oldAddress.ward.provinceId)
           setIdDistrict(oldAddress.ward.districtId)
           setIdWard(oldAddress.wardId)
           setAddress({
             ...address,
-            note: oldAddress.street,
+            note: oldAddress.street
           })
         }
       }
@@ -158,8 +145,8 @@ const EditProfile = () => {
 
   const saveProfile = () => {
     user.address = { wardId: idWard, street: address.note }
-    console.log('user', user)
     axios.put(`/user`, user).then((res) => {
+      localStorage.setItem('auth_name', user.name)
       navigate('/admin/profile')
     })
   }
@@ -211,9 +198,7 @@ const EditProfile = () => {
                         />
                       </div>
                     </div>
-                    <h6 className="mb-2 m-t-40 pb-1 b-b-default f-w-600">
-                      Địa chỉ
-                    </h6>
+                    <h6 className="mb-2 m-t-40 pb-1 b-b-default f-w-600">Địa chỉ</h6>
                     <div className="row mb-2">
                       <div className="col-12 col-md-6">
                         <lable>Tỉnh/Thành phố</lable>
@@ -230,7 +215,7 @@ const EditProfile = () => {
                                 province: handleGetNameProvince(e.target.value),
                                 district: '',
                                 ward: '',
-                                note: '',
+                                note: ''
                               })
                               if (e.target.value == '') {
                                 setStyleProvince('option_disable')
@@ -238,8 +223,7 @@ const EditProfile = () => {
                                 setStyleProvince('option_able')
                               }
                             }}
-                            value={idProvince}
-                          >
+                            value={idProvince}>
                             <option value="" className="option_disable">
                               Chọn tỉnh/thành phố
                             </option>
@@ -268,7 +252,7 @@ const EditProfile = () => {
                               setAddress({
                                 ...address,
                                 district: handleGetNameDistrict(e.target.value),
-                                ward: '',
+                                ward: ''
                               })
                               if (e.target.value == '') {
                                 setStyleDis('option_disable')
@@ -276,8 +260,7 @@ const EditProfile = () => {
                                 setStyleDis('option_able')
                               }
                             }}
-                            value={idDistrict}
-                          >
+                            value={idDistrict}>
                             <option value="" className="option_disable">
                               Chọn quận/huyện
                             </option>
@@ -305,7 +288,7 @@ const EditProfile = () => {
                               handleFetchWard()
                               setAddress({
                                 ...address,
-                                ward: handleGetNameWard(e.target.value),
+                                ward: handleGetNameWard(e.target.value)
                               })
                               setIdWard(e.target.value)
 
@@ -315,8 +298,7 @@ const EditProfile = () => {
                                 setStyleWard('option_able')
                               }
                             }}
-                            value={idWard}
-                          >
+                            value={idWard}>
                             <option value="" className="option_disable">
                               Chọn phường/xã
                             </option>
@@ -349,10 +331,7 @@ const EditProfile = () => {
                       <Link to="/admin/profile" className="btn btn-primary">
                         <div>Quay lại</div>
                       </Link>
-                      <button
-                        className="btn btn-primary "
-                        onClick={saveProfile}
-                      >
+                      <button className="btn btn-primary " onClick={saveProfile}>
                         Lưu
                       </button>
                     </div>

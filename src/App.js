@@ -1,21 +1,19 @@
-import './App.css';
-import AdminPrivateRoute from './AdminPrivateRoute';
-import Login from './components/auth/Login';
-import Page403 from './components/error/Page403';
-import Page404 from './components/error/Page404';
+import axios from 'axios'
+import { BrowserRouter as Router, Navigate, Route, Routes } from 'react-router-dom'
+import AdminPrivateRoute from './AdminPrivateRoute'
+import './App.css'
+import Login from './components/auth/Login'
+import Page403 from './components/error/Page403'
+import Page404 from './components/error/Page404'
 
-import axios from 'axios';
-import { useEffect, useState } from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-
-axios.defaults.baseURL = process.env.REACT_APP_API_URL;
-axios.defaults.headers.post['Content-Type'] = 'application/json';
-axios.defaults.headers.post['Accept'] = 'application/json';
+axios.defaults.baseURL = process.env.REACT_APP_API_URL
+axios.defaults.headers.post['Content-Type'] = 'application/json'
+axios.defaults.headers.post['Accept'] = 'application/json'
 axios.interceptors.request.use(function (config) {
-  const token = localStorage.getItem('auth_token');
-  config.headers.Authorization = token ? `Bearer ${token}` : '';
-  return config;
-});
+  const token = localStorage.getItem('auth_token')
+  config.headers.Authorization = token ? `Bearer ${token}` : ''
+  return config
+})
 
 function App() {
   return (
@@ -55,7 +53,7 @@ function App() {
         </Routes>
       </Router>
     </>
-  );
+  )
 }
 
-export default App;
+export default App

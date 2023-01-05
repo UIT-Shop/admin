@@ -1,11 +1,13 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 const Navbar = () => {
+  const navigate = useNavigate()
   const logOut = () => {
     localStorage.removeItem('auth_token')
     localStorage.removeItem('auth_name')
     localStorage.removeItem('auth_email')
+    navigate('/login')
   }
   return (
     <nav className="sb-topnav navbar navbar-expand navbar-dark bg-dark">

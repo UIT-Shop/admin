@@ -1,32 +1,31 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-import { Link, useSearchParams, Navigate, useNavigate } from 'react-router-dom';
-import ReactPaginate from 'react-paginate';
-import '../../common/assets/css/paginate.css';
-import { ToastContainer, toast } from 'react-toastify';
+import axios from 'axios'
+import React, { useEffect, useState } from 'react'
+import ReactPaginate from 'react-paginate'
+import { Link, useNavigate, useSearchParams } from 'react-router-dom'
+import { ToastContainer, toast } from 'react-toastify'
+import '../../common/assets/css/paginate.css'
 
 function ViewProduct() {
-  const [loading, setLoading] = useState(true);
-  const [viewProduct, setProduct] = useState([]);
-  const [searchParams, setSearchParams] = useSearchParams();
+  const navigate = useNavigate()
 
-  // let pageNumber = searchParams.get('page');
-  // if (pageNumber === null) pageNumber = 0;
-  const navigate = useNavigate();
-  const [currentPage, setCurrentPage] = useState(1);
-  const [pageCount, setPageCount] = useState(1);
+  const [loading, setLoading] = useState(true)
+  const [viewProduct, setProduct] = useState([])
+  const [searchParams, setSearchParams] = useSearchParams()
+  const [currentPage, setCurrentPage] = useState(1)
+  const [pageCount, setPageCount] = useState(1)
+
   useEffect(() => {
-    let isMounted = true;
-    setLoading(true);
-    setCurrentPage(searchParams.get('page'));
+    let isMounted = true
+    setLoading(true)
+    setCurrentPage(searchParams.get('page'))
     axios
       .get(`/Product/admin?page=${parseInt(searchParams.get('page'))}`)
       .then((res) => {
         if (isMounted) {
           if (res.status === 200) {
-            setProduct(res.data.data.products);
-            setPageCount(res.data.data.pages);
-            setLoading(false);
+            setProduct(res.data.data.products)
+            setPageCount(res.data.data.pages)
+            setLoading(false)
           }
           if (res.status === 500)
             toast.error('Lỗi máy chủ', {
@@ -37,8 +36,8 @@ function ViewProduct() {
               pauseOnHover: true,
               draggable: true,
               progress: undefined,
-              theme: 'colored',
-            });
+              theme: 'colored'
+            })
         }
       })
       .catch((err) => {
@@ -51,28 +50,25 @@ function ViewProduct() {
             pauseOnHover: true,
             draggable: true,
             progress: undefined,
-            theme: 'colored',
-          });
-      });
+            theme: 'colored'
+          })
+      })
     return () => {
-      isMounted = false;
-    };
-  }, [currentPage]);
-  // useEffect(() => {
-  //   setCurrentPage(pageNumber);
-  // }, [pageNumber]);
+      isMounted = false
+    }
+  }, [currentPage])
 
   // Invoke when user click to request another page.
   const handlePageClick = (event) => {
-    var page = parseInt(event.selected) + 1;
-    setCurrentPage(parseInt(event.selected));
-    window.scrollTo(0, 0);
-    navigate({ pathname: '/admin/view-product', search: `?page=${page}` });
-  };
+    var page = parseInt(event.selected) + 1
+    setCurrentPage(parseInt(event.selected))
+    window.scrollTo(0, 0)
+    navigate({ pathname: '/admin/view-product', search: `?page=${page}` })
+  }
 
-  var display_Productdata = '';
+  let display_Productdata = ''
   if (loading) {
-    return <h4>Đang tải dữ liệu...</h4>;
+    return <h4>Đang tải dữ liệu...</h4>
   } else {
     display_Productdata = viewProduct.map((item) => {
       return (
@@ -83,7 +79,7 @@ function ViewProduct() {
           <td>
             {Intl.NumberFormat('vi-VN', {
               style: 'currency',
-              currency: 'VND',
+              currency: 'VND'
             }).format(item.variants.length > 0 ? item.variants[0].price : 0)}
           </td>
           <td>
@@ -94,17 +90,14 @@ function ViewProduct() {
             />
           </td>
           <td>
-            <Link
-              to={`/admin/edit-product/${item.id}`}
-              className="btn btn-success btn-sm"
-            >
+            <Link to={`/admin/edit-product/${item.id}`} className="btn btn-success btn-sm">
               Sửa
             </Link>
           </td>
           <td>{item.visible ? 'Hiện' : 'Ẩn'}</td>
         </tr>
-      );
-    });
+      )
+    })
   }
 
   return (
@@ -113,10 +106,7 @@ function ViewProduct() {
         <div className="card-header">
           <h4>
             Danh sách sản phẩm
-            <Link
-              to="/admin/add-product"
-              className="btn btn-primary btn-sm float-end"
-            >
+            <Link to="/admin/add-product" className="btn btn-primary btn-sm float-end">
               Thêm sản phẩm
             </Link>
           </h4>
@@ -158,7 +148,7 @@ function ViewProduct() {
         </div>
       </div>
     </div>
-  );
+  )
 }
 
-export default ViewProduct;
+export default ViewProduct

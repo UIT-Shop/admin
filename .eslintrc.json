@@ -34,9 +34,10 @@
     ],
     // suppress errors for missing 'import React' in files
     "react/react-in-jsx-scope": "off",
-    "no-unused-vars": "off",
+    "no-unused-vars": "warn",
     "no-undef": "off",
-    "unused-imports/no-unused-imports": "off",
+    "react/jsx-key": "off",
+    "unused-imports/no-unused-imports": "warn",
     "unused-imports/no-unused-vars": [
       "warn",
       {
