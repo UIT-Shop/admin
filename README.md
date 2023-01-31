@@ -1,70 +1,89 @@
-# Getting Started with Create React App
+# Quản lý shop
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Phần mềm sẽ giúp quản lý các hàng hóa, người dùng một cách dễ dàng hơn.
 
-## Available Scripts
+## Mục lục
 
-In the project directory, you can run:
+- [1. Cài đặt](#caidat)
+- [2. Danh sách chức năng](#chucnang)
+- [3. Danh sách màn hình](#manhinh)
+- [4. Thông tin liên hệ](#lienhe)
 
-### `npm start`
+<a name="caidat"></a>
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Cài đặt
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+### Cài đặt back-end
 
-### `npm test`
+Xem chi tiết hơn tại [đây](https://github.com/UIT-Shop/back-end)
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### Cài đặt Admin:
+   Dùng Visual Studio Code để mở folder admin
+-  B1: Dùng lệnh `npm i` để cài đặt thư viện
+-  B2: Dùng lệnh `npm start` để chạy admin
+### Tài khoản:
+   Đăng nhập bằng Gmail và Password
+   Một số tài khoản dùng để truy cập phần mềm:
+| Tên | Gmail | Mật khẩu | Chức năng |
+| --- | --------- | ---- | ------- |
+| user1 | user1@gmail.com | string | Admin |
+| user2 | user2@gmail.com | string | Admin |
+| user3 | user3@gmail.com | string | Customer |
+| user4 | user4@gmail.com | string | Customer |
 
-### `npm run build`
+<a name="chucnang"></a>
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Chức năng của phần mềm
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+1.  **Quản lý doanh thu**: Chủ shop có thể xem doanh thu theo từng ngày và có chức năng dự đoán doanh thu trong tương lai.
+1.  **Quản lý thương hiệu**: Chủ shop có thể thêm, xoá, sửa thông tin của thương hiệu sản phẩm
+2.  **Quản lý màu**: Chủ shop có thể thêm, xoá, sửa thông tin màu sắc sản phẩm
+3.  **Quản lý sản phẩm**: Chủ shop có thể thêm, xoá, sửa thông tin của sản phẩm
+4.  **Quản lý phân loại**: Chủ shop có thể quản lý thông tin phân loại
+5.  **Quản lý tài khoản**: Chủ shop có thể xem, thay đổi vai trò cũng như xoá tài khoản
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Các chức năng khác:
 
-### `npm run eject`
+1.  **Đăng nhập**: Người dùng có thể đăng nhập để sử dụng phần mềm
+2.  **Xem thông tin cá nhân**: Người dùng có thể xem thông tin cá nhân của mình
+3.  **Đổi mật khẩu**: Người dùng có thể đổi mật khẩu của mình khi sử dụng phần mềm
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+<a name="manhinh"></a>
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## Danh sách màn hình
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+### 1. Màn hình Quản lý doanh thu
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+![Dashboard](https://res.cloudinary.com/nam-duong/image/upload/v1675193628/github/%E1%BA%A2nh12_f7b6ee.png)
 
-## Learn More
+### 2. Màn hình Quản lý thương hiệu
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+![BrandManagement](https://res.cloudinary.com/nam-duong/image/upload/v1675193654/github/%E1%BA%A2nh3_hevwwe.png)
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+### 3. Màn hình Quản lý màu sắc
 
-### Code Splitting
+![ColorManagement](https://res.cloudinary.com/nam-duong/image/upload/v1675193654/github/%E1%BA%A2nh3_hevwwe.png)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+### 4. Màn hình Quản lý sản phẩm
+![AddProduct](https://res.cloudinary.com/nam-duong/image/upload/v1675193627/github/%E1%BA%A2nh6_mie0wc.png)
+![ProductManagement](https://res.cloudinary.com/nam-duong/image/upload/v1675193628/github/%E1%BA%A2nh7_g6eazp.png)
+![EditProduct](https://res.cloudinary.com/nam-duong/image/upload/v1675193627/github/%E1%BA%A2nh8_moknzf.png)
+### 5. Màn hình Quản lý phân loại
 
-### Analyzing the Bundle Size
+![AddCategory](https://res.cloudinary.com/nam-duong/image/upload/v1675193627/github/%E1%BA%A2nh9_zrbjlm.png)
+![ManageCategory](https://res.cloudinary.com/nam-duong/image/upload/v1675193628/github/%E1%BA%A2nh10_gjqbx3.png)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+### 6. Màn hình Quản lý tài khoản
 
-### Making a Progressive Web App
+![ManageUser](https://res.cloudinary.com/nam-duong/image/upload/v1675193628/github/%E1%BA%A2nh11_hsoaux.png)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
 
-### Advanced Configuration
+<a name="lienhe"></a>
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+## Thông tin liên lạc
 
-### Deployment
+| STT | Họ và tên            | MSSV     | Liên hệ                                             |
+| --- | -------------------- | -------- | --------------------------------------------------- |
+| 1   | Nguyễn Duy Phúc      | 19522038 | [duyphuc](https://github.com/NguyenDuyPhuc01012001) |
+| 2 | Hoàng Quốc Trọng | 19522408| [quoctrong](https://github.com/hoangquoctrong) |
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
