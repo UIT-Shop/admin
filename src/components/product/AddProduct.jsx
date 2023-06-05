@@ -284,7 +284,7 @@ function AddProduct() {
               activeKey={parseInt(currentTab)}
               onSelect={(k) => setCurrentTab(k)}
               id="controlled-tab-example">
-              <Tab eventKey={0} title="Home">
+              <Tab eventKey={0} title="Thông tin chung">
                 <div
                   className="tab-pane card-body border fade show active"
                   id="home"
@@ -485,7 +485,7 @@ function AddProduct() {
                   </div>
                 </div>
               </Tab>
-              <Tab eventKey={2} title="Details">
+              <Tab eventKey={2} title="Chi tiết">
                 <div
                   className="tab-pane card-body border fade show active"
                   id="otherdetails"

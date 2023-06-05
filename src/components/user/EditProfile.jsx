@@ -34,10 +34,12 @@ const EditProfile = () => {
   }
 
   const handleFetchDistrict = async (oldProvinceId = null) => {
-    let response
+    let response = null
     if (oldProvinceId) response = await axios.get(`/address/provinces/${oldProvinceId}/districts`)
-    else response = await axios.get(`/address/provinces/${idProvince}/districts`)
-    setDistrict(response.data.data)
+    else if (idProvince !== '') {
+      response = await axios.get(`/address/provinces/${idProvince}/districts`)
+      setDistrict(response.data.data)
+    } else setDistrict(response)
   }
 
   useEffect(() => {
@@ -54,16 +56,16 @@ const EditProfile = () => {
   }, [idDistrict])
 
   const handleFetchWard = async (oldDistrictId = null, oldProvinceId = null) => {
-    let response
+    let response = null
     if (oldProvinceId && oldDistrictId) {
       response = await axios.get(
         `/address/provinces/${oldProvinceId}/districts/${oldProvinceId}/wards`
       )
       setWard(response.data.data)
-    } else if (idDistrict !== '') {
+    } else if (idDistrict !== '' && idProvince !== '') {
       response = await axios.get(`/address/provinces/${idProvince}/districts/${idDistrict}/wards`)
       setWard(response.data.data)
-    }
+    } else setWard(response)
   }
 
   const handleGetNameProvince = (id) => {
@@ -93,6 +95,7 @@ const EditProfile = () => {
       note: detail
     })
   }
+
   const [user, setUser] = useState({
     name: '',
     email: '',
@@ -145,6 +148,7 @@ const EditProfile = () => {
 
   const saveProfile = () => {
     user.address = { wardId: idWard, street: address.note }
+    //return
     axios.put(`/user`, user).then((res) => {
       localStorage.setItem('auth_name', user.name)
       navigate('/admin/profile')

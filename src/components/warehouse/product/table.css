@@ -1,0 +1,45 @@
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+tr th {
+  border: 1px solid #eeeeee;
+  text-align: left;
+  background-color: rgba(217, 221, 146, 0.2);
+}
+
+tr td {
+  border: 1px solid #eeeeee;
+  text-align: left;
+}
+
+tr td input {
+  background-color: transparent;
+  border: none;
+  width: 100%;
+}
+
+tr td select {
+  background-color: transparent;
+  border: none;
+  width: 100%;
+}
+
+tr td input:hover {
+  background-color: #fffaf3;
+}
+
+tr td input:focus {
+  outline: 1px solid #ccc;
+  border: 1px solid #ccc;
+}
+
+tr td select:hover {
+  background-color: #fffaf3;
+}
+
+tr td select:focus {
+  outline: 1px solid #ccc;
+  border: 1px solid #ccc;
+}

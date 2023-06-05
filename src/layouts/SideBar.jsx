@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React from 'react'
+import { Link } from 'react-router-dom'
 
 const SideBar = () => {
   return (
@@ -27,8 +27,7 @@ const SideBar = () => {
             data-bs-toggle="collapse"
             data-bs-target="#collapseProduct"
             aria-expanded="false"
-            aria-controls="collapseProduct"
-          >
+            aria-controls="collapseProduct">
             <div className="sb-nav-link-icon">
               <i className="fas fa-columns"></i>
             </div>
@@ -41,14 +40,49 @@ const SideBar = () => {
             className="collapse"
             id="collapseProduct"
             aria-labelledby="headingOne"
-            data-bs-parent="#sidenavAccordion"
-          >
+            data-bs-parent="#sidenavAccordion">
             <nav className="sb-sidenav-menu-nested nav">
               <Link className="nav-link" to="/admin/add-product">
                 Thêm sản phẩm
               </Link>
               <Link className="nav-link" to="/admin/view-product?page=1">
                 Xem sản phẩm
+              </Link>
+            </nav>
+          </div>
+
+          <Link
+            className="nav-link collapsed"
+            to="#"
+            data-bs-toggle="collapse"
+            data-bs-target="#collapseWarehouse"
+            aria-expanded="false"
+            aria-controls="collapseWarehouse">
+            <div className="sb-nav-link-icon">
+              <i className="fas fa-columns"></i>
+            </div>
+            Kho
+            <div className="sb-sidenav-collapse-arrow">
+              <i className="fas fa-angle-down"></i>
+            </div>
+          </Link>
+          <div
+            className="collapse"
+            id="collapseWarehouse"
+            aria-labelledby="headingOne"
+            data-bs-parent="#sidenavAccordion">
+            <nav className="sb-sidenav-menu-nested nav">
+              <Link className="nav-link" to="/admin/view-warehouse">
+                Quản lý các kho
+              </Link>
+              <Link className="nav-link" to="/admin/add-product-2-warehouse">
+                Nhập kho
+              </Link>
+              <Link className="nav-link" to="/admin/move-product-2-warehouse">
+                Di chuyển kho
+              </Link>
+              <Link className="nav-link" to="/admin/warehouse-statistic">
+                Thống kê tồn kho
               </Link>
             </nav>
           </div>
@@ -86,8 +120,7 @@ const SideBar = () => {
             data-bs-toggle="collapse"
             data-bs-target="#collapseLayouts"
             aria-expanded="false"
-            aria-controls="collapseLayouts"
-          >
+            aria-controls="collapseLayouts">
             <div className="sb-nav-link-icon">
               <i className="fas fa-columns"></i>
             </div>
@@ -100,8 +133,7 @@ const SideBar = () => {
             className="collapse"
             id="collapseLayouts"
             aria-labelledby="headingOne"
-            data-bs-parent="#sidenavAccordion"
-          >
+            data-bs-parent="#sidenavAccordion">
             <nav className="sb-sidenav-menu-nested nav">
               <Link className="nav-link" to="/admin/profile">
                 Profile
@@ -118,7 +150,7 @@ const SideBar = () => {
         {localStorage.getItem('auth_name')}
       </div>
     </nav>
-  );
-};
+  )
+}
 
-export default SideBar;
+export default SideBar

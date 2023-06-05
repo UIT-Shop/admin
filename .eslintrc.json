@@ -17,6 +17,7 @@
   },
   "rules": {
     // "react/react-in-jsx-scope": "off"
+    "react/prop-types": "off",
     "prettier/prettier": [
       "off",
       {
@@ -37,6 +38,7 @@
     "no-unused-vars": "warn",
     "no-undef": "off",
     "react/jsx-key": "off",
+    "no-unreachable": "off",
     "unused-imports/no-unused-imports": "warn",
     "unused-imports/no-unused-vars": [
       "warn",

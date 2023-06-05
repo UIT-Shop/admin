@@ -1,8 +1,8 @@
+import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { Navigate, Route, Routes, useNavigate } from 'react-router-dom'
-import axios from 'axios'
-import MasterLayout from './layouts/MasterLayout'
 import { ToastContainer, toast } from 'react-toastify'
+import MasterLayout from './layouts/MasterLayout'
 
 const AdminPrivateRoute = ({ ...rest }) => {
   const navigate = useNavigate()
