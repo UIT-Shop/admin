@@ -41,7 +41,7 @@ const Chart = () => {
                       Moment(item.date).format('DD/MM/yyyy') ==
                       Moment(date_tmp).format('DD/MM/yyyy')
                   )
-                  if (index > 0) {
+                  if (index >= 0) {
                     list[index].forecastedSale = res.data.data.forecastedSales[i]
                     list[index].lowerBoundSale =
                       res.data.data.lowerBoundSales[i] > 0 ? res.data.data.lowerBoundSales[i] : 0

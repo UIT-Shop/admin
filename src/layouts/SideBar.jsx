@@ -14,7 +14,7 @@ const SideBar = () => {
             Dashboard
           </Link>
 
-          <Link className="nav-link" to="/admin/orders">
+          <Link className="nav-link" to="/admin/orders?page=1&status=1">
             <div className="sb-nav-link-icon">
               <i className="fas fa-tachometer-alt"></i>
             </div>

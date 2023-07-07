@@ -1,35 +1,35 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-import { Link, useParams } from 'react-router-dom';
-import Moment from 'moment';
-import { OrderStatus } from '../../common/constant/OrderStatus';
-import { ToastContainer, toast } from 'react-toastify';
+import axios from 'axios'
+import Moment from 'moment'
+import React, { useEffect, useState } from 'react'
+import { useParams } from 'react-router-dom'
+import { ToastContainer, toast } from 'react-toastify'
+import { OrderStatus } from '../../common/constant/OrderStatus'
 
 function OrderDetail() {
-  const [loading, setLoading] = useState(true);
-  const [orderDetail, setOrderDetail] = useState([]);
-  const [order, setOrder] = useState();
-  const [status, setStatus] = useState('');
-  const { id } = useParams();
+  const [loading, setLoading] = useState(true)
+  const [orderDetail, setOrderDetail] = useState([])
+  const [order, setOrder] = useState()
+  const [status, setStatus] = useState('')
+  const { id } = useParams()
   useEffect(() => {
-    let isMounted = true;
+    let isMounted = true
     axios.get(`/Order/${id}`).then((res) => {
       if (isMounted) {
         if (res.status === 200) {
-          console.log(OrderStatus[res.data.data.status]);
-          setOrderDetail(res.data.data.products);
-          setOrder(res.data.data);
-          setStatus(OrderStatus[res.data.data.status].key);
-          setLoading(false);
+          console.log(OrderStatus[res.data.data.status])
+          setOrderDetail(res.data.data.products)
+          setOrder(res.data.data)
+          setStatus(OrderStatus[res.data.data.status].key)
+          setLoading(false)
         }
       }
-    });
+    })
     return () => {
-      isMounted = false;
-    };
-  }, []);
+      isMounted = false
+    }
+  }, [])
 
-  const handleStatus = (e) => setStatus(e.target.value);
+  const handleStatus = (e) => setStatus(e.target.value)
   const submit = () => {
     axios.put(`/Order/${id}/${status}`).then((res) => {
       if (res.status === 200) {
@@ -41,14 +41,14 @@ function OrderDetail() {
           pauseOnHover: true,
           draggable: true,
           progress: undefined,
-          theme: 'colored',
-        });
+          theme: 'colored'
+        })
       }
-    });
-  };
-  var display_order = '';
+    })
+  }
+  var display_order = ''
   if (loading) {
-    return <h4>Đang tải dữ liệu...</h4>;
+    return <h4>Đang tải dữ liệu...</h4>
   } else {
     display_order = orderDetail.map((item) => {
       return (
@@ -63,12 +63,12 @@ function OrderDetail() {
           <td>
             {Intl.NumberFormat('vi-VN', {
               style: 'currency',
-              currency: 'VND',
+              currency: 'VND'
             }).format(item.totalPrice)}
           </td>
         </tr>
-      );
-    });
+      )
+    })
   }
 
   return (
@@ -112,7 +112,7 @@ function OrderDetail() {
 
                   {Intl.NumberFormat('vi-VN', {
                     style: 'currency',
-                    currency: 'VND',
+                    currency: 'VND'
                   }).format(order.totalPrice)}
                 </div>
               </div>
@@ -143,32 +143,27 @@ function OrderDetail() {
               <strong>Trạng thái đơn hàng: </strong>
             </div>
             <div className="col ">
-              <select
-                name="status"
-                onChange={handleStatus}
-                value={status}
-                className="form-control"
-              >
+              <select name="status" onChange={handleStatus} value={status} className="form-control">
                 {OrderStatus.map((item) => {
-                  return (
-                    <option value={item.key} key={item.key}>
-                      {item.value}
-                    </option>
-                  );
+                  var index = OrderStatus.findIndex((o) => o.key === status)
+                  var indexDEL = 3
+                  if (index <= indexDEL)
+                    return (
+                      <option value={item.key} key={item.key}>
+                        {item.value}
+                      </option>
+                    )
                 })}
               </select>
             </div>
           </div>
-          <button
-            onClick={submit}
-            className="btn btn-primary px-4 float-end mt-2"
-          >
+          <button onClick={submit} className="btn btn-primary px-4 float-end mt-2">
             Cập nhật
           </button>
         </div>
       </div>
     </div>
-  );
+  )
 }
 
-export default OrderDetail;
+export default OrderDetail

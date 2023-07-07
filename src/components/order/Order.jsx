@@ -1,58 +1,107 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-import { Link } from 'react-router-dom';
-import Moment from 'moment';
-import { OrderStatus } from '../../common/constant/OrderStatus';
+import axios from 'axios'
+import Moment from 'moment'
+import React, { useEffect, useState } from 'react'
+import ReactPaginate from 'react-paginate'
+import { Link, useNavigate, useSearchParams } from 'react-router-dom'
+import { OrderStatus } from '../../common/constant/OrderStatus'
 
 function Order() {
-  const [loading, setLoading] = useState(true);
-  const [orders, setOrders] = useState([]);
+  const navigate = useNavigate()
+
+  const [loading, setLoading] = useState(true)
+  const [orders, setOrders] = useState([])
+  const [searchParams, setSearchParams] = useSearchParams()
+  const [currentPage, setCurrentPage] = useState(1)
+  const [pageCount, setPageCount] = useState(1)
+  const [statusSearch, setStatus] = useState(1)
 
   useEffect(() => {
-    let isMounted = true;
-    axios.get(`/Order/admin`).then((res) => {
-      if (isMounted) {
-        if (res.status === 200) {
-          setOrders(res.data.data);
-          setLoading(false);
+    let isMounted = true
+    setLoading(true)
+    setCurrentPage(searchParams.get('page'))
+    setStatus(searchParams.get('status'))
+    axios
+      .get(
+        `/Order/admin?page=${parseInt(searchParams.get('page'))}&status=${parseInt(
+          searchParams.get('status')
+        )}`
+      )
+      .then((res) => {
+        if (isMounted) {
+          if (res.status === 200) {
+            setOrders(res.data.data.orderOverviews)
+            setPageCount(res.data.data.pages)
+            setLoading(false)
+          }
         }
-      }
-    });
+      })
     return () => {
-      isMounted = false;
-    };
-  }, []);
+      isMounted = false
+    }
+  }, [currentPage])
 
-  Moment.locale('vi');
-  var display_orders = '';
+  // Invoke when user click to request another page.
+  const handlePageClick = (event) => {
+    var page = parseInt(event.selected) + 1
+    setCurrentPage(parseInt(event.selected))
+    window.scrollTo(0, 0)
+    navigate({ pathname: '/admin/orders', search: `?page=${page}&status=${statusSearch}` })
+  }
+
+  const handleStatusClick = (event) => {
+    var page = 1
+    setCurrentPage(0)
+    var status = OrderStatus.findIndex((o) => o.key === event.target.id)
+    window.scrollTo(0, 0)
+    navigate({ pathname: '/admin/orders', search: `?page=${page}&status=${status}` })
+  }
+
+  Moment.locale('vi')
+  var display_orders = ''
   if (loading) {
-    return <h4>Đang tải dữ liệu...</h4>;
+    return <h4>Đang tải dữ liệu...</h4>
   } else {
     display_orders = orders.map((item) => {
       return (
         <tr key={item.id}>
-          <td>{item.id}</td>
-          {/* <td>{item.product}</td> */}
+          {/* <td>{item.id}</td> */}
+          <td>{item.product}</td>
           <td>{Moment(item.orderDate).format('HH:mm:ss - DD/MM/yyyy')}</td>
           <td>
             {Intl.NumberFormat('vi-VN', {
               style: 'currency',
-              currency: 'VND',
+              currency: 'VND'
             }).format(item.totalPrice)}
           </td>
           <td>
-            <Link
-              to={`/admin/order-detail/${item.id}`}
-              className="btn btn-success btn-sm"
-            >
+            <Link to={`/admin/order-detail/${item.id}`} className="btn btn-success btn-sm">
               Chi tiết
             </Link>
           </td>
           <td>{OrderStatus[item.status].value}</td>
         </tr>
-      );
-    });
+      )
+    })
   }
+
+  var displayStatus = OrderStatus.map(({ value, key }) => {
+    return (
+      <div className="form-check form-check-inline">
+        <input
+          className="form-check-input"
+          type="radio"
+          onChange={handleStatusClick}
+          name="status"
+          id={key}
+          value={value}
+          checked={OrderStatus[statusSearch].value === value}
+        />
+        <label className="form-check-label" htmlFor={key}>
+          {value}
+        </label>
+      </div>
+    )
+  })
 
   return (
     <div className="container px-4 mt-3">
@@ -61,12 +110,20 @@ function Order() {
           <h4>Quản lý đơn hàng </h4>
         </div>
         <div className="card-body">
+          <div className="row">
+            <div className="col-md-12 form-group mb-4">
+              <div>
+                <label>Trạng thái</label>
+              </div>
+              {displayStatus}
+            </div>
+          </div>
           <div className="table-responsive">
             <table className="table table-bordered table-striped">
               <thead>
                 <tr>
-                  <th>ID</th>
-                  {/* <th>Sản phẩm</th> */}
+                  {/* <th>ID</th> */}
+                  <th>Sản phẩm</th>
                   <th>Ngày đặt hàng</th>
                   <th>Tổng tiền</th>
                   <th>Xem chi tiết</th>
@@ -76,10 +133,26 @@ function Order() {
               <tbody>{display_orders}</tbody>
             </table>
           </div>
+          <div className="d-flex justify-content-center">
+            <div className="pagination">
+              <ReactPaginate
+                breakLabel="..."
+                nextLabel={<i className="fas fa-chevron-right"></i>}
+                onPageChange={handlePageClick}
+                pageRangeDisplayed={2}
+                marginPagesDisplayed={2}
+                pageCount={pageCount}
+                previousLabel={<i className="fas fa-chevron-left"></i>}
+                renderOnZeroPageCount={null}
+                activeClassName="active"
+                forcePage={parseInt(currentPage) - 1}
+              />
+            </div>
+          </div>
         </div>
       </div>
     </div>
-  );
+  )
 }
 
-export default Order;
+export default Order
