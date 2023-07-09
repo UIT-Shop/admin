@@ -12,7 +12,7 @@ const Navbar = () => {
   return (
     <nav className="sb-topnav navbar navbar-expand navbar-dark bg-dark">
       <Link className="navbar-brand ps-3" to="/admin">
-        React Ecommerce
+        CShop
       </Link>
 
       <button
@@ -51,7 +51,7 @@ const Navbar = () => {
           <ul className="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
             <li>
               <Link className="dropdown-item" to="/admin/profile">
-                Profile
+                Cá nhân
               </Link>
             </li>
             <li>

@@ -133,7 +133,6 @@ function WarehouseStatistic() {
         axios.get(`/ProductVariant/StoreByWarehouse/${id}/${date_tmp}`).then((res) => {
           if (res.status === 200) {
             setProductStore(res.data.data)
-            console.log(res.data.data)
           }
           if (res.status === 500)
             toast.error('Lỗi máy chủ', {
@@ -210,10 +209,10 @@ function WarehouseStatistic() {
               <td>{item.productId}</td>
               <td>{item.productName}</td>
               <td>{item.color + ' - ' + item.size}</td>
-              <td>0</td>
+              <td>{item.quantityCurrent - item.quantityIn - item.quantityOut}</td>
               <td>{item.quantityIn}</td>
               <td>{-item.quantityOut}</td>
-              <td>{0 + item.quantityIn + item.quantityOut}</td>
+              <td>{item.quantityCurrent}</td>
             </tr>
           ))}
         </tbody>
@@ -250,10 +249,10 @@ function WarehouseStatistic() {
               <td>{item.warehouseId}</td>
               <td>{item.warehouseName}</td>
               <td>{item.color + ' - ' + item.size}</td>
-              <td>0</td>
+              <td>{item.quantityCurrent - item.quantityIn - item.quantityOut}</td>
               <td>{item.quantityIn}</td>
               <td>{-item.quantityOut}</td>
-              <td>{0 + item.quantityIn + item.quantityOut}</td>
+              <td>{item.quantityCurrent}</td>
             </tr>
           ))}
         </tbody>
@@ -299,7 +298,6 @@ function WarehouseStatistic() {
                         </option>
                       ))}
                     </select>
-                    <small className="text-danger">{errorlist.warehouse_id}</small>
                   </div>
                   <div className="col-md-6 form-group mb-4">
                     <label>Tháng / Năm</label>
@@ -309,7 +307,6 @@ function WarehouseStatistic() {
                       dateFormat={'MM/yyyy'}
                       onChange={(date) => handleDateChange(date)}
                     />
-                    <small className="text-danger">{errorlist.date}</small>
                   </div>
                 </div>
               </div>
@@ -330,8 +327,6 @@ function WarehouseStatistic() {
                       className="form-control"
                       onChange={handleInput}
                     />
-
-                    <small className="text-danger">{errorlist.warehouse_from_id}</small>
                   </div>
                   <div className="col-md-6 form-group mb-4">
                     <label>Tên sản phẩm</label>
@@ -342,7 +337,6 @@ function WarehouseStatistic() {
                       aria-disabled={true}
                       className="form-control"
                     />
-                    <small className="text-danger">{errorlist.product_id}</small>
                   </div>
 
                   <div className="col-md-4 form-group mb-4">
@@ -353,7 +347,6 @@ function WarehouseStatistic() {
                       dateFormat={'MM/yyyy'}
                       onChange={(date) => handleDateChange(date)}
                     />
-                    <small className="text-danger">{errorlist.date}</small>
                   </div>
                 </div>
               </div>

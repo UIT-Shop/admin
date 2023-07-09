@@ -1,7 +1,10 @@
+import Moment from 'moment'
 import React from 'react'
 import { Link } from 'react-router-dom'
 
 const SideBar = () => {
+  const current = new Date()
+  var dateFormat = Moment(current).format('yyyy-MM')
   return (
     <nav className="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
       <div className="sb-sidenav-menu">
@@ -14,7 +17,12 @@ const SideBar = () => {
             Dashboard
           </Link>
 
-          <Link className="nav-link" to="/admin/orders?page=1&status=1">
+          <Link
+            className="nav-link"
+            to={{
+              pathname: '/admin/orders',
+              search: `?page=1&status=0&date=${dateFormat}`
+            }}>
             <div className="sb-nav-link-icon">
               <i className="fas fa-tachometer-alt"></i>
             </div>
@@ -72,9 +80,6 @@ const SideBar = () => {
             aria-labelledby="headingOne"
             data-bs-parent="#sidenavAccordion">
             <nav className="sb-sidenav-menu-nested nav">
-              <Link className="nav-link" to="/admin/view-warehouse">
-                Quản lý các kho
-              </Link>
               <Link className="nav-link" to="/admin/add-product-2-warehouse">
                 Nhập kho
               </Link>
@@ -93,6 +98,12 @@ const SideBar = () => {
               <i className="fas fa-tachometer-alt"></i>
             </div>
             Phân loại
+          </Link>
+          <Link className="nav-link" to="/admin/view-warehouse">
+            <div className="sb-nav-link-icon">
+              <i className="fas fa-tachometer-alt"></i>
+            </div>
+            Kho
           </Link>
           <Link className="nav-link" to="/admin/add-brand">
             <div className="sb-nav-link-icon">
@@ -136,7 +147,7 @@ const SideBar = () => {
             data-bs-parent="#sidenavAccordion">
             <nav className="sb-sidenav-menu-nested nav">
               <Link className="nav-link" to="/admin/profile">
-                Profile
+                Cá nhân
               </Link>
               <Link className="nav-link" to="/admin/change-password">
                 Đổi mật khẩu
@@ -146,7 +157,7 @@ const SideBar = () => {
         </div>
       </div>
       <div className="sb-sidenav-footer">
-        <div className="small">Logged in as:</div>
+        <div className="small">Đăng nhập bởi:</div>
         {localStorage.getItem('auth_name')}
       </div>
     </nav>
