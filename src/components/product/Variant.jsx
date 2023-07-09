@@ -100,7 +100,7 @@ const Variant = ({ variantList, setVariantList, pictureList, setPictures }) => {
       )
     if (pictureList)
       return pictureList.map((picture, idx) => {
-        if (picture.colorId && picture.colorId === variant.colorId)
+        if (picture.colorId !== null && picture.colorId === variant.colorId)
           return (
             <div style={styles.preview}>
               <img src={picture.url} style={styles.image} alt="Thumb" />
@@ -188,7 +188,7 @@ const Variant = ({ variantList, setVariantList, pictureList, setPictures }) => {
                     onChange={(e) => handleVariantChange(e, index)}
                     value={singleVariant.productSize}
                     className="form-control">
-                    <option>Chọn Size</option>
+                    <option>Chọn size</option>
                     {Size.map((item, index) => {
                       return (
                         <option value={item} key={index}>

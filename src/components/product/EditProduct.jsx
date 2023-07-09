@@ -41,6 +41,7 @@ function EditProduct() {
       if (isMounted)
         if (res.status === 200) {
           setProduct(res.data.data)
+          console.log(res.data.data)
           setVariantList(res.data.data.variants)
           setOldVariantList(res.data.data.variants)
           setPictures(res.data.data.images)
@@ -173,7 +174,9 @@ function EditProduct() {
         categoryId: productInput.categoryId,
         brandId: productInput.brandId,
         isNew: productInput.isNew,
-        visible: productInput.visible
+        visible: productInput.visible,
+        overview: productInput.overview,
+        material: productInput.material
       })
       .then(async (res) => {
         let imageUrls = []
@@ -298,7 +301,7 @@ function EditProduct() {
               activeKey={parseInt(currentTab)}
               onSelect={(k) => setCurrentTab(k)}
               id="controlled-tab-example">
-              <Tab eventKey={0} title="Home">
+              <Tab eventKey={0} title="Tổng quan">
                 <div
                   className="tab-pane card-body border fade show active"
                   id="home"
@@ -368,7 +371,7 @@ function EditProduct() {
                       <select
                         name="category_id"
                         onChange={handleInput}
-                        value={productInput.category_id}
+                        value={productInput.categoryId}
                         className="form-control">
                         <option>Chọn phân loại</option>
                         {categoryList.map((item) => {
@@ -387,7 +390,7 @@ function EditProduct() {
                       <select
                         name="brand_id"
                         onChange={handleInput}
-                        value={productInput.brand_id}
+                        value={productInput.brandId}
                         className="form-control">
                         <option>Chọn nhãn hiệu</option>
                         {brandList.map((item) => {
@@ -406,10 +409,30 @@ function EditProduct() {
                     <label>Mô tả</label>
                     <textarea
                       name="description"
+                      style={{ minHeight: '200px' }}
                       onChange={handleInput}
                       value={productInput.description}
                       className="form-control"></textarea>
                   </div>
+                  <div className="form-group mb-4">
+                    <label>Tổng quan</label>
+                    <textarea
+                      name="overview"
+                      style={{ minHeight: '200px' }}
+                      onChange={handleInput}
+                      value={productInput.overview}
+                      className="form-control"></textarea>
+                  </div>
+                  <div className="form-group mb-4">
+                    <label>Chất liệu</label>
+                    <textarea
+                      name="material"
+                      style={{ minHeight: '200px' }}
+                      onChange={handleInput}
+                      value={productInput.material}
+                      className="form-control"></textarea>
+                  </div>
+
                   <div className="row">
                     <div className="col-md-4 form-group mb-4">
                       <label>Ảnh</label>
@@ -511,7 +534,7 @@ function EditProduct() {
                   </div>
                 </div>
               </Tab>
-              <Tab eventKey={2} title="Details">
+              <Tab eventKey={2} title="Chi tiết">
                 <div
                   className="tab-pane card-body border fade show active"
                   id="otherdetails"
@@ -540,7 +563,7 @@ function EditProduct() {
               ) : null}
               {parseInt(currentTab) === 2 ? (
                 <button type="submit" className="btn btn-primary px-4 ">
-                  Gửi
+                  Lưu
                 </button>
               ) : null}
             </Stack>

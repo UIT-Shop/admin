@@ -9,10 +9,12 @@ function AddProduct() {
   const [categoryList, setCategoryList] = useState([])
   const [brandList, setBrandList] = useState([])
   const [productInput, setProduct] = useState({
-    category_id: '',
-    brand_id: '',
+    categoryId: '',
+    brandId: '',
     title: '',
     description: '',
+    overview: '',
+    material: '',
 
     meta_title: '',
     meta_keyword: '',
@@ -100,8 +102,8 @@ function AddProduct() {
 
   const validate = () => {
     if (
-      productInput.brand_id === '' ||
-      productInput.category_id === '' ||
+      productInput.brandId === '' ||
+      productInput.categoryId === '' ||
       productInput.description === '' ||
       productInput.title === ''
     ) {
@@ -171,15 +173,16 @@ function AddProduct() {
       .post(`/Product`, {
         title: productInput.title,
         description: productInput.description,
-        categoryId: productInput.category_id,
-        brandId: productInput.brand_id,
+        overview: productInput.overview,
+        material: productInput.material,
+        categoryId: productInput.categoryId,
+        brandId: productInput.brandId,
         isNew: productInput.isNew,
         visible: productInput.visible
       })
       .then(async (res) => {
         const productId = res.data.data.id
         let imageUrls = []
-        console.log('submmitting')
         for (let file of pictures) {
           const formData = new FormData()
           formData.append('file', file)
@@ -241,8 +244,8 @@ function AddProduct() {
         })
         setProduct({
           ...productInput,
-          category_id: '',
-          brand_id: '',
+          categoryId: '',
+          brandId: '',
           title: '',
           description: '',
 
@@ -352,9 +355,9 @@ function AddProduct() {
                     <div className="col-md-4 form-group mb-4">
                       <label>Phân loại</label>
                       <select
-                        name="category_id"
+                        name="categoryId"
                         onChange={handleInput}
-                        value={productInput.category_id}
+                        value={productInput.categoryId}
                         className="form-control">
                         <option>Chọn phân loại</option>
                         {categoryList.map((item) => {
@@ -366,14 +369,14 @@ function AddProduct() {
                             )
                         })}
                       </select>
-                      <small className="text-danger">{errorlist.category_id}</small>
+                      <small className="text-danger">{errorlist.categoryId}</small>
                     </div>
                     <div className="col-md-4 form-group mb-4">
                       <label>Nhãn hiệu</label>
                       <select
-                        name="brand_id"
+                        name="brandId"
                         onChange={handleInput}
-                        value={productInput.brand_id}
+                        value={productInput.brandId}
                         className="form-control">
                         <option>Chọn nhãn hiệu</option>
                         {brandList.map((item) => {
@@ -392,10 +395,30 @@ function AddProduct() {
                     <label>Mô tả</label>
                     <textarea
                       name="description"
+                      style={{ minHeight: '200px' }}
                       onChange={handleInput}
                       value={productInput.description}
                       className="form-control"></textarea>
                   </div>
+                  <div className="form-group mb-4">
+                    <label>Tổng quan</label>
+                    <textarea
+                      name="overview"
+                      style={{ minHeight: '200px' }}
+                      onChange={handleInput}
+                      value={productInput.overview}
+                      className="form-control"></textarea>
+                  </div>
+                  <div className="form-group mb-4">
+                    <label>Chất liệu</label>
+                    <textarea
+                      name="material"
+                      style={{ minHeight: '200px' }}
+                      onChange={handleInput}
+                      value={productInput.material}
+                      className="form-control"></textarea>
+                  </div>
+
                   <div className="row">
                     <div className="col-md-4 form-group mb-4">
                       <label>Ảnh</label>
