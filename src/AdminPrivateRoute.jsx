@@ -67,16 +67,16 @@ const AdminPrivateRoute = ({ ...rest }) => {
 
   axios.interceptors.response.use(undefined, function axiosRetryInterceptor(err) {
     if (err.response.status === 401) {
-      toast.warning('Vui lòng đăng nhập', {
-        position: 'top-right',
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: 'colored'
-      })
+      // toast.warning('Vui lòng đăng nhập', {
+      //   position: 'top-right',
+      //   autoClose: 5000,
+      //   hideProgressBar: false,
+      //   closeOnClick: true,
+      //   pauseOnHover: true,
+      //   draggable: true,
+      //   progress: undefined,
+      //   theme: 'colored'
+      // })
       navigate('/login')
     }
     return Promise.reject(err)

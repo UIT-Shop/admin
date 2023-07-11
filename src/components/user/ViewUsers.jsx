@@ -1,41 +1,58 @@
-import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import axios from 'axios';
-import { ToastContainer, toast } from 'react-toastify';
-import { Role } from '../../common/constant/Role';
-import jwt from 'jwt-decode';
+import axios from 'axios'
+import jwt from 'jwt-decode'
+import React, { useEffect, useState } from 'react'
+import ReactPaginate from 'react-paginate'
+import { Link, useNavigate, useSearchParams } from 'react-router-dom'
+import { ToastContainer, toast } from 'react-toastify'
+import '../../common/assets/css/paginate.css'
+import { Role } from '../../common/constant/Role'
 
 function ViewUsers() {
-  const [loading, setLoading] = useState(true);
-  const [userlist, setUserlist] = useState([]);
-  const [id, setUserid] = useState();
+  const navigate = useNavigate()
+
+  const [loading, setLoading] = useState(true)
+  const [userlist, setUserlist] = useState([])
+  const [id, setUserId] = useState()
+  const [searchParams, setSearchParams] = useSearchParams()
+  const [currentPage, setCurrentPage] = useState(1)
+  const [pageCount, setPageCount] = useState(1)
 
   useEffect(() => {
-    const token = localStorage.getItem('auth_token');
-    const user = jwt(token);
-    let isMounted = true;
-
-    axios.get(`/User`).then((res) => {
+    const token = localStorage.getItem('auth_token')
+    const user = jwt(token)
+    let isMounted = true
+    setLoading(true)
+    setCurrentPage(searchParams.get('page'))
+    axios.get(`/User?page=${parseInt(searchParams.get('page'))}`).then((res) => {
       if (isMounted) {
         if (res.status === 200) {
-          setUserlist(res.data.data);
-          setLoading(false);
+          setUserlist(res.data.data.users)
+          setPageCount(res.data.data.pages)
+          setLoading(false)
         }
       }
-    });
+    })
 
-    setUserid(user[Object.keys(user)[0]]);
+    setUserId(user[Object.keys(user)[0]])
 
     return () => {
-      isMounted = false;
-    };
-  }, []);
+      isMounted = false
+    }
+  }, [currentPage])
+
+  // Invoke when user click to request another page.
+  const handlePageClick = (event) => {
+    var page = parseInt(event.selected) + 1
+    setCurrentPage(parseInt(event.selected))
+    window.scrollTo(0, 0)
+    navigate({ pathname: '/admin/view-user', search: `?page=${page}` })
+  }
 
   const deleteUser = (e, id) => {
-    e.preventDefault();
+    e.preventDefault()
 
-    const thisClicked = e.currentTarget;
-    thisClicked.innerText = 'Đang xóa';
+    const thisClicked = e.currentTarget
+    thisClicked.innerText = 'Đang xóa'
 
     axios.delete(`/User/${id}`).then((res) => {
       if (res.status === 200) {
@@ -47,40 +64,38 @@ function ViewUsers() {
           pauseOnHover: true,
           draggable: true,
           progress: undefined,
-          theme: 'colored',
-        });
-        thisClicked.closest('tr').remove();
+          theme: 'colored'
+        })
+        thisClicked.closest('tr').remove()
       } else if (res.status === 404) {
-        thisClicked.innerText = 'Xóa';
+        thisClicked.innerText = 'Xóa'
       }
-    });
-  };
+    })
+  }
 
   const changeRole = (e, userId, index) => {
-    axios
-      .put(`/User/${userId}/role/${e.target.checked ? 'Admin' : 'Customer'}`)
-      .then((res) => {
-        if (res.status === 200) {
-          toast.success('Cập nhật thành công', {
-            position: 'top-right',
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: 'colored',
-          });
+    axios.put(`/User/${userId}/role/${e.target.checked ? 'Admin' : 'Customer'}`).then((res) => {
+      if (res.status === 200) {
+        toast.success('Cập nhật thành công', {
+          position: 'top-right',
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: 'colored'
+        })
 
-          const list = [...userlist];
-          list[index].role = e.target.checked;
-          setUserlist(list);
-        }
-      });
-  };
-  var viewuser_HTMLTABLE = '';
+        const list = [...userlist]
+        list[index].role = e.target.checked
+        setUserlist(list)
+      }
+    })
+  }
+  var viewuser_HTMLTABLE = ''
   if (loading) {
-    return <h4>Đang tải dữ liệu...</h4>;
+    return <h4>Đang tải dữ liệu...</h4>
   } else {
     viewuser_HTMLTABLE = userlist.map((item, idx) => {
       return (
@@ -108,15 +123,14 @@ function ViewUsers() {
               <button
                 type="button"
                 onClick={(e) => deleteUser(e, item.id)}
-                className="btn btn-danger btn-sm"
-              >
+                className="btn btn-danger btn-sm">
                 Xóa
               </button>
             )}
           </td>
         </tr>
-      );
-    });
+      )
+    })
   }
 
   return (
@@ -141,9 +155,25 @@ function ViewUsers() {
             <tbody>{viewuser_HTMLTABLE}</tbody>
           </table>
         </div>
+        <div className="d-flex justify-content-center">
+          <div className="pagination">
+            <ReactPaginate
+              breakLabel="..."
+              nextLabel={<i className="fas fa-chevron-right"></i>}
+              onPageChange={handlePageClick}
+              pageRangeDisplayed={2}
+              marginPagesDisplayed={2}
+              pageCount={pageCount}
+              previousLabel={<i className="fas fa-chevron-left"></i>}
+              renderOnZeroPageCount={null}
+              activeClassName="active"
+              forcePage={parseInt(currentPage) - 1}
+            />
+          </div>
+        </div>
       </div>
     </div>
-  );
+  )
 }
 
-export default ViewUsers;
+export default ViewUsers

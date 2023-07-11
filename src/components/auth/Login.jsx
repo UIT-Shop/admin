@@ -58,10 +58,10 @@ const Login = () => {
   const handleKeypress = (e) => {
     //it triggers by pressing the enter key
     if (e.keyCode === 13) {
-      loginSubmit()
+      loginSubmit(e)
     }
   }
-  const loginSubmit = async (e) => {
+  const loginSubmit = (e) => {
     e.preventDefault()
     setError('')
     setValidEmail(checkValidEmail(loginInput.email))
@@ -137,7 +137,6 @@ const Login = () => {
         .catch((err) => {
           if (err.response) {
             // The client was given an error response (5xx, 4xx)
-            console.log('Error response', err.response)
             if (err.response.status === 400)
               toast.error('Sai tài khoản hoặc mật khẩu', {
                 position: 'top-right',
@@ -151,7 +150,6 @@ const Login = () => {
               })
           } else if (err.request) {
             // The client never received a response, and the request was never left (4xx)
-            console.log('Error request', err.request)
             toast.error(err.request.data.message, {
               position: 'top-right',
               autoClose: 5000,

@@ -119,7 +119,7 @@ const SideBar = () => {
           </Link>
 
           <div className="sb-sidenav-menu-heading">Tài khoản</div>
-          <Link className="nav-link" to="/admin/view-user">
+          <Link className="nav-link" to="/admin/view-user?page=1">
             <div className="sb-nav-link-icon">
               <i className="fas fa-tachometer-alt"></i>
             </div>
