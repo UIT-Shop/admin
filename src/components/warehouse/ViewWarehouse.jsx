@@ -28,7 +28,7 @@ function ViewWarehouse() {
     e.preventDefault()
 
     const thisClicked = e.currentTarget
-    thisClicked.innerText = 'Deleting'
+    thisClicked.innerText = 'Đang xóa'
 
     axios.delete(`/Warehouse/${id}`).then((res) => {
       if (res.status === 200) {
@@ -44,7 +44,7 @@ function ViewWarehouse() {
         })
         thisClicked.closest('tr').remove()
       } else if (res.status === 404) {
-        thisClicked.innerText = 'Delete'
+        thisClicked.innerText = 'Xóa'
       }
     })
   }

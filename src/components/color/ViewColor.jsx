@@ -1,34 +1,34 @@
-import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import axios from 'axios';
-import { ToastContainer, toast } from 'react-toastify';
+import axios from 'axios'
+import React, { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
+import { ToastContainer, toast } from 'react-toastify'
 
 function ViewColor() {
-  const [loading, setLoading] = useState(true);
-  const [colorlist, setColorlist] = useState([]);
+  const [loading, setLoading] = useState(true)
+  const [colorlist, setColorlist] = useState([])
 
   useEffect(() => {
-    let isMounted = true;
+    let isMounted = true
 
     axios.get(`/Color`).then((res) => {
       if (isMounted) {
         if (res.status === 200) {
-          setColorlist(res.data.data);
-          setLoading(false);
+          setColorlist(res.data.data)
+          setLoading(false)
         }
       }
-    });
+    })
 
     return () => {
-      isMounted = false;
-    };
-  }, []);
+      isMounted = false
+    }
+  }, [])
 
   const deleteColor = (e, id) => {
-    e.preventDefault();
+    e.preventDefault()
 
-    const thisClicked = e.currentTarget;
-    thisClicked.innerText = 'Deleting';
+    const thisClicked = e.currentTarget
+    thisClicked.innerText = 'Đang xóa'
 
     axios.delete(`/Color/${id}`).then((res) => {
       if (res.status === 200) {
@@ -40,18 +40,18 @@ function ViewColor() {
           pauseOnHover: true,
           draggable: true,
           progress: undefined,
-          theme: 'colored',
-        });
-        thisClicked.closest('tr').remove();
+          theme: 'colored'
+        })
+        thisClicked.closest('tr').remove()
       } else if (res.status === 404) {
-        thisClicked.innerText = 'Delete';
+        thisClicked.innerText = 'Xóa'
       }
-    });
-  };
+    })
+  }
 
-  var viewcolor_HTMLTABLE = '';
+  var viewcolor_HTMLTABLE = ''
   if (loading) {
-    return <h4>Đang tải dữ liệu...</h4>;
+    return <h4>Đang tải dữ liệu...</h4>
   } else {
     viewcolor_HTMLTABLE = colorlist.map((item) => {
       return (
@@ -59,10 +59,7 @@ function ViewColor() {
           <td>{item.id}</td>
           <td>{item.name}</td>
           <td>
-            <Link
-              to={`/admin/edit-color/${item.id}`}
-              className="btn btn-success btn-sm"
-            >
+            <Link to={`/admin/edit-color/${item.id}`} className="btn btn-success btn-sm">
               Sửa
             </Link>
           </td>
@@ -70,14 +67,13 @@ function ViewColor() {
             <button
               type="button"
               onClick={(e) => deleteColor(e, item.id)}
-              className="btn btn-danger btn-sm"
-            >
+              className="btn btn-danger btn-sm">
               Xóa
             </button>
           </td>
         </tr>
-      );
-    });
+      )
+    })
   }
 
   return (
@@ -107,7 +103,7 @@ function ViewColor() {
         </div>
       </div>
     </div>
-  );
+  )
 }
 
-export default ViewColor;
+export default ViewColor

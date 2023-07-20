@@ -13,17 +13,24 @@ function ViewProduct() {
   const [searchParams, setSearchParams] = useSearchParams()
   const [currentPage, setCurrentPage] = useState(1)
   const [pageCount, setPageCount] = useState(1)
+  const [searchProduct, setSearchProduct] = useState()
 
   useEffect(() => {
     let isMounted = true
     setLoading(true)
     setCurrentPage(searchParams.get('page'))
+    let apiUrl = `/Product/admin?page=${parseInt(searchParams.get('page'))}`
+    if (searchParams.get('product') != null)
+      apiUrl = `/Product/search/${searchParams.get('product')}/${parseInt(
+        searchParams.get('page')
+      )}/1`
     axios
-      .get(`/Product/admin?page=${parseInt(searchParams.get('page'))}`)
+      .get(apiUrl)
       .then((res) => {
         if (isMounted) {
           if (res.status === 200) {
             setProduct(res.data.data.products)
+
             setPageCount(res.data.data.pages)
             setLoading(false)
           }
@@ -63,7 +70,24 @@ function ViewProduct() {
     var page = parseInt(event.selected) + 1
     setCurrentPage(parseInt(event.selected))
     window.scrollTo(0, 0)
-    navigate({ pathname: '/admin/view-product', search: `?page=${page}` })
+    let searchUrl = `?page=${page}`
+    if (searchProduct != null) searchUrl = searchUrl + `&product=${searchProduct}`
+    navigate({ pathname: '/admin/view-product', search: searchUrl })
+  }
+
+  const handleKeypress = (e) => {
+    //it triggers by pressing the enter key
+    if (e.keyCode === 13) {
+      handleSearchClick()
+    }
+  }
+  const handleSearchClick = () => {
+    console.log('search: ', searchProduct)
+    var page = 1
+    setCurrentPage(0)
+    window.scrollTo(0, 0)
+    //navigate({ pathname: '/admin/view-product', search: `?page=${page}` })
+    navigate({ pathname: '/admin/view-product', search: `?page=${page}&product=${searchProduct}` })
   }
 
   let display_Productdata = ''
@@ -113,6 +137,30 @@ function ViewProduct() {
           <ToastContainer />
         </div>
         <div className="card-body">
+          <form>
+            <div className="form-group mb-4">
+              <div className="row">
+                <div className="col-md-8 form-group mb-4">
+                  <input
+                    type="text"
+                    onChange={(e) => setSearchProduct(e.target.value)}
+                    value={searchProduct}
+                    placeholder="Tìm kiếm"
+                    className="form-control"
+                  />
+                </div>
+                <div className="col-md-4 form-group mb-4">
+                  <button
+                    className="btn btn-primary"
+                    type="button"
+                    onKeyUp={handleKeypress}
+                    onClick={handleSearchClick}>
+                    <i className="fas fa-search"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </form>
           <div className="table-responsive">
             <table className="table table-bordered table-striped">
               <thead>

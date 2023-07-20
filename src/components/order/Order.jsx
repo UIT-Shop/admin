@@ -35,6 +35,7 @@ function Order() {
       if (isMounted) {
         if (res.status === 200) {
           setOrders(res.data.data.orderOverviews)
+          console.log(res.data.data.orderOverviews)
           setPageCount(res.data.data.pages)
           setLoading(false)
         }
@@ -106,6 +107,7 @@ function Order() {
             </Link>
           </td>
           <td>{OrderStatus[item.status].value}</td>
+          <td>{item.isPaid ? 'Đã thanh toán' : 'Chưa thanh toán'}</td>
         </tr>
       )
     })
@@ -146,7 +148,8 @@ function Order() {
               {displayStatus}
             </div>
             <div className="col-md-4 form-group mb-4">
-              <label>Tháng / Năm</label>
+              <label>Tháng / Năm </label>
+              <div />
               <DatePicker
                 locale={'vi'}
                 selected={dateInput}
@@ -165,6 +168,7 @@ function Order() {
                   <th>Tổng tiền</th>
                   <th>Xem chi tiết</th>
                   <th>Trạng thái</th>
+                  <th>Thanh toán</th>
                 </tr>
               </thead>
               <tbody>{display_orders}</tbody>

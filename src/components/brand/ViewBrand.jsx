@@ -1,34 +1,34 @@
-import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import axios from 'axios';
-import { ToastContainer, toast } from 'react-toastify';
+import axios from 'axios'
+import React, { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
+import { ToastContainer, toast } from 'react-toastify'
 
 function ViewBrand() {
-  const [loading, setLoading] = useState(true);
-  const [brandlist, setBrandlist] = useState([]);
+  const [loading, setLoading] = useState(true)
+  const [brandlist, setBrandlist] = useState([])
 
   useEffect(() => {
-    let isMounted = true;
+    let isMounted = true
 
     axios.get(`/Brand`).then((res) => {
       if (isMounted) {
         if (res.status === 200) {
-          setBrandlist(res.data.data);
-          setLoading(false);
+          setBrandlist(res.data.data)
+          setLoading(false)
         }
       }
-    });
+    })
 
     return () => {
-      isMounted = false;
-    };
-  }, []);
+      isMounted = false
+    }
+  }, [])
 
   const deleteBrand = (e, id) => {
-    e.preventDefault();
+    e.preventDefault()
 
-    const thisClicked = e.currentTarget;
-    thisClicked.innerText = 'Deleting';
+    const thisClicked = e.currentTarget
+    thisClicked.innerText = 'Đang xóa'
 
     axios.delete(`/Brand/${id}`).then((res) => {
       if (res.status === 200) {
@@ -40,18 +40,18 @@ function ViewBrand() {
           pauseOnHover: true,
           draggable: true,
           progress: undefined,
-          theme: 'colored',
-        });
-        thisClicked.closest('tr').remove();
+          theme: 'colored'
+        })
+        thisClicked.closest('tr').remove()
       } else if (res.status === 404) {
-        thisClicked.innerText = 'Delete';
+        thisClicked.innerText = 'Xóa'
       }
-    });
-  };
+    })
+  }
 
-  var viewbrand_HTMLTABLE = '';
+  var viewbrand_HTMLTABLE = ''
   if (loading) {
-    return <h4>Đang tải dữ liệu...</h4>;
+    return <h4>Đang tải dữ liệu...</h4>
   } else {
     viewbrand_HTMLTABLE = brandlist.map((item) => {
       return (
@@ -60,10 +60,7 @@ function ViewBrand() {
           <td>{item.name}</td>
           {/* <td>{item.url}</td> */}
           <td>
-            <Link
-              to={`/admin/edit-brand/${item.id}`}
-              className="btn btn-success btn-sm"
-            >
+            <Link to={`/admin/edit-brand/${item.id}`} className="btn btn-success btn-sm">
               Sửa
             </Link>
           </td>
@@ -71,14 +68,13 @@ function ViewBrand() {
             <button
               type="button"
               onClick={(e) => deleteBrand(e, item.id)}
-              className="btn btn-danger btn-sm"
-            >
+              className="btn btn-danger btn-sm">
               Xóa
             </button>
           </td>
         </tr>
-      );
-    });
+      )
+    })
   }
 
   return (
@@ -109,7 +105,7 @@ function ViewBrand() {
         </div>
       </div>
     </div>
-  );
+  )
 }
 
-export default ViewBrand;
+export default ViewBrand
