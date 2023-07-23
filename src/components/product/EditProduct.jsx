@@ -41,7 +41,6 @@ function EditProduct() {
       if (isMounted)
         if (res.status === 200) {
           setProduct(res.data.data)
-          console.log(res.data.data)
           setVariantList(res.data.data.variants)
           setOldVariantList(res.data.data.variants)
           setPictures(res.data.data.images)

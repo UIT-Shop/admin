@@ -26,14 +26,10 @@ const Variant = ({ variantList, setVariantList, dateInput, isAdd }) => {
   const handleVariantChange = async (e, index) => {
     const { name, value } = e.target
     const list = [...variantList]
-    console.log('name ', name)
-    console.log('value ', value)
     list[index][name] = value
     if (name === 'productId' && value.trim() !== '')
       await axios.get(`/Product/${value}`).then((res) => {
         if (res.status === 200) {
-          console.log('success')
-
           let detail = res.data.data.variants
 
           list[index]['productName'] = res.data.data.title
@@ -47,7 +43,7 @@ const Variant = ({ variantList, setVariantList, dateInput, isAdd }) => {
             'L' +
             list[index]['productId'].padStart(5, '0') +
             '-' +
-            Moment(dateInput).format('yyyyMMdd')
+            Moment(dateInput).format('yyyyMMDD')
         }
       })
     else if (name === 'size' || name === 'colorId') {

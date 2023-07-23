@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import { Link, useParams } from 'react-router-dom';
-import jwt from 'jwt-decode';
-import { Role } from '../../common/constant/Role';
-import './Profile.css';
+import axios from 'axios'
+import jwt from 'jwt-decode'
+import React, { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
+import { Role } from '../../common/constant/Role'
+import './Profile.css'
 
 const Profile = () => {
   const [user, setUser] = useState({
@@ -11,31 +11,29 @@ const Profile = () => {
     email: '',
     phone: '',
     role: 1,
-    address: {},
-  });
+    address: {}
+  })
 
   // const [detailAddress, setDetailAddress] = useState({
   //   fullAddress:'',
   // });
 
   useEffect(() => {
-    let isMounted = true;
-    const token = localStorage.getItem('auth_token');
-    const user = jwt(token);
-    const useId = user[Object.keys(user)[0]];
+    let isMounted = true
+    const token = localStorage.getItem('auth_token')
+    const user = jwt(token)
+    const useId = user[Object.keys(user)[0]]
 
     axios.get(`/user/info/${useId}`).then((res) => {
       if (isMounted) {
-        console.log(res.data.data);
-
         // setDetailAddress(res.data.data.address);
-        setUser(res.data.data);
+        setUser(res.data.data)
       }
-    });
+    })
     return () => {
-      isMounted = false;
-    };
-  }, []);
+      isMounted = false
+    }
+  }, [])
 
   return (
     <div className="page-content page-container" id="page-content">
@@ -56,10 +54,7 @@ const Profile = () => {
                     <h6 className="f-w-600">{user.name}</h6>
                     <p>{user.role ? Role.Ad : Role.Cus}</p>
                     <div className="d-flex justify-content-center">
-                      <Link
-                        to="/admin/profile/edit"
-                        className="btn btn-primary"
-                      >
+                      <Link to="/admin/profile/edit" className="btn btn-primary">
                         <div>
                           <i className="fas fa-pen-to-square"></i>
                         </div>
@@ -80,9 +75,7 @@ const Profile = () => {
                         <h6 className="text-muted f-w-400">{user.phone}</h6>
                       </div>
                     </div>
-                    <h6 className="mb-2 m-t-40 pb-1 b-b-default f-w-600">
-                      Địa chỉ
-                    </h6>
+                    <h6 className="mb-2 m-t-40 pb-1 b-b-default f-w-600">Địa chỉ</h6>
                     <h6 className="text-muted f-w-400">
                       {user.address ? user.address.fullAddress : null}
                     </h6>
@@ -94,7 +87,7 @@ const Profile = () => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Profile;
+export default Profile

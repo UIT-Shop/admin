@@ -35,7 +35,6 @@ function Order() {
       if (isMounted) {
         if (res.status === 200) {
           setOrders(res.data.data.orderOverviews)
-          console.log(res.data.data.orderOverviews)
           setPageCount(res.data.data.pages)
           setLoading(false)
         }

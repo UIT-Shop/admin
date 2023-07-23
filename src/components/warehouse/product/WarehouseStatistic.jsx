@@ -301,6 +301,7 @@ function WarehouseStatistic() {
                   </div>
                   <div className="col-md-6 form-group mb-4">
                     <label>Tháng / Năm</label>
+                    <div />
                     <DatePicker
                       locale={'vi'}
                       selected={dateInput}
@@ -341,6 +342,7 @@ function WarehouseStatistic() {
 
                   <div className="col-md-4 form-group mb-4">
                     <label>Tháng / Năm</label>
+                    <div />
                     <DatePicker
                       locale={'vi'}
                       selected={dateInput}

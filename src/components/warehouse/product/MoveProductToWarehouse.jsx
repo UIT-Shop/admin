@@ -207,6 +207,7 @@ function MoveProductToWarehouse() {
 
               <div className="col-md-4 form-group mb-4">
                 <label>Ngày di chuyển</label>
+                <div />
                 <DatePicker
                   locale={'vi'}
                   selected={dateInput}

@@ -83,7 +83,6 @@ function ViewProduct() {
   // }
 
   const handleSearchClick = () => {
-    console.log('search: ', searchProduct)
     var page = 1
     setCurrentPage(0)
     window.scrollTo(0, 0)

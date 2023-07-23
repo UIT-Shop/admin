@@ -95,8 +95,6 @@ function ChangePassword() {
       })
       .catch((err) => {
         if (err.response) {
-          // The client was given an error response (5xx, 4xx)
-          console.log('Error response', err.response)
           if (err.response.status === 400)
             toast.error('Sai mật khẩu cũ', {
               position: 'top-right',
@@ -109,8 +107,6 @@ function ChangePassword() {
               theme: 'colored'
             })
         } else if (err.request) {
-          // The client never received a response, and the request was never left (4xx)
-          console.log('Error request', err.request)
           toast.error(err.request.data.message, {
             position: 'top-right',
             autoClose: 5000,

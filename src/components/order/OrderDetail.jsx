@@ -16,7 +16,6 @@ function OrderDetail() {
     axios.get(`/Order/${id}`).then((res) => {
       if (isMounted) {
         if (res.status === 200) {
-          console.log(OrderStatus[res.data.data.status])
           setOrderDetail(res.data.data.products)
           setOrder(res.data.data)
           setStatus(OrderStatus[res.data.data.status].key)
@@ -52,7 +51,8 @@ function OrderDetail() {
   } else {
     display_order = orderDetail.map((item) => {
       return (
-        <tr key={item.id}>
+        <tr key={item.productId}>
+          <td>{item.productId}</td>
           <td>{item.title}</td>
           <td>{item.productSize}</td>
           <td>{item.productColor}</td>
@@ -126,6 +126,7 @@ function OrderDetail() {
             <table className="table table-bordered table-striped">
               <thead>
                 <tr>
+                  <th>ID</th>
                   <th>Sản phẩm</th>
                   <th>Kích cỡ</th>
                   <th>Màu sắc</th>
