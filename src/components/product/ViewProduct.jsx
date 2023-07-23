@@ -75,12 +75,13 @@ function ViewProduct() {
     navigate({ pathname: '/admin/view-product', search: searchUrl })
   }
 
-  const handleKeypress = (e) => {
-    //it triggers by pressing the enter key
-    if (e.keyCode === 13) {
-      handleSearchClick()
-    }
-  }
+  // const handleKeypress = (e) => {
+  //   //it triggers by pressing the enter key
+  //   if (e.keyCode === 13) {
+  //     handleSearchClick()
+  //   }
+  // }
+
   const handleSearchClick = () => {
     console.log('search: ', searchProduct)
     var page = 1
@@ -153,7 +154,7 @@ function ViewProduct() {
                   <button
                     className="btn btn-primary"
                     type="button"
-                    onKeyUp={handleKeypress}
+                    // onKeyUp={handleKeypress}
                     onClick={handleSearchClick}>
                     <i className="fas fa-search"></i>
                   </button>
