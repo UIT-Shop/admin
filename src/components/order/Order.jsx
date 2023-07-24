@@ -47,7 +47,7 @@ function Order() {
 
   // Invoke when user click to request another page.
   const handlePageClick = (event) => {
-    event.preventDefault()
+    // event.preventDefault()
     var page = parseInt(event.selected) + 1
     setCurrentPage(parseInt(event.selected))
     window.scrollTo(0, 0)
